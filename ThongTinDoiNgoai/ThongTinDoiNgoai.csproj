@@ -1,0 +1,701 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FEA1A66D-B9F5-4DF4-9A12-B31CCAA016C5}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ThongTinDoiNgoai</RootNamespace>
+    <AssemblyName>ThongTinDoiNgoai</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44370</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DocX">
+      <HintPath>..\..\DanhMucChung\DanhMucChung\bin\DocX.dll</HintPath>
+    </Reference>
+    <Reference Include="EsbUsers.Sso">
+      <HintPath>..\..\DanhMucChung\DanhMucChung\bin\EsbUsers.Sso.dll</HintPath>
+    </Reference>
+    <Reference Include="FITC.Web.Component">
+      <HintPath>..\..\DanhMucChung\DanhMucChung\bin\FITC.Web.Component.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>C:\Users\USER\Desktop\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Mail">
+      <HintPath>..\..\DanhMucChung\DanhMucChung\bin\Mail.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\aaaaa\aaaaa\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\DanhMucChung\DanhMucChung\bin\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\..\DanhMucChung\DanhMucChung\bin\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="AspNet.ScriptManager.bootstrap">
+      <HintPath>..\packages\AspNet.ScriptManager.bootstrap.3.4.1\lib\net45\AspNet.ScriptManager.bootstrap.dll</HintPath>
+    </Reference>
+    <Reference Include="AspNet.ScriptManager.jQuery">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.3.4.1\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.MSAjax">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.WebForms">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.WebForms.1.1.3\lib\net45\Microsoft.AspNet.Web.Optimization.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.FriendlyUrls">
+      <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Css\Combox\select2.css" />
+    <Content Include="Css\Combox\select2.min.css" />
+    <Content Include="Css\Combox\select3.css" />
+    <Content Include="Css\ContextMenu.css" />
+    <Content Include="Css\home.css" />
+    <Content Include="Css\Home\1.png" />
+    <Content Include="Css\Home\banner.png" />
+    <Content Include="Css\Home\banner1.jpg" />
+    <Content Include="Css\Home\banner2.jpg" />
+    <Content Include="Css\Home\banner3.jpg" />
+    <Content Include="Css\Home\bg.png" />
+    <Content Include="Css\Home\Bg_dichvu.png" />
+    <Content Include="Css\Home\Bg_dichvu1.png" />
+    <Content Include="Css\Home\bg_DonVi.png" />
+    <Content Include="Css\Home\bg_donvi1.png" />
+    <Content Include="Css\Home\bg_DonVi2.png" />
+    <Content Include="Css\Home\bg_MaHS.png" />
+    <Content Include="Css\Home\Bg_TieuDe.png" />
+    <Content Include="Css\Home\btn_DangNhap.png" />
+    <Content Include="Css\Home\bulet_xo.png" />
+    <Content Include="Css\Home\bulet_xo1.png" />
+    <Content Include="Css\Home\bullet.png" />
+    <Content Include="Css\Home\BulletCon.png" />
+    <Content Include="Css\Home\BulletConHoVer.png" />
+    <Content Include="Css\Home\Congviec.png" />
+    <Content Include="Css\Home\cpxd_vungchinh.png" />
+    <Content Include="Css\Home\Cvchuyentiep.png" />
+    <Content Include="Css\Home\cvQuahan.png" />
+    <Content Include="Css\Home\Dangnhap.png" />
+    <Content Include="Css\Home\DangNhap_bd.png" />
+    <Content Include="Css\Home\demuc_lct.png" />
+    <Content Include="Css\Home\demuc_tb.png" />
+    <Content Include="Css\Home\demuc_tinnhan.png" />
+    <Content Include="Css\Home\drop1.gif" />
+    <Content Include="Css\Home\drop2.gif" />
+    <Content Include="Css\Home\drop3.gif" />
+    <Content Include="Css\Home\footer.png" />
+    <Content Include="Css\Home\HoVer_Cap1.png" />
+    <Content Include="Css\Home\HoVer_Con.png" />
+    <Content Include="Css\Home\IconGiaoTiep.png" />
+    <Content Include="Css\Home\IconGiaoViec.png" />
+    <Content Include="Css\Home\IconThucHien.png" />
+    <Content Include="Css\Home\k_thich_cuoi.png" />
+    <Content Include="Css\Home\k_thich_dau.png" />
+    <Content Include="Css\Home\MeNuHT_TCQB.png" />
+    <Content Include="Css\Home\menulaptrang.jpg" />
+    <Content Include="Css\Home\menu_demuc.png" />
+    <Content Include="Css\Home\menu_ht.png" />
+    <Content Include="Css\Home\nentraiduoi.jpg" />
+    <Content Include="Css\Home\nentrailap.jpg" />
+    <Content Include="Css\Home\nentraitop.jpg" />
+    <Content Include="Css\Home\QB_Close.png" />
+    <Content Include="Css\Home\QB_DeMuc_Left.png" />
+    <Content Include="Css\Home\QB_DeMuc_Right.png" />
+    <Content Include="Css\Home\QB_li_hover.png" />
+    <Content Include="Css\Home\QB_MenuHT.png" />
+    <Content Include="Css\Home\QB_TabChon.png" />
+    <Content Include="Css\Home\QB_VungChinh_Lap.png" />
+    <Content Include="Css\Home\thanh00.jpg" />
+    <Content Include="Css\Home\thanh01.jpg" />
+    <Content Include="Css\Home\thanh02.jpg" />
+    <Content Include="Css\Home\thanh03.jpg" />
+    <Content Include="Css\Home\thich_cuoi.png" />
+    <Content Include="Css\Home\thich_dau.png" />
+    <Content Include="Css\Home\TinNoiBo\bullet.png" />
+    <Content Include="Css\Home\TinNoiBo\bullet1.png" />
+    <Content Include="Css\Home\TinNoiBo\nen.png" />
+    <Content Include="Css\Home\TinNoiBo\nguoisoan.png" />
+    <Content Include="Css\Home\TinNoiBo\thanhduoi.png" />
+    <Content Include="Css\Home\TinNoiBo\thanhgiua.png" />
+    <Content Include="Css\Home\TinNoiBo\thanhtren.png" />
+    <Content Include="Css\Home\TinNoiBo\Tieude.png" />
+    <Content Include="Css\Home\trangchu.jpg" />
+    <Content Include="Css\jquery-ui-1.9.1.custom.css" />
+    <Content Include="Css\PhanAnh.css" />
+    <Content Include="Css\PhanAnh\ytcot1.png" />
+    <Content Include="Css\PhanAnh\ytcot2.png" />
+    <Content Include="Css\PhanAnh\ytcot3.png" />
+    <Content Include="Css\Thickbox\blank.gif" />
+    <Content Include="Css\Thickbox\fancybox_close.png" />
+    <Content Include="Css\Thickbox\fancybox_loading.gif" />
+    <Content Include="Css\Thickbox\fancybox_overlay.png" />
+    <Content Include="Css\Thickbox\fancybox_sprite.png" />
+    <Content Include="Css\Thickbox\fancybox_sprite1.png" />
+    <Content Include="Css\Thickbox\helpers\fancybox_buttons.png" />
+    <Content Include="Css\Thickbox\helpers\jquery.fancybox-buttons.css" />
+    <Content Include="Css\Thickbox\helpers\jquery.fancybox-buttons.js" />
+    <Content Include="Css\Thickbox\helpers\jquery.fancybox-media.js" />
+    <Content Include="Css\Thickbox\helpers\jquery.fancybox-thumbs.css" />
+    <Content Include="Css\Thickbox\helpers\jquery.fancybox-thumbs.js" />
+    <Content Include="Css\Thickbox\jquery.fancybox.css" />
+    <Content Include="Css\Thickbox\new-thickbox-title.png" />
+    <Content Include="Default.aspx" />
+    <Content Include="DichVu\HeThong\BanQuyen.ascx" />
+    <Content Include="DichVu\HeThong\DangXuat.ascx" />
+    <Content Include="DichVu\HeThong\DoiMatKhau.ascx" />
+    <Content Include="DichVu\HeThong\Email\DangKyEmail.ascx" />
+    <Content Include="DichVu\HeThong\Email\DangKyEmail_Tm.ascx" />
+    <Content Include="DichVu\HeThong\HuongDanSuDung.ascx" />
+    <Content Include="DichVu\HeThong\MaHoa.ascx" />
+    <Content Include="DichVu\HeThong\NhatKySuDung.ascx" />
+    <Content Include="DichVu\HeThong\PhanQuyen\PhanQuyen.ascx" />
+    <Content Include="DichVu\HeThong\PhanQuyen\PhanQuyen_KiemSoat.ascx" />
+    <Content Include="DichVu\HeThong\PhanQuyen\PhanQuyen_Nhom.ascx" />
+    <Content Include="DichVu\HeThong\PhanQuyen\PhanQuyen_TaiKhoan.ascx" />
+    <Content Include="DichVu\HeThong\PhanQuyen\PhanQuyen_TheoDonVi.ascx" />
+    <Content Include="DichVu\HeThong\PhanQuyen\TaoNhom.ascx" />
+    <Content Include="DichVu\HeThong\PhanQuyen\ThietLapQuyTrinh.ascx" />
+    <Content Include="DichVu\HeThong\SoDienThoai.ascx" />
+    <Content Include="DichVu\HeThong\TaiKhoan\BoPhan.ascx" />
+    <Content Include="DichVu\HeThong\TaiKhoan\DonVi.ascx" />
+    <Content Include="DichVu\HeThong\TaiKhoan\DonVi_Tm.ascx" />
+    <Content Include="DichVu\HeThong\TaiKhoan\QuyenNgoaiNhom.ascx" />
+    <Content Include="DichVu\HeThong\TaiKhoan\TaiKhoan.ascx" />
+    <Content Include="DichVu\HeThong\TaiKhoan\TaiKhoanTruyCapApi.ascx" />
+    <Content Include="DichVu\HeThong\TaiKhoan\TaiKhoan_Tm.ascx" />
+    <Content Include="DichVu\HeThong\TaoMenu\TaoMenu.ascx" />
+    <Content Include="DichVu\HeThong\TaoMenu\TaoMenu_Tm.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\BaiViet.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\BaiViet_Xem.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\ChuyenMuc.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\ChuyenMuc_Tm.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\TrangWeb.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\XpathChiTiet_Tm.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm.ascx" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Home\DangNhap.aspx" />
+    <Content Include="Home\Default.aspx" />
+    <Content Include="Home\Popup.aspx" />
+    <Content Include="Images\access.gif" />
+    <Content Include="Images\add.gif" />
+    <Content Include="Images\add.ico" />
+    <Content Include="Images\add.png" />
+    <Content Include="Images\angle_up-16.png" />
+    <Content Include="Images\canhbao.png" />
+    <Content Include="Images\ChuyenTrang\AnhChuTich.jpg" />
+    <Content Include="Images\ChuyenTrang\Chuagiaiquyet.png" />
+    <Content Include="Images\ChuyenTrang\Dagiaiquyet.png" />
+    <Content Include="Images\ChuyenTrang\dttm_GD_trangchu2_21022019.jpg" />
+    <Content Include="Images\close.gif" />
+    <Content Include="Images\collapse.jpg" />
+    <Content Include="Images\Cuoc_thi_anh.jpg" />
+    <Content Include="Images\DaDuyet.gif" />
+    <Content Include="Images\delete.gif" />
+    <Content Include="Images\edit.gif" />
+    <Content Include="Images\excel.gif" />
+    <Content Include="Images\expand.jpg" />
+    <Content Include="Images\giam.gif" />
+    <Content Include="Images\Ho\hotatrach.jpg" />
+    <Content Include="Images\hues.png" />
+    <Content Include="Images\imgThemMoi.png" />
+    <Content Include="Images\Img_ThemMoi.png" />
+    <Content Include="Images\map.png" />
+    <Content Include="Images\new.gif" />
+    <Content Include="Images\pdf.gif" />
+    <Content Include="Images\ppt.gif" />
+    <Content Include="Images\rar.gif" />
+    <Content Include="Images\Save.gif" />
+    <Content Include="Images\showCalander.gif" />
+    <Content Include="Images\SOS\S_blue.png" />
+    <Content Include="Images\SOS\S_green.png" />
+    <Content Include="Images\SOS\S_red.png" />
+    <Content Include="Images\SOS\S_yellow.png" />
+    <Content Include="Images\tang.gif" />
+    <Content Include="Images\TheDienTu\0014009190088_1_qr.png" />
+    <Content Include="Images\TheDienTu\keyboard32.png" />
+    <Content Include="Images\TheDienTu\MayPos.jpg" />
+    <Content Include="Images\TheDienTu\QrCode.jpg" />
+    <Content Include="Images\TheDienTu\The.jpg" />
+    <Content Include="Images\TraoDoi.gif" />
+    <Content Include="Images\TreeLineImages\dash.gif" />
+    <Content Include="Images\TreeLineImages\dashminus.gif" />
+    <Content Include="Images\TreeLineImages\dashplus.gif" />
+    <Content Include="Images\TreeLineImages\i.gif" />
+    <Content Include="Images\TreeLineImages\l.gif" />
+    <Content Include="Images\TreeLineImages\lminus.gif" />
+    <Content Include="Images\TreeLineImages\lplus.gif" />
+    <Content Include="Images\TreeLineImages\minus.gif" />
+    <Content Include="Images\TreeLineImages\noexpand.gif" />
+    <Content Include="Images\TreeLineImages\plus.gif" />
+    <Content Include="Images\TreeLineImages\r.gif" />
+    <Content Include="Images\TreeLineImages\rminus.gif" />
+    <Content Include="Images\TreeLineImages\rplus.gif" />
+    <Content Include="Images\TreeLineImages\t.gif" />
+    <Content Include="Images\TreeLineImages\tminus.gif" />
+    <Content Include="Images\TreeLineImages\tplus.gif" />
+    <Content Include="Images\View.gif" />
+    <Content Include="Images\zip.gif" />
+    <Content Include="Js\BieuDo\highcharts.js" />
+    <Content Include="Js\BieuDo\toaDoCapHuyenThuaThienHue.min.js" />
+    <Content Include="Js\ChamCong\ChamCong.css" />
+    <Content Include="Js\ChamCong\jquery.datetimepicker.css" />
+    <Content Include="Js\ChamCong\jquery.datetimepicker.full.min.js" />
+    <Content Include="Js\ChamCong\jquery.js" />
+    <Content Include="Js\ChamCong\myPopup.css" />
+    <Content Include="Js\ChamCong\myPopup.js" />
+    <Content Include="Js\ChamCong\myStyle_ChamCong.css" />
+    <Content Include="Js\chatbot_script.js" />
+    <Content Include="Js\Combox\select2.full.js" />
+    <Content Include="Js\Combox\select2.full.min.js" />
+    <Content Include="Js\Combox\select2.js" />
+    <Content Include="Js\Combox\select2.min.js" />
+    <Content Include="Js\contextMenu.js" />
+    <Content Include="Js\Fcm\firebase-app.js" />
+    <Content Include="Js\Fcm\firebase-messaging.js" />
+    <Content Include="Js\Functions.js" />
+    <Content Include="Js\jquery-1.8.2.min.js" />
+    <Content Include="Js\jquery-3.1.0.min.js" />
+    <Content Include="Js\jquery-ui-1.12.0.custom.min.js" />
+    <Content Include="Js\jquery.contextmenu.js" />
+    <Content Include="Js\jquery.fancybox.pack.js" />
+    <Content Include="Js\keyboard_type.js" />
+    <Content Include="Js\keyboard_type11.js" />
+    <Content Include="Js\map.js" />
+    <Content Include="Js\newCalendar.js" />
+    <Content Include="Js\PDFSigning.min.js" />
+    <Content Include="Js\simple-keyboard-min.js" />
+    <Content Include="Js\Upload\add-item.js" />
+    <Content Include="Js\Upload\fontawesome-v5.3.1.js" />
+    <Content Include="Js\Upload\jquery-3.2.1.min.js" />
+    <Content Include="Js\Upload\running-effect.js" />
+    <Content Include="Js\validate.min.js" />
+    <Content Include="Js\validatejs\moment-2.10.6.min.js" />
+    <Content Include="Js\validatejs\underscore-1.8.3.min.js" />
+    <Content Include="Js\validatejs\validate.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Class\Api\DynamicWebService.cs" />
+    <Compile Include="Class\Api\InMemoryMultipartFormDataStreamProvider.cs" />
+    <Compile Include="Class\Api\KetQuaAlert.cs" />
+    <Compile Include="Class\Api\KetQuaList.cs" />
+    <Compile Include="Class\Api\ThongTinTaiKhoan.cs" />
+    <Compile Include="Class\LayTinTuDong.cs" />
+    <Compile Include="Class\ThuDienTu\EncryptDescript.cs" />
+    <Compile Include="Class\ThuDienTu\FITC_EmailSettings.cs" />
+    <Compile Include="Class\ThuDienTu\FITC_Imap4Controller.cs" />
+    <Compile Include="Class\ThuDienTu\FITC_MailFunctions.cs" />
+    <Compile Include="Class\ThuDienTu\FITC_Pop3Controller.cs" />
+    <Compile Include="Class\ThuDienTu\FITC_SmtpController.cs" />
+    <Compile Include="Class\TUONGTAC.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\BanQuyen.ascx.cs">
+      <DependentUpon>BanQuyen.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\BanQuyen.ascx.designer.cs">
+      <DependentUpon>BanQuyen.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\DangXuat.ascx.cs">
+      <DependentUpon>DangXuat.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\DangXuat.ascx.designer.cs">
+      <DependentUpon>DangXuat.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\DoiMatKhau.ascx.cs">
+      <DependentUpon>DoiMatKhau.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\DoiMatKhau.ascx.designer.cs">
+      <DependentUpon>DoiMatKhau.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\Email\DangKyEmail.ascx.cs">
+      <DependentUpon>DangKyEmail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\Email\DangKyEmail.ascx.designer.cs">
+      <DependentUpon>DangKyEmail.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\Email\DangKyEmail_Tm.ascx.cs">
+      <DependentUpon>DangKyEmail_Tm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\Email\DangKyEmail_Tm.ascx.designer.cs">
+      <DependentUpon>DangKyEmail_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\HuongDanSuDung.ascx.cs">
+      <DependentUpon>HuongDanSuDung.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\HuongDanSuDung.ascx.designer.cs">
+      <DependentUpon>HuongDanSuDung.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\MaHoa.ascx.cs">
+      <DependentUpon>MaHoa.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\MaHoa.ascx.designer.cs">
+      <DependentUpon>MaHoa.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\NhatKySuDung.ascx.cs">
+      <DependentUpon>NhatKySuDung.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\NhatKySuDung.ascx.designer.cs">
+      <DependentUpon>NhatKySuDung.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen.ascx.cs">
+      <DependentUpon>PhanQuyen.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen.ascx.designer.cs">
+      <DependentUpon>PhanQuyen.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen_KiemSoat.ascx.cs">
+      <DependentUpon>PhanQuyen_KiemSoat.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen_KiemSoat.ascx.designer.cs">
+      <DependentUpon>PhanQuyen_KiemSoat.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen_Nhom.ascx.cs">
+      <DependentUpon>PhanQuyen_Nhom.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen_Nhom.ascx.designer.cs">
+      <DependentUpon>PhanQuyen_Nhom.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen_TaiKhoan.ascx.cs">
+      <DependentUpon>PhanQuyen_TaiKhoan.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen_TaiKhoan.ascx.designer.cs">
+      <DependentUpon>PhanQuyen_TaiKhoan.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen_TheoDonVi.ascx.cs">
+      <DependentUpon>PhanQuyen_TheoDonVi.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\PhanQuyen_TheoDonVi.ascx.designer.cs">
+      <DependentUpon>PhanQuyen_TheoDonVi.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\TaoNhom.ascx.cs">
+      <DependentUpon>TaoNhom.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\TaoNhom.ascx.designer.cs">
+      <DependentUpon>TaoNhom.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\ThietLapQuyTrinh.ascx.cs">
+      <DependentUpon>ThietLapQuyTrinh.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\PhanQuyen\ThietLapQuyTrinh.ascx.designer.cs">
+      <DependentUpon>ThietLapQuyTrinh.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\SoDienThoai.ascx.cs">
+      <DependentUpon>SoDienThoai.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\SoDienThoai.ascx.designer.cs">
+      <DependentUpon>SoDienThoai.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\BoPhan.ascx.cs">
+      <DependentUpon>BoPhan.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\BoPhan.ascx.designer.cs">
+      <DependentUpon>BoPhan.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\DonVi.ascx.cs">
+      <DependentUpon>DonVi.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\DonVi.ascx.designer.cs">
+      <DependentUpon>DonVi.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\DonVi_Tm.ascx.cs">
+      <DependentUpon>DonVi_Tm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\DonVi_Tm.ascx.designer.cs">
+      <DependentUpon>DonVi_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\QuyenNgoaiNhom.ascx.cs">
+      <DependentUpon>QuyenNgoaiNhom.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\QuyenNgoaiNhom.ascx.designer.cs">
+      <DependentUpon>QuyenNgoaiNhom.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\TaiKhoan.ascx.cs">
+      <DependentUpon>TaiKhoan.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\TaiKhoan.ascx.designer.cs">
+      <DependentUpon>TaiKhoan.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\TaiKhoanTruyCapApi.ascx.cs">
+      <DependentUpon>TaiKhoanTruyCapApi.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\TaiKhoanTruyCapApi.ascx.designer.cs">
+      <DependentUpon>TaiKhoanTruyCapApi.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\TaiKhoan_Tm.ascx.cs">
+      <DependentUpon>TaiKhoan_Tm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaiKhoan\TaiKhoan_Tm.ascx.designer.cs">
+      <DependentUpon>TaiKhoan_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaoMenu\TaoMenu.ascx.cs">
+      <DependentUpon>TaoMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaoMenu\TaoMenu.ascx.designer.cs">
+      <DependentUpon>TaoMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaoMenu\TaoMenu_Tm.ascx.cs">
+      <DependentUpon>TaoMenu_Tm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\HeThong\TaoMenu\TaoMenu_Tm.ascx.designer.cs">
+      <DependentUpon>TaoMenu_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\BaiViet.ascx.cs">
+      <DependentUpon>BaiViet.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\BaiViet.ascx.designer.cs">
+      <DependentUpon>BaiViet.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\BaiViet_Xem.ascx.cs">
+      <DependentUpon>BaiViet_Xem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\BaiViet_Xem.ascx.designer.cs">
+      <DependentUpon>BaiViet_Xem.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\ChuyenMuc.ascx.cs">
+      <DependentUpon>ChuyenMuc.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\ChuyenMuc.ascx.designer.cs">
+      <DependentUpon>ChuyenMuc.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\ChuyenMuc_Tm.ascx.cs">
+      <DependentUpon>ChuyenMuc_Tm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\ChuyenMuc_Tm.ascx.designer.cs">
+      <DependentUpon>ChuyenMuc_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\TrangWeb.ascx.cs">
+      <DependentUpon>TrangWeb.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\TrangWeb.ascx.designer.cs">
+      <DependentUpon>TrangWeb.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\XpathChiTiet_Tm.ascx.cs">
+      <DependentUpon>XpathChiTiet_Tm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\XpathChiTiet_Tm.ascx.designer.cs">
+      <DependentUpon>XpathChiTiet_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm.ascx.cs">
+      <DependentUpon>XpathChuyenMuc_Tm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm.ascx.designer.cs">
+      <DependentUpon>XpathChuyenMuc_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Home\DangNhap.aspx.cs">
+      <DependentUpon>DangNhap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home\DangNhap.aspx.designer.cs">
+      <DependentUpon>DangNhap.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Popup.aspx.cs">
+      <DependentUpon>Popup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home\Popup.aspx.designer.cs">
+      <DependentUpon>Popup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="UploadFiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Css\Home\Thumbs.db" />
+    <Content Include="Css\Home\TinNoiBo\Thumbs.db" />
+    <Content Include="Css\Thickbox\helpers\Thumbs.db" />
+    <None Include="packages.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50379</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44370/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
