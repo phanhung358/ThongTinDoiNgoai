@@ -35,7 +35,7 @@
     <tr>
         <td style="width: 65px;">Trang web:</td>
         <td style="width:350px">
-            <asp:DropDownList ID="drpWebID" CssClass="js-example-basic-single" runat="server" Width="100%" AutoPostBack="true" OnSelectedIndexChanged="drpWebID_SelectedIndexChanged"></asp:DropDownList>
+            <asp:DropDownList ID="drpWeb" CssClass="js-example-basic-single" runat="server" Width="100%" AutoPostBack="true" OnSelectedIndexChanged="drpWeb_SelectedIndexChanged"></asp:DropDownList>
         </td>
         <td style="text-align: right">
             <asp:ImageButton ID="imgThemMoi" runat="server" ImageUrl="~/Images/imgThemMoi.png" />

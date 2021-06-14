@@ -14,13 +14,14 @@
     <tr>
         <td style="width: 65px;">Trang web:</td>
         <td style="width:300px">
-            <asp:DropDownList ID="drpWebID" CssClass="js-example-basic-single" runat="server" Width="100%" AutoPostBack="true" OnSelectedIndexChanged="drpWebID_SelectedIndexChanged"></asp:DropDownList>
+            <asp:DropDownList ID="drpWeb" CssClass="js-example-basic-single" runat="server" Width="100%" AutoPostBack="true" OnSelectedIndexChanged="drpWeb_SelectedIndexChanged"></asp:DropDownList>
         </td>
         <td style="width: 70px; text-align: right">Chuyên mục:</td>
         <td style="width:300px">
-            <asp:DropDownList ID="drpChuyenMucID" CssClass="js-example-basic-single" runat="server" Width="100%" AutoPostBack="true" OnSelectedIndexChanged="drpChuyenMucID_SelectedIndexChanged"></asp:DropDownList>
+            <asp:DropDownList ID="drpChuyenMuc" CssClass="js-example-basic-single" runat="server" Width="100%" AutoPostBack="true" OnSelectedIndexChanged="drpChuyenMuc_SelectedIndexChanged"></asp:DropDownList>
         </td>
         <td style="text-align: right">
+            <asp:Button ID="btnXoa" runat="server" Text="Xóa" CssClass="button" OnClick="btnXoa_Click" />
             <asp:Button runat="server" CssClass="button" ID="btnCapNhat" Text="Lấy dữ liệu" OnClick="btnCapNhat_Click" />
         </td>
     </tr>

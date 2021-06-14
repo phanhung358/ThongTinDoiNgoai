@@ -25,14 +25,14 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
         private void addDanhMuc()
         {
-            drpWebID.Items.Add(new ListItem("[Tất cả]", "0"));
+            drpWeb.Items.Add(new ListItem("[Tất cả]", "0"));
             DataSet dsWeb = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0);
             if (dsWeb != null && dsWeb.Tables.Count > 0 && dsWeb.Tables[0].Rows.Count > 0)
             {
                 for (int i = 0; i < dsWeb.Tables[0].Rows.Count; i++)
                 {
                     DataRow row = dsWeb.Tables[0].Rows[i];
-                    drpWebID.Items.Add(new ListItem(row["TenWeb"].ToString() + " (" + row["DiaChiWeb"].ToString() + ")", row["WebID"].ToString()));
+                    drpWeb.Items.Add(new ListItem(row["TenWeb"].ToString(), row["WebID"].ToString()));
                 }
             }
         }
@@ -146,7 +146,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
         private void addData()
         {
-            imgThemMoi.Attributes["onclick"] = string.Format("return thickboxPopup('Thêm mới chuyên mục', '{0}?control={1}&btn={2}&WebID={3}','650','500');", Static.AppPath() + "/home/popup.aspx", "/DichVu/ThongTinDoiNgoai/ChuyenMuc_Tm.ascx", btnSuKien.ClientID, drpWebID.SelectedValue);
+            imgThemMoi.Attributes["onclick"] = string.Format("return thickboxPopup('Thêm mới chuyên mục', '{0}?control={1}&btn={2}&WebID={3}','650','500');", Static.AppPath() + "/home/popup.aspx", "/DichVu/ThongTinDoiNgoai/ChuyenMuc_Tm.ascx", btnSuKien.ClientID, drpWeb.SelectedValue);
 
             divDanhSach.Controls.Clear();
             Table tbl = new Table();
@@ -164,8 +164,13 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
             tblCell = new TableCell();
             tblCell.CssClass = "Cot_TieuDe";
-            tblCell.Width = 40;
+            tblCell.Width = 30;
             tblCell.Text = "STT";
+            tblRow.Controls.Add(tblCell);
+
+            tblCell = new TableCell();
+            tblCell.CssClass = "Cot_TieuDe";
+            tblCell.Text = "Tên website";
             tblRow.Controls.Add(tblCell);
 
             tblCell = new TableCell();
@@ -192,14 +197,20 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
             tblCell = new TableCell();
             tblCell.CssClass = "Cot_TieuDe";
-            tblCell.Width = 75;
+            tblCell.Width = 65;
             tblCell.Text = "XPath <br/> chi tiết";
             tblRow.Controls.Add(tblCell);
 
             tblCell = new TableCell();
             tblCell.CssClass = "Cot_TieuDe";
-            tblCell.Width = 75;
+            tblCell.Width = 65;
             tblCell.Text = "Thời gian <br/> đồng bộ";
+            tblRow.Controls.Add(tblCell);
+
+            tblCell = new TableCell();
+            tblCell.CssClass = "Cot_TieuDe";
+            tblCell.Text = "Tổng tin";
+            tblCell.Width = 50;
             tblRow.Controls.Add(tblCell);
 
             tblCell = new TableCell();
@@ -216,7 +227,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
             tbl.Controls.Add(tblRow);
 
             tblPhanTrang.Visible = false;
-            using (DataSet ds = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 0, drpWebID.SelectedValue.ToString()))
+            using (DataSet ds = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 0, drpWeb.SelectedValue.ToString()))
             {
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
@@ -250,11 +261,15 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         tblRow.Controls.Add(tblCell);
 
                         tblCell = new TableCell();
+                        tblCell.Text = row["TenWeb"].ToString();
+                        tblRow.Controls.Add(tblCell);
+
+                        tblCell = new TableCell();
                         tblCell.Text = row["TenChuyenMuc"].ToString();
                         tblRow.Controls.Add(tblCell);
 
                         tblCell = new TableCell();
-                        tblCell.Text = row["UrlChuyenMuc"].ToString();
+                        tblCell.Text = string.Format("<a href='{0}' target='_blank'>{1}</a>", row["UrlChuyenMuc"].ToString(), row["UrlChuyenMuc"].ToString());
                         tblRow.Controls.Add(tblCell);
 
                         tblCell = new TableCell();
@@ -269,18 +284,18 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
                         tblCell = new TableCell();
                         ImageButton xpathCM = new ImageButton();
-                        xpathCM.ToolTip = "Click để sửa Xpath chuyên mục";
+                        xpathCM.ToolTip = "Click để thiết lập Xpath chuyên mục";
                         xpathCM.ImageUrl = Static.AppPath() + "/images/view.gif";
-                        xpathCM.Attributes["onclick"] = string.Format("return thickboxPopup('Chỉnh sửa Xpath chuyên mục', '{0}?control={1}&btn={2}&ChuyenMucID={3}&WebID={4}','650','320');", Static.AppPath() + "/home/popup.aspx", "/DichVu/ThongTinDoiNgoai/XpathChuyenMuc_Tm.ascx", btnSuKien.ClientID, row["ChuyenMucID"].ToString(), row["WebID"].ToString());
+                        xpathCM.Attributes["onclick"] = string.Format("return thickboxPopup('Thiết lập Xpath chuyên mục', '{0}?control={1}&btn={2}&ChuyenMucID={3}&WebID={4}','650','500');", Static.AppPath() + "/home/popup.aspx", "/DichVu/ThongTinDoiNgoai/XpathChuyenMuc_Tm.ascx", btnSuKien.ClientID, row["ChuyenMucID"].ToString(), row["WebID"].ToString());
                         tblCell.Controls.Add(xpathCM);
                         tblCell.HorizontalAlign = HorizontalAlign.Center;
                         tblRow.Controls.Add(tblCell);
 
                         tblCell = new TableCell();
                         ImageButton xpathCT = new ImageButton();
-                        xpathCT.ToolTip = "Click để sửa Xpath chi tiết";
+                        xpathCT.ToolTip = "Click để thiết lập Xpath chi tiết";
                         xpathCT.ImageUrl = Static.AppPath() + "/images/view.gif";
-                        xpathCT.Attributes["onclick"] = string.Format("return thickboxPopup('Chỉnh sửa Xpath chi tiết', '{0}?control={1}&btn={2}&ChuyenMucID={3}&WebID={4}','650','350');", Static.AppPath() + "/home/popup.aspx", "/DichVu/ThongTinDoiNgoai/XpathChiTiet_Tm.ascx", btnSuKien.ClientID, row["ChuyenMucID"].ToString(), row["WebID"].ToString());
+                        xpathCT.Attributes["onclick"] = string.Format("return thickboxPopup('Thiết lập Xpath chi tiết', '{0}?control={1}&btn={2}&ChuyenMucID={3}&WebID={4}','650','500');", Static.AppPath() + "/home/popup.aspx", "/DichVu/ThongTinDoiNgoai/XpathChiTiet_Tm.ascx", btnSuKien.ClientID, row["ChuyenMucID"].ToString(), row["WebID"].ToString());
                         tblCell.Controls.Add(xpathCT);
                         tblCell.HorizontalAlign = HorizontalAlign.Center;
                         tblRow.Controls.Add(tblCell);
@@ -288,6 +303,11 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         tblCell = new TableCell();
                         if (row["ThoiGianDongBo"].ToString() != "")
                             tblCell.Text = Convert.ToDateTime(row["ThoiGianDongBo"].ToString()).ToString("dd/MM/yyyy HH:mm");
+                        tblRow.Controls.Add(tblCell);
+
+                        tblCell = new TableCell();
+                        tblCell.HorizontalAlign = HorizontalAlign.Center;
+                        tblCell.Text = row["TongSoTin"].ToString();
                         tblRow.Controls.Add(tblCell);
 
                         tblCell = new TableCell();
@@ -305,7 +325,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         imgXoa.ImageUrl = Static.AppPath() + "/images/delete.gif";
                         imgXoa.ToolTip = "Click xóa ";
                         imgXoa.CausesValidation = false;
-                        imgXoa.Attributes["onclick"] = string.Format("return confirm('Bạn có chắc chắn xóa văn bản này không ?');");
+                        imgXoa.Attributes["onclick"] = string.Format("return confirm('Bạn có chắc chắn xóa chuyên mục này không ?');");
                         imgXoa.Click += new ImageClickEventHandler(imgXoa_Click);
                         tblCell.Controls.Add(imgXoa);
                         tblCell.HorizontalAlign = HorizontalAlign.Center;
@@ -371,7 +391,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
             }
         }
 
-        protected void drpWebID_SelectedIndexChanged(object sender, EventArgs e)
+        protected void drpWeb_SelectedIndexChanged(object sender, EventArgs e)
         {
             addData();
         }

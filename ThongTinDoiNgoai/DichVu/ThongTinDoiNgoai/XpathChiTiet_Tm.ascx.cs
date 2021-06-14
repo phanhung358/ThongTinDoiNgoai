@@ -33,27 +33,27 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
         private void addDanhMuc()
         {
-            drpWebID.Items.Add(new ListItem("[Chọn]", "0"));
+            drpWeb.Items.Add(new ListItem("[Chọn]", "0"));
             DataSet dsWeb = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0);
             if (dsWeb != null && dsWeb.Tables.Count > 0 && dsWeb.Tables[0].Rows.Count > 0)
             {
                 for (int i = 0; i < dsWeb.Tables[0].Rows.Count; i++)
                 {
                     DataRow row = dsWeb.Tables[0].Rows[i];
-                    drpWebID.Items.Add(new ListItem(row["TenWeb"].ToString() + " (" + row["DiaChiWeb"].ToString() + ")", row["WebID"].ToString()));
+                    drpWeb.Items.Add(new ListItem(row["TenWeb"].ToString() + " (" + row["DiaChiWeb"].ToString() + ")", row["WebID"].ToString()));
                 }
             }
-            drpChuyenMucID.Items.Clear();
-            drpChuyenMucID.Items.Add(new ListItem("[Chọn]", "0"));
+            drpChuyenMuc.Items.Clear();
+            drpChuyenMuc.Items.Add(new ListItem("[Chọn]", "0"));
         }
 
         private void addSua()
         {
             try
             {
-                db.GetItem(drpWebID, sWebID);
-                drpWebID_SelectedIndexChanged(null, null);
-                db.GetItem(drpChuyenMucID, sChuyenMucID);
+                db.GetItem(drpWeb, sWebID);
+                drpWeb_SelectedIndexChanged(null, null);
+                db.GetItem(drpChuyenMuc, sChuyenMucID);
 
                 DataSet ds = db.GetDataSet("TTDN_XPATH_CHITIET_SELECT", 0, sWebID, sChuyenMucID);
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -75,9 +75,9 @@ namespace QuanLyVanBan.DichVu.DuLieu
         {
             FITC_CDataTime dt = new FITC_CDataTime();
             string sLoi = "";
-            if (drpWebID.SelectedValue == "0")
+            if (drpWeb.SelectedValue == "0")
                 sLoi = "Chưa chọn trang web!";
-            if (drpChuyenMucID.SelectedValue == "0")
+            if (drpChuyenMuc.SelectedValue == "0")
                 sLoi = "Chưa chọn chuyên mục!";
             if (txtTieuDe.Text.Trim() == "")
                 sLoi = "Chưa nhập Xpath tiêu đề!";
@@ -85,9 +85,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 sLoi = "Chưa nhập Xpath nội dung bài viết!";
             if (txtThoiGian.Text.Trim() == "")
                 sLoi = "Chưa nhập Xpath thời gian!";
-            if (txtDinhDangThoiGian.Text.Trim() == "")
-                sLoi = "Chưa nhập định dạng thời gian!";
-
             return sLoi;
         }
 
@@ -111,8 +108,8 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 obj[4] = txtThoiGian.Text.Trim();
                 obj[5] = txtDinhDangThoiGian.Text.Trim();
                 obj[6] = txtTacGia.Text.Trim();
-                obj[7] = drpChuyenMucID.SelectedValue;
-                obj[8] = drpWebID.SelectedValue;
+                obj[7] = drpChuyenMuc.SelectedValue;
+                obj[8] = drpWeb.SelectedValue;
                 obj[9] = "Phan Hùng";
                 string sLoi = db.ExcuteSP("TTDN_XPATH_CHITIET_INSERT", obj);
                 if (sLoi == "")
@@ -131,21 +128,21 @@ namespace QuanLyVanBan.DichVu.DuLieu
             }
         }
 
-        protected void drpWebID_SelectedIndexChanged(object sender, EventArgs e)
+        protected void drpWeb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            drpChuyenMucID.Items.Clear();
-            if (drpWebID.SelectedValue == "0")
-                drpChuyenMucID.Items.Add(new ListItem("[Chọn]", "0"));
+            drpChuyenMuc.Items.Clear();
+            if (drpWeb.SelectedValue == "0")
+                drpChuyenMuc.Items.Add(new ListItem("[Chọn]", "0"));
             else
             {
-                drpChuyenMucID.Items.Add(new ListItem("[Chọn]", "0"));
-                DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 0, drpWebID.SelectedValue);
+                drpChuyenMuc.Items.Add(new ListItem("[Chọn]", "0"));
+                DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 0, drpWeb.SelectedValue);
                 if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
                 {
                     for (int i = 0; i < dsChuyenMuc.Tables[0].Rows.Count; i++)
                     {
                         DataRow row = dsChuyenMuc.Tables[0].Rows[i];
-                        drpChuyenMucID.Items.Add(new ListItem(row["TenChuyenMuc"].ToString() + " (" + row["UrlChuyenMuc"].ToString() + ")", row["ChuyenMucID"].ToString()));
+                        drpChuyenMuc.Items.Add(new ListItem(row["TenChuyenMuc"].ToString() + " (" + row["UrlChuyenMuc"].ToString() + ")", row["ChuyenMucID"].ToString()));
                     }
                 }
             }
@@ -162,17 +159,17 @@ namespace QuanLyVanBan.DichVu.DuLieu
             try
             {
                 List<string> dsTin = new List<string>();
-                DataSet dsWeb = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, drpWebID.SelectedValue);
+                DataSet dsWeb = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, drpWeb.SelectedValue);
                 if (dsWeb != null && dsWeb.Tables.Count > 0 && dsWeb.Tables[0].Rows.Count > 0)
                 {
                     DataRow rowWeb = dsWeb.Tables[0].Rows[0];
 
-                    DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 1, 0, drpChuyenMucID.SelectedValue);
+                    DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 1, 0, drpChuyenMuc.SelectedValue);
                     if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
                     {
                         DataRow row = dsChuyenMuc.Tables[0].Rows[0];
 
-                        DataSet ds = db.GetDataSet("TTDN_XPATH_CHUYENMUC_SELECT", 0, drpWebID.SelectedValue, drpChuyenMucID.SelectedValue);
+                        DataSet ds = db.GetDataSet("TTDN_XPATH_CHUYENMUC_SELECT", 0, drpWeb.SelectedValue, drpChuyenMuc.SelectedValue);
                         if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                         {
                             DataRow rowXpathCM = ds.Tables[0].Rows[0];
@@ -180,29 +177,32 @@ namespace QuanLyVanBan.DichVu.DuLieu
                             HtmlDocument html = htmlWeb.Load(row["UrlChuyenMuc"].ToString());
 
                             string xds = rowXpathCM["DanhSach"].ToString().Replace("tbody/", "");
-                            string xbv = rowXpathCM["BaiViet_Url"].ToString().Replace("tbody/", "");
                             string XDanhSach = xds.LastIndexOf(']') == xds.Length - 1 ? xds.Remove(xds.LastIndexOf('['), xds.Length - xds.LastIndexOf('[')) : xds;
-                            string XBaiViet_Url = xbv.Replace(xds, ".");
+                            string xbv = rowXpathCM["BaiViet_Url"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                            string xbv1 = rowXpathCM["BaiViet_Url1"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                            string xbv2 = rowXpathCM["BaiViet_Url2"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                            string XBaiViet_Url = xbv.IndexOf('[') == 1 ? xbv.Remove(1, xbv.IndexOf(']')) : xbv;
+                            string XBaiViet_Url1 = xbv1.IndexOf('[') == 1 ? xbv1.Remove(1, xbv1.IndexOf(']')) : xbv1;
+                            string XBaiViet_Url2 = xbv2.IndexOf('[') == 1 ? xbv2.Remove(1, xbv2.IndexOf(']')) : xbv2;
 
                             var DanhSach = html.DocumentNode.SelectNodes(XDanhSach) != null ? html.DocumentNode.SelectNodes(XDanhSach).ToList() : null;
                             if (DanhSach != null)
                             {
                                 for (int i = 0; i < 5; i++)
                                 {
-                                    var BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url) != null ? DanhSach[i].SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&") : null;
+                                    string BaiViet_Url = null;
+                                    if (DanhSach[i].SelectSingleNode(XBaiViet_Url) != null)
+                                        BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&");
+                                    else if (DanhSach[i].SelectSingleNode(XBaiViet_Url1) != null)
+                                        BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url1).Attributes["href"].Value.Replace("&amp;", "&");
+                                    else if (DanhSach[i].SelectSingleNode(XBaiViet_Url2) != null)
+                                        BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url2).Attributes["href"].Value.Replace("&amp;", "&");
+                                    else
+                                        BaiViet_Url = null;
 
                                     if (BaiViet_Url != null)
                                     {
-                                        if (BaiViet_Url.LastIndexOf(row["DiaChiWeb"].ToString()) == -1)
-                                        {
-                                            if (BaiViet_Url.Substring(0, 1) == "/")
-                                                BaiViet_Url = row["DiaChiWeb"].ToString() + BaiViet_Url;
-                                            else if (BaiViet_Url.IndexOf("https") == 0 && row["DiaChiWeb"].ToString().IndexOf("http") == 0)
-                                                BaiViet_Url.Replace("https", "http");
-                                            else if (BaiViet_Url.IndexOf("http") == 0 && row["DiaChiWeb"].ToString().IndexOf("https") == 0)
-                                                BaiViet_Url.Replace("http", "https");
-                                        }
-
+                                        BaiViet_Url = (BaiViet_Url.LastIndexOf(rowWeb["DiaChiWeb"].ToString()) > -1) ? BaiViet_Url : (rowWeb["DiaChiWeb"].ToString() + BaiViet_Url);
                                         string obj = BaiViet_Url;
                                         dsTin.Add(obj);
                                     }

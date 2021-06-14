@@ -70,12 +70,12 @@
         background-color: rgba(0,0,0,0.4);
     }
 
-    .loading img {
-        position: relative;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-    }
+        .loading img {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
 
     .d-none {
         display: none;
@@ -85,14 +85,14 @@
 <div style="width: 100%; clear: both" class="Dong_Table">
     <div class="Dong_Cell" style="width: 115px;">Trang web:<sup>*</sup></div>
     <div class="Dong_Cell">
-        <asp:DropDownList ID="drpWebID" runat="server" AutoPostBack="true" Width="100%" OnSelectedIndexChanged="drpWebID_SelectedIndexChanged" Enabled="False"></asp:DropDownList>
+        <asp:DropDownList ID="drpWeb" runat="server" AutoPostBack="true" Width="100%" OnSelectedIndexChanged="drpWeb_SelectedIndexChanged" Enabled="False"></asp:DropDownList>
     </div>
 </div>
 
 <div style="width: 100%; clear: both" class="Dong_Table">
     <div class="Dong_Cell" style="width: 115px;">Chuyên mục:<sup>*</sup></div>
     <div class="Dong_Cell">
-        <asp:DropDownList ID="drpChuyenMucID" runat="server" Width="100%" Enabled="False"></asp:DropDownList>
+        <asp:DropDownList ID="drpChuyenMuc" runat="server" Width="100%" Enabled="False"></asp:DropDownList>
     </div>
 </div>
 
@@ -131,8 +131,8 @@
     </div>
 </div>
 
-<div style="width: 100%; clear: both" class="Dong_Table">
-    <div class="Dong_Cell" style="width: 115px;">Định dạng thời gian:<sup>*</sup></div>
+<div style="width: 100%; clear: both; display: none" class="Dong_Table">
+    <div class="Dong_Cell" style="width: 115px;">Định dạng thời gian:</div>
     <div class="Dong_Cell">
         <asp:TextBox ID="txtDinhDangThoiGian" runat="server" Width="100%"></asp:TextBox>
     </div>

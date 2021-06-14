@@ -30,14 +30,14 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
         private void addDanhMuc()
         {
-            drpWebID.Items.Add(new ListItem("[Chọn]", "0"));
+            drpWeb.Items.Add(new ListItem("[Chọn]", "0"));
             DataSet dsWeb = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0);
             if (dsWeb != null && dsWeb.Tables.Count > 0 && dsWeb.Tables[0].Rows.Count > 0)
             {
                 for (int i = 0; i < dsWeb.Tables[0].Rows.Count; i++)
                 {
                     DataRow row = dsWeb.Tables[0].Rows[i];
-                    drpWebID.Items.Add(new ListItem(row["TenWeb"].ToString() + " (" + row["DiaChiWeb"].ToString() + ")", row["WebID"].ToString()));
+                    drpWeb.Items.Add(new ListItem(row["TenWeb"].ToString() + " (" + row["DiaChiWeb"].ToString() + ")", row["WebID"].ToString()));
                 }
             }
         }
@@ -52,14 +52,14 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                     {
                         DataRow row = ds.Tables[0].Rows[0];
-                        db.GetItem(drpWebID, row["WebID"].ToString());
+                        db.GetItem(drpWeb, row["WebID"].ToString());
                         txtTenChuyenMuc.Text = row["TenChuyenMuc"].ToString();
                         txtUrlChuyenMuc.Text = row["UrlChuyenMuc"].ToString();
                     }
                 }
                 else
                 {
-                    db.GetItem(drpWebID, sWebID);
+                    db.GetItem(drpWeb, sWebID);
                 }
             }
             catch { }
@@ -69,7 +69,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
         {
             FITC_CDataTime dt = new FITC_CDataTime();
             string sLoi = "";
-            if (drpWebID.SelectedValue == "0")
+            if (drpWeb.SelectedValue == "0")
                 sLoi = "Chưa chọn trang web!";
             if (txtTenChuyenMuc.Text.Trim() == "")
                 sLoi = "Chưa nhập tên chuyên mục!";
@@ -90,13 +90,11 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     return;
                 }
                 object[] obj = new object[5];
-
-
                 obj[0] = sChuyenMucID;
                 obj[1] = txtTenChuyenMuc.Text.Trim();
                 obj[2] = txtUrlChuyenMuc.Text.Trim();
-                obj[3] = drpWebID.SelectedValue;
-                obj[4] = "Phan Hùng";
+                obj[3] = drpWeb.SelectedValue;
+                obj[4] = TUONGTAC.TenTaiKhoan;
                 string sLoi = db.ExcuteSP("TTDN_CHUYENMUC_INSERT", obj);
                 if (sLoi == "")
                 {

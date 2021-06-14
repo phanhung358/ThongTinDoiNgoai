@@ -46,18 +46,35 @@ namespace ThongTinDoiNgoai
 
                                         HtmlDocument html = htmlWeb.Load(rowCM["UrlChuyenMuc"].ToString());
 
-                                        string xds = rowXpathCM["DanhSach"].ToString().Replace("tbody/", "");
-                                        string xbv = rowXpathCM["BaiViet_Url"].ToString().Replace("tbody/", "");
+                                        if (html == null)
+                                        {
+                                            string Loi = "Không lấy được dữ liệu của chuyên mục!";
+                                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
+                                        }
 
+                                        string xds = rowXpathCM["DanhSach"].ToString().Replace("tbody/", "");
                                         string XDanhSach = xds.LastIndexOf(']') == xds.Length - 1 ? xds.Remove(xds.LastIndexOf('['), xds.Length - xds.LastIndexOf('[')) : xds;
-                                        string XBaiViet_Url = xbv.Replace(xds, ".");
+                                        string xbv = rowXpathCM["BaiViet_Url"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                                        string xbv1 = rowXpathCM["BaiViet_Url1"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                                        string xbv2 = rowXpathCM["BaiViet_Url2"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                                        string XBaiViet_Url = xbv.IndexOf('[') == 1 ? xbv.Remove(1, xbv.IndexOf(']')) : xbv;
+                                        string XBaiViet_Url1 = xbv1.IndexOf('[') == 1 ? xbv1.Remove(1, xbv1.IndexOf(']')) : xbv1;
+                                        string XBaiViet_Url2 = xbv2.IndexOf('[') == 1 ? xbv2.Remove(1, xbv2.IndexOf(']')) : xbv2;
 
                                         var DanhSach = html.DocumentNode.SelectNodes(XDanhSach) != null ? html.DocumentNode.SelectNodes(XDanhSach).ToList() : null;
                                         if (DanhSach != null)
                                         {
                                             foreach (var item in DanhSach)
                                             {
-                                                var BaiViet_Url = item.SelectSingleNode(XBaiViet_Url) != null ? item.SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&") : null;
+                                                string BaiViet_Url = null;
+                                                if (item.SelectSingleNode(XBaiViet_Url) != null)
+                                                    BaiViet_Url = item.SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&");
+                                                else if (item.SelectSingleNode(XBaiViet_Url1) != null)
+                                                    BaiViet_Url = item.SelectSingleNode(XBaiViet_Url1).Attributes["href"].Value.Replace("&amp;", "&");
+                                                else if (item.SelectSingleNode(XBaiViet_Url2) != null)
+                                                    BaiViet_Url = item.SelectSingleNode(XBaiViet_Url2).Attributes["href"].Value.Replace("&amp;", "&");
+                                                else
+                                                    BaiViet_Url = null;
 
                                                 if (BaiViet_Url != null)
                                                 {
@@ -70,7 +87,7 @@ namespace ThongTinDoiNgoai
                                                     {
                                                         if (BaiViet_Url.LastIndexOf(row["DiaChiWeb"].ToString()) == -1)
                                                         {
-                                                            BaiViet_Url = row["DiaChiWeb"].ToString() + "/" + BaiViet_Url;
+                                                            BaiViet_Url = row["DiaChiWeb"].ToString() + BaiViet_Url;
                                                         }
                                                     }
 
@@ -82,7 +99,17 @@ namespace ThongTinDoiNgoai
                                                     obj[2] = rowXpathCM["WebID"].ToString();
                                                     dsTin.Add(obj);
                                                 }
+                                                else
+                                                {
+                                                    string Loi = "Không lấy được đường dẫn (URL) của bài viết trong chuyên mục!";
+                                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
+                                                }
                                             }
+                                        }
+                                        else
+                                        {
+                                            string Loi = "Không lấy được danh sách tin của chuyên mục!";
+                                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
                                         }
                                     }
                                 }
@@ -99,6 +126,12 @@ namespace ThongTinDoiNgoai
                         DataRow rowXpathCT = dsXpathCT.Tables[0].Rows[0];
 
                         HtmlDocument html = htmlWeb.Load(item[0].ToString());
+
+                        if (html == null)
+                        {
+                            string Loi = "Không lấy được chi tiết bài viết!";
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                        }
 
                         string XTieuDe = rowXpathCT["TieuDe"].ToString().Replace("tbody/", "");
                         string XTieuDePhu = rowXpathCT["TieuDePhu"].ToString().Replace("tbody/", "");
@@ -123,7 +156,36 @@ namespace ThongTinDoiNgoai
                             tgian = LayNgay(strNewsDatePosted);
                         }
 
-
+                        if (!string.IsNullOrEmpty(XTieuDe) && TieuDe == null)
+                        {
+                            string Loi = "Không lấy được tiêu đề của bài viết!";
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                        }
+                        if (!string.IsNullOrEmpty(XTieuDePhu) && TieuDePhu == null)
+                        {
+                            string Loi = "Không lấy được tiêu đề phụ của bài viết!";
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                        }
+                        if (!string.IsNullOrEmpty(XTomTat) && TomTat == null)
+                        {
+                            string Loi = "Không lấy được tóm tắt bài viết!";
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                        }
+                        if (!string.IsNullOrEmpty(XNoiDung) && NoiDung == null)
+                        {
+                            string Loi = "Không lấy được nội dung của bài viết!";
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                        }
+                        if (!string.IsNullOrEmpty(XThoiGian) && ThoiGian == null)
+                        {
+                            string Loi = "Không lấy được thời gian đăng bài!";
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                        }
+                        if (!string.IsNullOrEmpty(XTacGia) && TacGia == null)
+                        {
+                            string Loi = "Không lấy được tác giả của bài viết!";
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                        }
 
                         string DiaChiWeb = "";
                         DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, item[2].ToString());

@@ -266,6 +266,7 @@
     <Content Include="DichVu\ThongTinDoiNgoai\TrangWeb.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\XpathChiTiet_Tm.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm_Copy.ascx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Home\DangNhap.aspx" />
@@ -616,6 +617,13 @@
     </Compile>
     <Compile Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm.ascx.designer.cs">
       <DependentUpon>XpathChuyenMuc_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm_Copy.ascx.cs">
+      <DependentUpon>XpathChuyenMuc_Tm_Copy.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm_Copy.ascx.designer.cs">
+      <DependentUpon>XpathChuyenMuc_Tm_Copy.ascx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
