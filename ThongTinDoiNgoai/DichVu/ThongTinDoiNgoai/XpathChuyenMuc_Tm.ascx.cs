@@ -181,11 +181,11 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         foreach (var item in DanhSach)
                         {
                             string BaiViet_Url = null;
-                            if (item.SelectSingleNode(XBaiViet_Url) != null)
+                            if (!string.IsNullOrEmpty(XBaiViet_Url) && item.SelectSingleNode(XBaiViet_Url) != null)
                                 BaiViet_Url = item.SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&");
-                            else if (item.SelectSingleNode(XBaiViet_Url1) != null)
+                            else if (!string.IsNullOrEmpty(XBaiViet_Url1) && item.SelectSingleNode(XBaiViet_Url1) != null)
                                 BaiViet_Url = item.SelectSingleNode(XBaiViet_Url1).Attributes["href"].Value.Replace("&amp;", "&");
-                            else if (item.SelectSingleNode(XBaiViet_Url2) != null)
+                            else if (!string.IsNullOrEmpty(XBaiViet_Url2) && item.SelectSingleNode(XBaiViet_Url2) != null)
                                 BaiViet_Url = item.SelectSingleNode(XBaiViet_Url2).Attributes["href"].Value.Replace("&amp;", "&");
                             else
                                 BaiViet_Url = null;

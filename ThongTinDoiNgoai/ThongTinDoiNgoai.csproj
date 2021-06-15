@@ -263,6 +263,7 @@
     <Content Include="DichVu\ThongTinDoiNgoai\BaiViet_Xem.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\ChuyenMuc.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\ChuyenMuc_Tm.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\QuanLyLoi.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\TrangWeb.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\XpathChiTiet_Tm.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm.ascx" />
@@ -596,6 +597,13 @@
     </Compile>
     <Compile Include="DichVu\ThongTinDoiNgoai\ChuyenMuc_Tm.ascx.designer.cs">
       <DependentUpon>ChuyenMuc_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\QuanLyLoi.ascx.cs">
+      <DependentUpon>QuanLyLoi.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\QuanLyLoi.ascx.designer.cs">
+      <DependentUpon>QuanLyLoi.ascx</DependentUpon>
     </Compile>
     <Compile Include="DichVu\ThongTinDoiNgoai\TrangWeb.ascx.cs">
       <DependentUpon>TrangWeb.ascx</DependentUpon>
