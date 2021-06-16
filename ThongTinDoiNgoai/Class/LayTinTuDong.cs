@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace ThongTinDoiNgoai
 {
@@ -53,23 +52,13 @@ namespace ThongTinDoiNgoai
                                         string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
                                         continue;
                                     }
-                                    html.Text = html.Text.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title");
+                                    html.Text = html.Text.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
 
-                                    string xds = rowXpathCM["DanhSach"].ToString();
-                                    string xbv = rowXpathCM["BaiViet_Url"].ToString();
-                                    string xbv1 = rowXpathCM["BaiViet_Url1"].ToString();
-                                    string xbv2 = rowXpathCM["BaiViet_Url2"].ToString();
-                                    if (!html.Text.Contains("<tbody>"))
-                                    {
-                                        xds = xds.Replace("tbody/", "");
-                                        xbv = xbv.Replace("tbody/", "");
-                                        xbv1 = xbv1.Replace("tbody/", "");
-                                        xbv2 = xbv2.Replace("tbody/", "");
-                                    }
+                                    string xds = rowXpathCM["DanhSach"].ToString().Replace("tbody/", "");
                                     string XDanhSach = xds.LastIndexOf(']') == xds.Length - 1 ? xds.Remove(xds.LastIndexOf('['), xds.Length - xds.LastIndexOf('[')) : xds;
-                                    xbv = xbv.Replace(XDanhSach, ".");
-                                    xbv1 = xbv1.Replace(XDanhSach, ".");
-                                    xbv2 = xbv2.Replace(XDanhSach, ".");
+                                    string xbv = rowXpathCM["BaiViet_Url"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                                    string xbv1 = rowXpathCM["BaiViet_Url1"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                                    string xbv2 = rowXpathCM["BaiViet_Url2"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
                                     string XBaiViet_Url = xbv.IndexOf('[') == 1 ? xbv.Remove(1, xbv.IndexOf(']')) : xbv;
                                     string XBaiViet_Url1 = xbv1.IndexOf('[') == 1 ? xbv1.Remove(1, xbv1.IndexOf(']')) : xbv1;
                                     string XBaiViet_Url2 = xbv2.IndexOf('[') == 1 ? xbv2.Remove(1, xbv2.IndexOf(']')) : xbv2;
@@ -93,7 +82,7 @@ namespace ThongTinDoiNgoai
                                             {
                                                 if (BaiViet_Url.Contains("http"))
                                                 {
-                                                    if (row["DiaChiWeb"].ToString().Substring(0, 5) == "https" && BaiViet_Url.Substring(0, 5) !="https")
+                                                    if (row["DiaChiWeb"].ToString().Substring(0, 5) == "https" && BaiViet_Url.Substring(0, 5) != "https")
                                                         BaiViet_Url = BaiViet_Url.Replace("http", "https");
                                                     if (row["DiaChiWeb"].ToString().Substring(0, 5) != "https" && BaiViet_Url.Substring(0, 5) == "https")
                                                         BaiViet_Url = BaiViet_Url.Replace("https", "http");
@@ -137,6 +126,7 @@ namespace ThongTinDoiNgoai
 
             try
             {
+                string sChuyenMucID = "";
                 foreach (var item in dsTin)
                 {
                     DataSet dsXpathCT = db.GetDataSet("TTDN_XPATH_CHITIET_SELECT", 0, item[2].ToString(), item[1].ToString());
@@ -152,23 +142,14 @@ namespace ThongTinDoiNgoai
                             string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
                             continue;
                         }
-                        html.Text = html.Text.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title");
+                        html.Text = html.Text.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
 
-                        string XTieuDe = rowXpathCT["TieuDe"].ToString();
-                        string XTieuDePhu = rowXpathCT["TieuDePhu"].ToString();
-                        string XTomTat = rowXpathCT["TomTat"].ToString();
-                        string XNoiDung = rowXpathCT["NoiDung"].ToString();
-                        string XThoiGian = rowXpathCT["ThoiGian"].ToString();
-                        string XTacGia = rowXpathCT["TacGia"].ToString();
-                        if (!html.Text.Contains("<tbody>"))
-                        {
-                            XTieuDe = XTieuDe.Replace("tbody/", "");
-                            XTieuDePhu = XTieuDePhu.Replace("tbody/", "");
-                            XTomTat = XTomTat.Replace("tbody/", "");
-                            XNoiDung = XNoiDung.Replace("tbody/", "");
-                            XThoiGian = XThoiGian.Replace("tbody/", "");
-                            XTacGia = XTacGia.Replace("tbody/", "");
-                        }    
+                        string XTieuDe = rowXpathCT["TieuDe"].ToString().Replace("tbody/", "");
+                        string XTieuDePhu = rowXpathCT["TieuDePhu"].ToString().Replace("tbody/", "");
+                        string XTomTat = rowXpathCT["TomTat"].ToString().Replace("tbody/", "");
+                        string XNoiDung = rowXpathCT["NoiDung"].ToString().Replace("tbody/", "");
+                        string XThoiGian = rowXpathCT["ThoiGian"].ToString().Replace("tbody/", "");
+                        string XTacGia = rowXpathCT["TacGia"].ToString().Replace("tbody/", "");
 
                         var TieuDe = html.DocumentNode.SelectSingleNode(XTieuDe) != null ? html.DocumentNode.SelectSingleNode(XTieuDe) : null;
                         var TieuDePhu = XTieuDePhu != "" ? (html.DocumentNode.SelectSingleNode(XTieuDePhu) != null ? html.DocumentNode.SelectSingleNode(XTieuDePhu) : null) : null;
@@ -191,11 +172,6 @@ namespace ThongTinDoiNgoai
                             string Loi = "Không lấy được tiêu đề của bài viết!";
                             string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
                         }
-                        if (!string.IsNullOrEmpty(XTieuDePhu) && TieuDePhu == null)
-                        {
-                            string Loi = "Không lấy được tiêu đề phụ của bài viết!";
-                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
-                        }
                         if (!string.IsNullOrEmpty(XTomTat) && TomTat == null)
                         {
                             string Loi = "Không lấy được tóm tắt bài viết!";
@@ -209,11 +185,6 @@ namespace ThongTinDoiNgoai
                         if (!string.IsNullOrEmpty(XThoiGian) && ThoiGian == null)
                         {
                             string Loi = "Không lấy được thời gian đăng bài!";
-                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
-                        }
-                        if (!string.IsNullOrEmpty(XTacGia) && TacGia == null)
-                        {
-                            string Loi = "Không lấy được tác giả của bài viết!";
                             string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
                         }
 
@@ -241,10 +212,15 @@ namespace ThongTinDoiNgoai
                         {
 
                         }
+                        if (sChuyenMucID != "" && (item[1].ToString() != sChuyenMucID || item != dsTin[dsTin.Count - 1]))
+                        {
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_UPDATE_THOIGIANDONGBO", sChuyenMucID);
+                        }
+                        sChuyenMucID = item[1].ToString();
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }

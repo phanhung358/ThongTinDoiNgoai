@@ -186,6 +186,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
 
             tblCell = new TableCell();
             tblCell.CssClass = "Cot_TieuDe";
+            tblCell.Width = 400;
             tblCell.Text = "Đường dẫn lỗi";
             tblRow.Controls.Add(tblCell);
 
