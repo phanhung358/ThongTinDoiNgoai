@@ -52,7 +52,7 @@ namespace ThongTinDoiNgoai
                                         string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
                                         continue;
                                     }
-                                    html.Text = html.Text.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
+                                    html.Text = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
 
                                     string xds = rowXpathCM["DanhSach"].ToString().Replace("tbody/", "");
                                     string XDanhSach = xds.LastIndexOf(']') == xds.Length - 1 ? xds.Remove(xds.LastIndexOf('['), xds.Length - xds.LastIndexOf('[')) : xds;
@@ -66,6 +66,7 @@ namespace ThongTinDoiNgoai
                                     var DanhSach = html.DocumentNode.SelectNodes(XDanhSach) != null ? html.DocumentNode.SelectNodes(XDanhSach).ToList() : null;
                                     if (DanhSach != null)
                                     {
+                                        int count = 0;
                                         foreach (var item in DanhSach)
                                         {
                                             string BaiViet_Url = null;
@@ -84,7 +85,7 @@ namespace ThongTinDoiNgoai
                                                 {
                                                     if (row["DiaChiWeb"].ToString().Substring(0, 5) == "https" && BaiViet_Url.Substring(0, 5) != "https")
                                                         BaiViet_Url = BaiViet_Url.Replace("http", "https");
-                                                    if (row["DiaChiWeb"].ToString().Substring(0, 5) != "https" && BaiViet_Url.Substring(0, 5) == "https")
+                                                    else if (row["DiaChiWeb"].ToString().Substring(0, 5) != "https" && BaiViet_Url.Substring(0, 5) == "https")
                                                         BaiViet_Url = BaiViet_Url.Replace("https", "http");
                                                 }
                                                 else
@@ -103,9 +104,13 @@ namespace ThongTinDoiNgoai
                                             }
                                             else
                                             {
-                                                string Loi = "Không lấy được đường dẫn (URL) của bài viết trong chuyên mục!";
-                                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
+                                                count++;
                                             }
+                                        }
+                                        if (count == DanhSach.Count)
+                                        {
+                                            string Loi = "Không lấy được đường dẫn (URL) của bài viết trong chuyên mục!";
+                                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
                                         }
                                     }
                                     else
@@ -142,7 +147,7 @@ namespace ThongTinDoiNgoai
                             string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
                             continue;
                         }
-                        html.Text = html.Text.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
+                        html.Text = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
 
                         string XTieuDe = rowXpathCT["TieuDe"].ToString().Replace("tbody/", "");
                         string XTieuDePhu = rowXpathCT["TieuDePhu"].ToString().Replace("tbody/", "");
@@ -200,7 +205,7 @@ namespace ThongTinDoiNgoai
                         obj[0] = TieuDe != null ? TieuDe.InnerText : null;
                         obj[1] = TieuDePhu != null ? TieuDePhu.InnerText : null;
                         obj[2] = TomTat != null ? TomTat.InnerText : null;
-                        obj[3] = NoiDung != null ? NoiDung.InnerHtml.Replace("src=\"/uploads", "src=\"" + DiaChiWeb + "/uploads") : null;
+                        obj[3] = NoiDung != null ? NoiDung.InnerHtml : null;
                         obj[4] = ThoiGian != null ? tgian : null;
                         obj[5] = TacGia != null ? TacGia.InnerText : null;
                         obj[6] = item[0].ToString();
@@ -212,9 +217,13 @@ namespace ThongTinDoiNgoai
                         {
 
                         }
-                        if (sChuyenMucID != "" && (item[1].ToString() != sChuyenMucID || item != dsTin[dsTin.Count - 1]))
+                        if (sChuyenMucID != "" && item[1].ToString() != sChuyenMucID)
                         {
                             string s = db.ExcuteSP("TTDN_CHUYENMUC_UPDATE_THOIGIANDONGBO", sChuyenMucID);
+                        }
+                        else if (item == dsTin[dsTin.Count - 1])
+                        {
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_UPDATE_THOIGIANDONGBO", item[1].ToString());
                         }
                         sChuyenMucID = item[1].ToString();
                     }

@@ -163,8 +163,8 @@ D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\System.Net.Http.Formatting.xml
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\System.Web.Http.xml
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\System.Web.Http.WebHost.xml
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.csprojAssemblyReference.cache
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.csproj.CoreCompileInputs.cache
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.csproj.CopyComplete
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.dll
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.pdb
+D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.csproj.AssemblyReference.cache
