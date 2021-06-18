@@ -170,11 +170,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
             tblCell = new TableCell();
             tblCell.CssClass = "Cot_TieuDe";
-            tblCell.Text = "Tên website";
-            tblRow.Controls.Add(tblCell);
-
-            tblCell = new TableCell();
-            tblCell.CssClass = "Cot_TieuDe";
             tblCell.Text = "Tên chuyên mục";
             tblRow.Controls.Add(tblCell);
 
@@ -261,11 +256,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         tblRow.Controls.Add(tblCell);
 
                         tblCell = new TableCell();
-                        tblCell.Text = row["TenWeb"].ToString();
-                        tblRow.Controls.Add(tblCell);
-
-                        tblCell = new TableCell();
-                        tblCell.Text = row["TenChuyenMuc"].ToString();
+                        tblCell.Text = row["TenChuyenMuc"].ToString() + "<br>" + row["TenWeb"].ToString();
                         tblRow.Controls.Add(tblCell);
 
                         tblCell = new TableCell();
@@ -303,6 +294,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         tblCell = new TableCell();
                         if (row["ThoiGianDongBo"].ToString() != "")
                             tblCell.Text = Convert.ToDateTime(row["ThoiGianDongBo"].ToString()).ToString("dd/MM/yyyy HH:mm");
+                        tblCell.HorizontalAlign = HorizontalAlign.Center;
                         tblRow.Controls.Add(tblCell);
 
                         tblCell = new TableCell();
