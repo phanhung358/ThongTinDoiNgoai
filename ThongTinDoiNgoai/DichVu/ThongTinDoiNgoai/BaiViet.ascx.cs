@@ -582,6 +582,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                req.UserAgent = "Mozilla/5.0";
                 using (HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
                 {
                     //string folderName = "downloads";
