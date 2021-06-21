@@ -31,9 +31,9 @@ namespace ThongTinDoiNgoai
                 for (int j = 0; j < dsChuyenMuc.Tables[0].Rows.Count; j++)
                 {
                     List<object[]> dsTin = new List<object[]>();
+                    DataRow rowCM = dsChuyenMuc.Tables[0].Rows[j];
                     try
                     {
-                        DataRow rowCM = dsChuyenMuc.Tables[0].Rows[j];
                         DataSet dsXpathCM = db.GetDataSet("TTDN_XPATH_CHUYENMUC_SELECT", 0, rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString());
                         if (dsXpathCM != null && dsXpathCM.Tables.Count > 0 && dsXpathCM.Tables[0].Rows.Count > 0)
                         {
@@ -117,7 +117,7 @@ namespace ThongTinDoiNgoai
                     }
                     catch (Exception ex)
                     {
-
+                        db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), ex.Message, "");
                     }
 
                     foreach (var item in dsTin)
@@ -215,7 +215,7 @@ namespace ThongTinDoiNgoai
                         }
                         catch (Exception ex)
                         {
-
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, "");
                         }
                     }
                 }
