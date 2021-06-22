@@ -3,6 +3,7 @@ using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -63,20 +64,42 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                         foreach (var file in dsFile)
                         {
                             string strSource = file.Attributes["src"].Value;
-                            string fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace("%20", "_");
-                            if (fileName.IndexOf("?") != -1)
-                                fileName = fileName.Remove(fileName.IndexOf("?"));
+                            string fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace("%20", "_").Replace(" ", "_");
+                            if (fileName.Contains("?"))
+                            {
+                                fileName = fileName.Replace(fileName.Substring(fileName.IndexOf("?"), fileName.IndexOf("=") - fileName.IndexOf("?") + 1), "_");
+                                if (fileName.Contains("&"))
+                                    fileName = fileName.Replace(fileName.Substring(fileName.IndexOf("&"), fileName.IndexOf("=") - fileName.IndexOf("&") + 1), "_");
+                            }
                             if (!fileName.Contains("."))
                                 fileName += ".jpg";
                             string strSourceRep = DirUpload + fileName;
                             string img = file.OuterHtml.Replace(file.Attributes["src"].Value, strSourceRep);
-                            if (file.Attributes["width"] != null)
-                                if (Convert.ToInt32(file.Attributes["width"].Value) > 920)
-                                    img = img.Replace(file.Attributes["width"].Value, "920");
+                            Bitmap image = new Bitmap(Server.MapPath(strSourceRep), true);
+                            if (file.Attributes["style"] != null && (file.Attributes["style"].Value.Contains("width") || file.Attributes["style"].Value.Contains("height")))
+                            {
+                                string[] st = file.Attributes["style"].Value.Split(';');
+                                string newstyle = "";
+                                foreach (var css in st)
+                                {
+                                    if (css.Contains("width") && Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 920)
+                                        newstyle += "width: 920px;";
+                                    else if (css.Contains("height"))
+                                        newstyle += "height: auto;";
+                                    else
+                                        newstyle += css == "" ? "" : css + ";";
+                                }
+                                img = img.Replace(file.Attributes["style"].Value, newstyle);
+                            }
                             else
-                                img = img.Replace(">", " width=\"920\">");
-                            if (file.Attributes["height"] != null)
-                                img = img.Replace(file.Attributes["height"].Value, "auto");
+                            {
+                                if (file.Attributes["width"] != null && Convert.ToInt32(file.Attributes["width"].Value) > 920)
+                                    img = img.Replace(file.Attributes["width"].Value, "920");
+                                else if(image.Width > 500)
+                                    img = img.Replace(">", " width=\"920\">");
+                                if (file.Attributes["height"] != null)
+                                    img = img.Replace(file.Attributes["height"].Value, "auto");
+                            }
                             
 
                             NoiDung.DocumentNode.InnerHtml = NoiDung.DocumentNode.InnerHtml.Replace(file.OuterHtml, img);

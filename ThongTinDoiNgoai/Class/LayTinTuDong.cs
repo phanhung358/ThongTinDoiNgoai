@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace ThongTinDoiNgoai
 {
@@ -184,11 +185,39 @@ namespace ThongTinDoiNgoai
                                 }
 
                                 string DiaChiWeb = "";
-                                DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, item[2].ToString());
-                                if (dsXpathCT != null && dsXpathCT.Tables.Count > 0 && dsXpathCT.Tables[0].Rows.Count > 0)
+                                DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, item[2].ToString());
+                                if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
                                 {
-                                    DataRow rowWeb = ds.Tables[0].Rows[0];
+                                    DataRow rowWeb = ds1.Tables[0].Rows[0];
                                     DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
+                                }
+                                string WebHost = new Uri(item[0].ToString()).Host;
+                                string GiaoThuc = new Uri(item[0].ToString()).Scheme;
+
+                                if (NoiDung != null)
+                                {
+                                    string DirUpload = Static.GetPath() + "/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DiaChiWeb.Remove(0, DiaChiWeb.IndexOf("/") + 2) + "/";
+                                    var dsFile = NoiDung.SelectNodes(".//img");
+                                    if (dsFile != null)
+                                    {
+                                        foreach (var file in dsFile)
+                                        {
+                                            string strSource = file.Attributes["src"].Value;
+                                            if (!strSource.Contains(WebHost))
+                                            {
+                                                if (strSource.IndexOf("/") == 0)
+                                                    strSource = GiaoThuc + "://" + WebHost + strSource;
+                                                else if (strSource.IndexOf("http") != 0)
+                                                    strSource = GiaoThuc + "://" + WebHost + "/" + strSource;
+                                            }
+
+                                            string err = DownloadFile(strSource, DirUpload);
+                                            if (err != "")
+                                            {
+                                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource);
+                                            }
+                                        }
+                                    }
                                 }
 
                                 object[] obj = new object[10];
@@ -252,6 +281,58 @@ namespace ThongTinDoiNgoai
             catch
             { }
             return kq;
+        }
+
+        private string DownloadFile(string url, string folderName)
+        {
+            try
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                HttpWebResponse resp;
+
+                try
+                {
+                    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                    resp = (HttpWebResponse)req.GetResponse();
+                }
+                catch (Exception)
+                {
+                    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                    req.UserAgent = "Mozilla/5.0";
+                    resp = (HttpWebResponse)req.GetResponse();
+                }
+
+                using (resp)
+                {
+                    string folderPath = HttpContext.Current.Server.MapPath("~/" + folderName);
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    string filename = url.Substring(url.LastIndexOf("/") + 1).Replace("%20", "_").Replace(" ", "_");
+                    if (filename.Contains("?"))
+                    {
+                        filename = filename.Replace(filename.Substring(filename.IndexOf("?"), filename.IndexOf("=") - filename.IndexOf("?") + 1), "_");
+                        if (filename.Contains("&"))
+                            filename = filename.Replace(filename.Substring(filename.IndexOf("&"), filename.IndexOf("=") - filename.IndexOf("&") + 1), "_");
+                    }
+                    if (!filename.Contains("."))
+                        filename += ".jpg";
+                    string filePath = HttpContext.Current.Server.MapPath("~/" + folderName + "/" + filename);
+
+                    using (FileStream outputFileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        resp.GetResponseStream().CopyTo(outputFileStream);
+                    }
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         private bool LuuTapTin(string strSource, string strUploadFolder, string strFile)

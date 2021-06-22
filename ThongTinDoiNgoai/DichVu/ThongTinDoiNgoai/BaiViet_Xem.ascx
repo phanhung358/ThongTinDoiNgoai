@@ -42,6 +42,11 @@
     .p-lr-30 {
         padding: 0 30px;
     }
+
+    img.pull-left {
+        float: left;
+        display: none;
+    }
 </style>
 
 <div class="p-lr-30" id="divDanhSach" runat="server"></div>
