@@ -63,7 +63,7 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                     {
                         foreach (var file in dsFile)
                         {
-                            string strSource = file.Attributes["src"].Value;
+                            string strSource = file.Attributes["url-img-full"] == null ? file.Attributes["src"].Value : file.Attributes["url-img-full"].Value;
                             string fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace("%20", "_").Replace(" ", "_");
                             if (fileName.Contains("?"))
                             {
@@ -75,7 +75,8 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                                 fileName += ".jpg";
                             string strSourceRep = DirUpload + fileName;
                             string img = file.OuterHtml.Replace(file.Attributes["src"].Value, strSourceRep);
-                            Bitmap image = new Bitmap(Server.MapPath(strSourceRep), true);
+                            System.Drawing.Image image = System.Drawing.Image.FromFile(Server.MapPath(strSourceRep));
+                            
                             if (file.Attributes["style"] != null && (file.Attributes["style"].Value.Contains("width") || file.Attributes["style"].Value.Contains("height")))
                             {
                                 string[] st = file.Attributes["style"].Value.Split(';');

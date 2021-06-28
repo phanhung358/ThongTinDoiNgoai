@@ -84,12 +84,18 @@ namespace ThongTinDoiNgoai
                                             else if (rowCM["DiaChiWeb"].ToString().Substring(0, 5) != "https" && BaiViet_Url.Substring(0, 5) == "https")
                                                 BaiViet_Url = BaiViet_Url.Replace("https", "http");
                                         }
-                                        else
+                                        else if (BaiViet_Url.LastIndexOf(rowCM["DiaChiWeb"].ToString()) == -1)
                                         {
-                                            if (BaiViet_Url.LastIndexOf(rowCM["DiaChiWeb"].ToString()) == -1)
-                                            {
-                                                BaiViet_Url = rowCM["DiaChiWeb"].ToString() + (BaiViet_Url.IndexOf('/') == 0 ? BaiViet_Url : "/" + BaiViet_Url);
-                                            }
+                                            if (BaiViet_Url.IndexOf("/") == 0)
+                                                BaiViet_Url = rowCM["DiaChiWeb"].ToString() + BaiViet_Url;
+                                            else if (BaiViet_Url.IndexOf("../") == 0)
+                                                BaiViet_Url = rowCM["DiaChiWeb"].ToString() + "/" + BaiViet_Url.Replace("../", "");
+                                            else if (BaiViet_Url.IndexOf("~/") == 0)
+                                                BaiViet_Url = rowCM["DiaChiWeb"].ToString() + BaiViet_Url.Replace("~/", "/");
+                                            else if (BaiViet_Url.IndexOf("./") == 0)
+                                                BaiViet_Url = rowCM["DiaChiWeb"].ToString() + BaiViet_Url.Replace("./", "/");
+                                            else
+                                                BaiViet_Url = rowCM["DiaChiWeb"].ToString() + "/" + BaiViet_Url;
                                         }
 
                                         object[] obj = new object[3];
@@ -202,7 +208,7 @@ namespace ThongTinDoiNgoai
                                     {
                                         foreach (var file in dsFile)
                                         {
-                                            string strSource = file.Attributes["src"].Value;
+                                            string strSource = file.Attributes["url-img-full"] ==null ? file.Attributes["src"].Value : file.Attributes["url-img-full"].Value;
                                             if (!strSource.Contains(WebHost))
                                             {
                                                 if (strSource.IndexOf("/") == 0)
