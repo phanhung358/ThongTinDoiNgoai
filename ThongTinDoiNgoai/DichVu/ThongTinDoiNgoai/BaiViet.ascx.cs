@@ -1,5 +1,7 @@
 ﻿using FITC.Web.Component;
 using HtmlAgilityPack;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -323,14 +325,24 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         {
                             DataRow rowXpathCM = dsXpathCM.Tables[0].Rows[0];
 
-                            var t = new Thread(MyThreadStartMethod);
-                            t.SetApartmentState(ApartmentState.STA);
-                            t.Start();
-                            HtmlDocument html = htmlWeb.LoadFromBrowser(rowCM["UrlChuyenMuc"].ToString(), o =>
+                            ChromeOptions options = new ChromeOptions() { Proxy = null };
+                            options.AddArgument("--headless");
+                            options.AddArgument("--no-sandbox");
+                            options.AddArgument("--ignore-certificate-errors");
+                            ChromeDriver driver = new ChromeDriver(Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
+                            driver.Navigate().GoToUrl(rowCM["UrlChuyenMuc"].ToString());
+
+                            for (int i = 1; i <= 10; i++)
                             {
-                                //Thread.Sleep(5000);
-                                return true;
-                            });
+                                string jsCode = "window.scrollTo({top: document.body.scrollHeight / " + 10 + " * " + i + ", behavior: \"smooth\"});";
+                                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                                js.ExecuteScript(jsCode);
+                                Thread.Sleep(1000);
+                            }
+
+                            HtmlDocument html = new HtmlDocument();
+                            html.LoadHtml(driver.PageSource);
+                            driver.Quit();
 
                             if (html == null)
                             {
@@ -356,14 +368,22 @@ namespace QuanLyVanBan.DichVu.DuLieu
                                 foreach (var item in DanhSach)
                                 {
                                     string BaiViet_Url = null;
+                                    string TieuDe = null;
                                     if (!string.IsNullOrEmpty(XBaiViet_Url) && item.SelectSingleNode(XBaiViet_Url) != null)
+                                    {
                                         BaiViet_Url = item.SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
+                                        TieuDe = item.SelectSingleNode(XBaiViet_Url).InnerText;
+                                    }    
                                     else if (!string.IsNullOrEmpty(XBaiViet_Url1) && item.SelectSingleNode(XBaiViet_Url1) != null)
+                                    {
                                         BaiViet_Url = item.SelectSingleNode(XBaiViet_Url1).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
+                                        TieuDe = item.SelectSingleNode(XBaiViet_Url1).InnerText;
+                                    }
                                     else if (!string.IsNullOrEmpty(XBaiViet_Url2) && item.SelectSingleNode(XBaiViet_Url2) != null)
+                                    {
                                         BaiViet_Url = item.SelectSingleNode(XBaiViet_Url2).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
-                                    else
-                                        BaiViet_Url = null;
+                                        TieuDe = item.SelectSingleNode(XBaiViet_Url2).InnerText;
+                                    }
 
                                     if (BaiViet_Url != null)
                                     {
@@ -388,10 +408,11 @@ namespace QuanLyVanBan.DichVu.DuLieu
                                                 BaiViet_Url = rowCM["DiaChiWeb"].ToString() + "/" + BaiViet_Url;
                                         }
 
-                                        object[] obj = new object[3];
+                                        object[] obj = new object[4];
                                         obj[0] = BaiViet_Url;
                                         obj[1] = rowXpathCM["ChuyenMucID"].ToString();
                                         obj[2] = rowXpathCM["WebID"].ToString();
+                                        obj[3] = TieuDe;
                                         dsTin.Add(obj);
                                     }
                                     else
@@ -414,7 +435,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     }
                     catch (Exception ex)
                     {
-                        db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), ex.Message, "");
+                        db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), ex.Message, rowCM["UrlChuyenMuc"].ToString());
                     }
 
                     foreach (var item in dsTin)
@@ -426,7 +447,24 @@ namespace QuanLyVanBan.DichVu.DuLieu
                             {
                                 DataRow rowXpathCT = dsXpathCT.Tables[0].Rows[0];
 
-                                HtmlDocument html = htmlWeb.Load(item[0].ToString());
+                                ChromeOptions options = new ChromeOptions();
+                                options.AddArgument("--headless");
+                                options.AddArgument("--no-sandbox");
+                                options.AddArgument("--ignore-certificate-errors");
+                                ChromeDriver driver = new ChromeDriver(Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
+                                driver.Navigate().GoToUrl(item[0].ToString());
+
+                                for (int i = 1; i <= 10; i++)
+                                {
+                                    string jsCode = "window.scrollTo({top: document.body.scrollHeight / " + 10 + " * " + i + ", behavior: \"smooth\"});";
+                                    IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                                    js.ExecuteScript(jsCode);
+                                    Thread.Sleep(1000);
+                                }
+
+                                HtmlDocument html = new HtmlDocument();
+                                html.LoadHtml(driver.PageSource);
+                                driver.Quit();
 
                                 if (html == null)
                                 {
@@ -436,15 +474,11 @@ namespace QuanLyVanBan.DichVu.DuLieu
                                 }
                                 html.DocumentNode.InnerHtml = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
 
-                                string XTieuDe = rowXpathCT["TieuDe"].ToString().Replace("tbody/", "");
-                                string XTieuDePhu = rowXpathCT["TieuDePhu"].ToString().Replace("tbody/", "");
                                 string XTomTat = rowXpathCT["TomTat"].ToString().Replace("tbody/", "");
                                 string XNoiDung = rowXpathCT["NoiDung"].ToString().Replace("tbody/", "");
                                 string XThoiGian = rowXpathCT["ThoiGian"].ToString().Replace("tbody/", "");
                                 string XTacGia = rowXpathCT["TacGia"].ToString().Replace("tbody/", "");
 
-                                var TieuDe = html.DocumentNode.SelectSingleNode(XTieuDe) != null ? html.DocumentNode.SelectSingleNode(XTieuDe) : null;
-                                var TieuDePhu = XTieuDePhu != "" ? (html.DocumentNode.SelectSingleNode(XTieuDePhu) != null ? html.DocumentNode.SelectSingleNode(XTieuDePhu) : null) : null;
                                 var TomTat = XTomTat != "" ? (html.DocumentNode.SelectSingleNode(XTomTat) != null ? html.DocumentNode.SelectSingleNode(XTomTat) : null) : null;
                                 var NoiDung = html.DocumentNode.SelectSingleNode(XNoiDung) != null ? html.DocumentNode.SelectSingleNode(XNoiDung) : null;
                                 var ThoiGian = XThoiGian != "" ? (html.DocumentNode.SelectSingleNode(XThoiGian) != null ? html.DocumentNode.SelectSingleNode(XThoiGian) : null) : null;
@@ -459,11 +493,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
                                     tgian = LayNgay(strNewsDatePosted);
                                 }
 
-                                if (!string.IsNullOrEmpty(XTieuDe) && TieuDe == null)
-                                {
-                                    string Loi = "Không lấy được tiêu đề của bài viết!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
-                                }
                                 if (!string.IsNullOrEmpty(XTomTat) && TomTat == null)
                                 {
                                     string Loi = "Không lấy được tóm tắt bài viết!";
@@ -516,17 +545,16 @@ namespace QuanLyVanBan.DichVu.DuLieu
                                     }
                                 }
 
-                                object[] obj = new object[10];
-                                obj[0] = TieuDe != null ? TieuDe.InnerText : null;
-                                obj[1] = TieuDePhu != null ? TieuDePhu.InnerText : null;
-                                obj[2] = TomTat != null ? TomTat.InnerText : null;
-                                obj[3] = NoiDung != null ? NoiDung.InnerHtml : null;
-                                obj[4] = ThoiGian != null ? tgian : null;
-                                obj[5] = TacGia != null ? TacGia.InnerText : null;
-                                obj[6] = item[0].ToString();
-                                obj[7] = NoiDung?.InnerHtml.Length;
-                                obj[8] = item[1].ToString();
-                                obj[9] = item[2].ToString();
+                                object[] obj = new object[9];
+                                obj[0] = item[3].ToString();
+                                obj[1] = TomTat != null ? TomTat.InnerText : null;
+                                obj[2] = NoiDung != null ? NoiDung.InnerHtml : null;
+                                obj[3] = ThoiGian != null ? tgian : null;
+                                obj[4] = TacGia != null ? TacGia.InnerText : null;
+                                obj[5] = item[0].ToString();
+                                obj[6] = NoiDung?.InnerHtml.Length;
+                                obj[7] = item[1].ToString();
+                                obj[8] = item[2].ToString();
                                 string sLoi = db.ExcuteSP("TTDN_BAIVIET_INSERT", obj);
                                 if (sLoi != "")
                                 {
@@ -540,7 +568,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         }
                         catch (Exception ex)
                         {
-                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, "");
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, item[0].ToString());
                         }
                     }
                 }
@@ -564,7 +592,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
             try
             {
                 //string inputText = " gg gd ngay cap nhat 07/9/2021 2:00:23 AM gdf dgd gdg";
-                string regex = @"(?<ngay>[0|1|2]?[0-9]|3[01])[/-](?<thang>0?[1-9]|1[012])[/-](?<nam>[1-9][0-9][0-9][0-9])[\s]?(?<gio>[0|1]?[0-9]|2[0-4])?[:]?(?<phut>[0-5][0-9])?[:]?(?<giay>[0-5][0-9])?[\s]?(?<buoi>am|pm|sa|ch)?";
+                string regex = @"((?<ngay>[0|1|2]?[0-9]|3[01])[/-](?<thang>0?[1-9]|1[012])[/-](?<nam>[1-9][0-9][0-9][0-9])[\s]?(?<gio>[0|1]?[0-9]|2[0-4])?[:]?(?<phut>[0-5][0-9])?[:]?(?<giay>[0-5][0-9])?[\s]?(?<buoi>am|pm|sa|ch)?)|((?<gio1>[0|1]?[0-9]|2[0-4])[:]?(?<phut1>[0-5][0-9])[:]?(?<giay1>[0-5][0-9])[\s]?(?<buoi1>am|pm|sa|ch)?[\s]?(?<ngay1>[0|1|2]?[0-9]|3[01])[/-](?<thang1>0?[1-9]|1[012])[/-](?<nam1>[1-9][0-9][0-9][0-9]))";
                 MatchCollection matchCollection = Regex.Matches(inputText.ToLower(), regex);
                 if (matchCollection.Count > 0)
                 {
@@ -573,13 +601,26 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 CacHamChung ham = new CacHamChung();
                 foreach (Match match in matchCollection)
                 {
-                    kq = kq + match.Groups["thang"].Value;
-                    kq = kq + "/" + match.Groups["ngay"].Value;
-                    kq = kq + "/" + match.Groups["nam"].Value;
-                    kq = kq + " " + (match.Groups["gio"].Value == "" ? "00" : match.Groups["gio"].Value);
-                    kq = kq + ":" + (match.Groups["phut"].Value == "" ? "00" : match.Groups["phut"].Value);
-                    kq = kq + ":" + (match.Groups["giay"].Value == "" ? "00" : match.Groups["giay"].Value);
-                    kq = kq + " " + match.Groups["buoi"].Value;
+                    if (match.Groups["thang"].Value != "")
+                    {
+                        kq = kq + match.Groups["thang"].Value;
+                        kq = kq + "/" + match.Groups["ngay"].Value;
+                        kq = kq + "/" + match.Groups["nam"].Value;
+                        kq = kq + " " + (match.Groups["gio"].Value == "" ? "00" : match.Groups["gio"].Value);
+                        kq = kq + ":" + (match.Groups["phut"].Value == "" ? "00" : match.Groups["phut"].Value);
+                        kq = kq + ":" + (match.Groups["giay"].Value == "" ? "00" : match.Groups["giay"].Value);
+                        kq = kq + " " + match.Groups["buoi"].Value;
+                    }
+                    else
+                    {
+                        kq = kq + match.Groups["thang1"].Value;
+                        kq = kq + "/" + match.Groups["ngay1"].Value;
+                        kq = kq + "/" + match.Groups["nam1"].Value;
+                        kq = kq + " " + (match.Groups["gio1"].Value == "" ? "00" : match.Groups["gio"].Value);
+                        kq = kq + ":" + (match.Groups["phut1"].Value == "" ? "00" : match.Groups["phut"].Value);
+                        kq = kq + ":" + (match.Groups["giay1"].Value == "" ? "00" : match.Groups["giay"].Value);
+                        kq = kq + " " + match.Groups["buoi1"].Value;
+                    }
                 }
                 kq = kq.Replace("sa", "am");
                 kq = kq.Replace("ch", "pm");

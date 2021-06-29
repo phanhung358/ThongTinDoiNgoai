@@ -97,20 +97,6 @@
 </div>
 
 <div style="width: 100%; clear: both" class="Dong_Table">
-    <div class="Dong_Cell" style="width: 115px;">Xpath Tiêu đề:<sup>*</sup></div>
-    <div class="Dong_Cell">
-        <asp:TextBox ID="txtTieuDe" runat="server" Width="100%"></asp:TextBox>
-    </div>
-</div>
-
-<div style="width: 100%; clear: both" class="Dong_Table">
-    <div class="Dong_Cell" style="width: 115px;">Xpath Tiêu đề phụ:</div>
-    <div class="Dong_Cell">
-        <asp:TextBox ID="txtTieuDePhu" runat="server" Width="100%"></asp:TextBox>
-    </div>
-</div>
-
-<div style="width: 100%; clear: both" class="Dong_Table">
     <div class="Dong_Cell" style="width: 115px;">Xpath Tóm tắt:<sup>*</sup></div>
     <div class="Dong_Cell">
         <asp:TextBox ID="txtTomTat" runat="server" Width="100%"></asp:TextBox>

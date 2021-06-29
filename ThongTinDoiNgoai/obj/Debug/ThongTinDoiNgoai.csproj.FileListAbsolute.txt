@@ -168,3 +168,5 @@ D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.csproj.
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.dll
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.pdb
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.csproj.AssemblyReference.cache
+D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\WebDriver.dll
+D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\WebDriver.xml

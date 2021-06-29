@@ -33,6 +33,15 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
         protected global::System.Web.UI.WebControls.DropDownList drpChuyenMuc;
 
         /// <summary>
+        /// btnXoa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnXoa;
+
+        /// <summary>
         /// divDanhSach control.
         /// </summary>
         /// <remarks>

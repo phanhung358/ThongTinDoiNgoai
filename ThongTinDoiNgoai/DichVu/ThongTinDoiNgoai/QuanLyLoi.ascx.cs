@@ -18,6 +18,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
             btnSuKien.Style.Add("display", "none");
             if (!IsPostBack)
             {
+                Static.PhanTrangThu = 1;
                 addDanhMuc();
             }
             addData();
@@ -186,7 +187,6 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
 
             tblCell = new TableCell();
             tblCell.CssClass = "Cot_TieuDe";
-            tblCell.Width = 400;
             tblCell.Text = "Đường dẫn lỗi";
             tblRow.Controls.Add(tblCell);
 
@@ -269,6 +269,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
 
         protected void drpWeb_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Static.PhanTrangThu = 1;
             drpChuyenMuc.Items.Clear();
             if (drpWeb.SelectedValue == "0")
                 drpChuyenMuc.Items.Add(new ListItem("[Tất cả]", "0"));
@@ -290,6 +291,12 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
 
         protected void drpChuyenMuc_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Static.PhanTrangThu = 1;
+            addData();
+        }
+        protected void btnXoa_Click(object sender, EventArgs e)
+        {
+            db.ExcuteSP("TTDN_CHUYENMUC_LOI_DELETE");
             addData();
         }
     }

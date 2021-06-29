@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -75,7 +76,7 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                                 fileName += ".jpg";
                             string strSourceRep = DirUpload + fileName;
                             string img = file.OuterHtml.Replace(file.Attributes["src"].Value, strSourceRep);
-                            System.Drawing.Image image = System.Drawing.Image.FromFile(Server.MapPath(strSourceRep));
+                            System.Drawing.Image image = LoadImage(Server.MapPath(strSourceRep));
                             
                             if (file.Attributes["style"] != null && (file.Attributes["style"].Value.Contains("width") || file.Attributes["style"].Value.Contains("height")))
                             {
@@ -113,6 +114,31 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
 
                 divDanhSach.InnerHtml = str.ToString();
             }
+        }
+
+        public byte[] ReadAllBytes(string fileName)
+        {
+            byte[] buffer = null;
+            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                buffer = new byte[fs.Length];
+                fs.Read(buffer, 0, (int)fs.Length);
+            }
+            return buffer;
+        }
+
+
+        public System.Drawing.Image LoadImage(string url)
+        {
+            byte[] bytes = ReadAllBytes(url);
+
+            System.Drawing.Image image;
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                image = System.Drawing.Image.FromStream(ms);
+            }
+
+            return image;
         }
     }
 }

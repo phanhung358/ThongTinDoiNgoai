@@ -33,24 +33,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
         protected global::System.Web.UI.WebControls.DropDownList drpChuyenMuc;
 
         /// <summary>
-        /// txtTieuDe control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTieuDe;
-
-        /// <summary>
-        /// txtTieuDePhu control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTieuDePhu;
-
-        /// <summary>
         /// txtTomTat control.
         /// </summary>
         /// <remarks>
