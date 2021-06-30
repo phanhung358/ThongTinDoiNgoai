@@ -65,44 +65,57 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                         foreach (var file in dsFile)
                         {
                             string strSource = file.Attributes["url-img-full"] == null ? file.Attributes["src"].Value : file.Attributes["url-img-full"].Value;
-                            string fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace("%20", "_").Replace(" ", "_");
+                            string fileName = "";
+                            if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
+                            {
+                                if (!strSource.Contains(DiaChiWeb))
+                                    strSource = DiaChiWeb + (strSource.IndexOf("/") == 0 ? strSource : "/" + strSource);
+                                fileName = Path.GetFileName(new Uri(strSource).AbsolutePath).Replace("%20", "_").Replace(" ", "_");
+                            }
+                            else
+                            {
+                                fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace("%20", "_").Replace(" ", "_").Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
+                            }
+
                             if (fileName.Contains("?"))
                             {
                                 fileName = fileName.Replace(fileName.Substring(fileName.IndexOf("?"), fileName.IndexOf("=") - fileName.IndexOf("?") + 1), "_");
                                 if (fileName.Contains("&"))
                                     fileName = fileName.Replace(fileName.Substring(fileName.IndexOf("&"), fileName.IndexOf("=") - fileName.IndexOf("&") + 1), "_");
                             }
-                            if (!fileName.Contains("."))
-                                fileName += ".jpg";
                             string strSourceRep = DirUpload + fileName;
                             string img = file.OuterHtml.Replace(file.Attributes["src"].Value, strSourceRep);
-                            System.Drawing.Image image = LoadImage(Server.MapPath(strSourceRep));
                             
-                            if (file.Attributes["style"] != null && (file.Attributes["style"].Value.Contains("width") || file.Attributes["style"].Value.Contains("height")))
+                            if (File.Exists(Server.MapPath(strSourceRep)))
                             {
-                                string[] st = file.Attributes["style"].Value.Split(';');
-                                string newstyle = "";
-                                foreach (var css in st)
+                                System.Drawing.Image image = LoadImage(Server.MapPath(strSourceRep));
+
+                                if (file.Attributes["style"] != null && (file.Attributes["style"].Value.Contains("width") || file.Attributes["style"].Value.Contains("height")))
                                 {
-                                    if (css.Contains("width") && Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 920)
-                                        newstyle += "width: 920px;";
-                                    else if (css.Contains("height"))
-                                        newstyle += "height: auto;";
-                                    else
-                                        newstyle += css == "" ? "" : css + ";";
+                                    string[] st = file.Attributes["style"].Value.Split(';');
+                                    string newstyle = "";
+                                    foreach (var css in st)
+                                    {
+                                        if (css.Contains("width") && Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 920)
+                                            newstyle += "width: 920px;";
+                                        else if (css.Contains("height"))
+                                            newstyle += "height: auto;";
+                                        else
+                                            newstyle += css == "" ? "" : css + ";";
+                                    }
+                                    img = img.Replace(file.Attributes["style"].Value, newstyle);
                                 }
-                                img = img.Replace(file.Attributes["style"].Value, newstyle);
+                                else
+                                {
+                                    if (file.Attributes["width"] != null && !string.IsNullOrEmpty(file.Attributes["width"].Value))
+                                        if (Convert.ToInt32(file.Attributes["width"].Value) > 920)
+                                            img = img.Replace(file.Attributes["width"].Value, "920");
+                                        else if (image.Width > 500)
+                                            img = img.Replace(">", " width=\"920\">");
+                                    if (file.Attributes["height"] != null && !string.IsNullOrEmpty(file.Attributes["height"].Value))
+                                        img = img.Replace(file.Attributes["height"].Value, "auto");
+                                }
                             }
-                            else
-                            {
-                                if (file.Attributes["width"] != null && Convert.ToInt32(file.Attributes["width"].Value) > 920)
-                                    img = img.Replace(file.Attributes["width"].Value, "920");
-                                else if(image.Width > 500)
-                                    img = img.Replace(">", " width=\"920\">");
-                                if (file.Attributes["height"] != null)
-                                    img = img.Replace(file.Attributes["height"].Value, "auto");
-                            }
-                            
 
                             NoiDung.DocumentNode.InnerHtml = NoiDung.DocumentNode.InnerHtml.Replace(file.OuterHtml, img);
                         }

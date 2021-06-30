@@ -1,10 +1,13 @@
 ﻿using FITC.Web.Component;
 using HtmlAgilityPack;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -144,76 +147,88 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
         protected void btnConnect_Click(object sender, EventArgs e)
         {
-            HtmlWeb htmlWeb = new HtmlWeb()
-            {
-                AutoDetectEncoding = false,
-                OverrideEncoding = Encoding.UTF8
-            };
+            ChromeOptions options = new ChromeOptions() { Proxy = null };
+            options.AddArgument("--headless");
+            options.AddArgument("--no-sandbox");
+            options.AddArgument("--ignore-certificate-errors");
+            ChromeDriver driver = new ChromeDriver(HttpContext.Current.Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
 
             try
             {
                 List<string> dsTin = new List<string>();
-                DataSet dsWeb = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, drpWeb.SelectedValue);
-                if (dsWeb != null && dsWeb.Tables.Count > 0 && dsWeb.Tables[0].Rows.Count > 0)
+                DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 3, drpWeb.SelectedValue);
+                if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
                 {
-                    DataRow rowWeb = dsWeb.Tables[0].Rows[0];
+                    DataRow row = dsChuyenMuc.Tables[0].Rows[0];
 
-                    DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 1, 0, drpChuyenMuc.SelectedValue);
-                    if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
+                    DataSet ds = db.GetDataSet("TTDN_XPATH_CHUYENMUC_SELECT", 0, drpWeb.SelectedValue, drpChuyenMuc.SelectedValue);
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                     {
-                        DataRow row = dsChuyenMuc.Tables[0].Rows[0];
+                        DataRow rowXpathCM = ds.Tables[0].Rows[0];
 
-                        DataSet ds = db.GetDataSet("TTDN_XPATH_CHUYENMUC_SELECT", 0, drpWeb.SelectedValue, drpChuyenMuc.SelectedValue);
-                        if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                        driver.Navigate().GoToUrl(row["UrlChuyenMuc"].ToString());
+
+                        for (int i = 1; i <= 10; i++)
                         {
-                            DataRow rowXpathCM = ds.Tables[0].Rows[0];
+                            string jsCode = "window.scrollTo({top: document.body.scrollHeight / " + 10 + " * " + i + ", behavior: \"smooth\"});";
+                            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                            js.ExecuteScript(jsCode);
+                            Thread.Sleep(1000);
+                        }
 
-                            HtmlDocument html = htmlWeb.Load(row["UrlChuyenMuc"].ToString());
-                            html.DocumentNode.InnerHtml = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
+                        HtmlDocument html = new HtmlDocument();
+                        html.LoadHtml(driver.PageSource);
 
-                            string xds = rowXpathCM["DanhSach"].ToString().Replace("tbody/", "");
-                            string XDanhSach = xds.LastIndexOf(']') == xds.Length - 1 ? xds.Remove(xds.LastIndexOf('['), xds.Length - xds.LastIndexOf('[')) : xds;
-                            string xbv = rowXpathCM["BaiViet_Url"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
-                            string xbv1 = rowXpathCM["BaiViet_Url1"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
-                            string xbv2 = rowXpathCM["BaiViet_Url2"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
-                            string XBaiViet_Url = xbv.IndexOf('[') == 1 ? xbv.Remove(1, xbv.IndexOf(']')) : xbv;
-                            string XBaiViet_Url1 = xbv1.IndexOf('[') == 1 ? xbv1.Remove(1, xbv1.IndexOf(']')) : xbv1;
-                            string XBaiViet_Url2 = xbv2.IndexOf('[') == 1 ? xbv2.Remove(1, xbv2.IndexOf(']')) : xbv2;
+                        if (html == null)
+                        {
+                            ham.Alert("Không lấy được dữ liệu của chuyên mục!");
+                            return;
+                        }
+                        html.DocumentNode.InnerHtml = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
 
-                            var DanhSach = html.DocumentNode.SelectNodes(XDanhSach) != null ? html.DocumentNode.SelectNodes(XDanhSach).ToList() : null;
-                            if (DanhSach != null)
+                        string xds = rowXpathCM["DanhSach"].ToString().Replace("tbody/", "");
+                        string XDanhSach = xds.LastIndexOf(']') == xds.Length - 1 ? xds.Remove(xds.LastIndexOf('['), xds.Length - xds.LastIndexOf('[')) : xds;
+                        string xbv = rowXpathCM["BaiViet_Url"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                        string xbv1 = rowXpathCM["BaiViet_Url1"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                        string xbv2 = rowXpathCM["BaiViet_Url2"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                        string XBaiViet_Url = xbv.IndexOf('[') == 1 ? xbv.Remove(1, xbv.IndexOf(']')) : xbv;
+                        string XBaiViet_Url1 = xbv1.IndexOf('[') == 1 ? xbv1.Remove(1, xbv1.IndexOf(']')) : xbv1;
+                        string XBaiViet_Url2 = xbv2.IndexOf('[') == 1 ? xbv2.Remove(1, xbv2.IndexOf(']')) : xbv2;
+
+                        var DanhSach = html.DocumentNode.SelectNodes(XDanhSach) != null ? html.DocumentNode.SelectNodes(XDanhSach).ToList() : null;
+                        int count = DanhSach.Count < 5 ? DanhSach.Count : 5;
+                        if (DanhSach != null)
+                        {
+                            for (int i = 0; i < count; i++)
                             {
-                                for (int i = 0; i < 5; i++)
+                                string BaiViet_Url = null;
+                                if (!string.IsNullOrEmpty(XBaiViet_Url) && DanhSach[i].SelectSingleNode(XBaiViet_Url) != null)
+                                    BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&");
+                                else if (!string.IsNullOrEmpty(XBaiViet_Url1) && DanhSach[i].SelectSingleNode(XBaiViet_Url1) != null)
+                                    BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url1).Attributes["href"].Value.Replace("&amp;", "&");
+                                else if (!string.IsNullOrEmpty(XBaiViet_Url2) && DanhSach[i].SelectSingleNode(XBaiViet_Url2) != null)
+                                    BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url2).Attributes["href"].Value.Replace("&amp;", "&");
+                                else
+                                    BaiViet_Url = null;
+
+                                if (BaiViet_Url != null)
                                 {
-                                    string BaiViet_Url = null;
-                                    if (!string.IsNullOrEmpty(XBaiViet_Url) && DanhSach[i].SelectSingleNode(XBaiViet_Url) != null)
-                                        BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&");
-                                    else if (!string.IsNullOrEmpty(XBaiViet_Url1) && DanhSach[i].SelectSingleNode(XBaiViet_Url1) != null)
-                                        BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url1).Attributes["href"].Value.Replace("&amp;", "&");
-                                    else if (!string.IsNullOrEmpty(XBaiViet_Url2) && DanhSach[i].SelectSingleNode(XBaiViet_Url2) != null)
-                                        BaiViet_Url = DanhSach[i].SelectSingleNode(XBaiViet_Url2).Attributes["href"].Value.Replace("&amp;", "&");
-                                    else
-                                        BaiViet_Url = null;
-
-                                    if (BaiViet_Url != null)
-                                    {
-                                        BaiViet_Url = (BaiViet_Url.LastIndexOf(rowWeb["DiaChiWeb"].ToString()) > -1) ? BaiViet_Url : (rowWeb["DiaChiWeb"].ToString() + BaiViet_Url);
-                                        string obj = BaiViet_Url;
-                                        dsTin.Add(obj);
-                                    }
+                                    BaiViet_Url = (BaiViet_Url.LastIndexOf(row["DiaChiWeb"].ToString()) > -1) ? BaiViet_Url : (row["DiaChiWeb"].ToString() + BaiViet_Url);
+                                    string obj = BaiViet_Url;
+                                    dsTin.Add(obj);
                                 }
-                            }
-                            else
-                            {
-                                ham.Alert("Lỗi: Xpath chuyên mục không đúng!");
-                                return;
                             }
                         }
                         else
                         {
-                            ham.Alert("Lỗi: Xpath chuyên mục không tồn tại! (Bạn phải nhập Xpath chuyên mục trước)");
+                            ham.Alert("Lỗi: Xpath chuyên mục không đúng!");
                             return;
                         }
+                    }
+                    else
+                    {
+                        ham.Alert("Lỗi: Xpath chuyên mục không tồn tại! (Bạn phải nhập Xpath chuyên mục trước)");
+                        return;
                     }
                 }
 
@@ -221,7 +236,16 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 {
                     foreach (var item in dsTin)
                     {
-                        HtmlDocument html = htmlWeb.Load(item);
+                        driver.Navigate().GoToUrl(item);
+
+                        HtmlDocument html = new HtmlDocument();
+                        html.LoadHtml(driver.PageSource);
+
+                        if (html == null)
+                        {
+                            ham.Alert("Không lấy được chi tiết bài viết!");
+                            return;
+                        }
                         html.DocumentNode.InnerHtml = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
 
                         string XTomTat = txtTomTat.Text.Replace("tbody/", "");
@@ -254,6 +278,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
             {
                 ham.Alert("Lỗi: " + ex.Message);
             }
+            driver.Quit();
         }
     }
 }

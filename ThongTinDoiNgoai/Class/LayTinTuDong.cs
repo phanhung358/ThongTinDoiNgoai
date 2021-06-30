@@ -23,6 +23,11 @@ namespace ThongTinDoiNgoai
         {
             FITC_CDataBase db = new FITC_CDataBase(Static.GetConnect());
 
+            ChromeOptions options = new ChromeOptions() { Proxy = null };
+            options.AddArgument("--headless");
+            options.AddArgument("--no-sandbox");
+            options.AddArgument("--ignore-certificate-errors");
+            ChromeDriver driver = new ChromeDriver(HttpContext.Current.Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
 
             DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 3, webID);
             if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
@@ -38,24 +43,10 @@ namespace ThongTinDoiNgoai
                         {
                             DataRow rowXpathCM = dsXpathCM.Tables[0].Rows[0];
 
-                            ChromeOptions options = new ChromeOptions() { Proxy = null };
-                            options.AddArgument("--headless");
-                            options.AddArgument("--no-sandbox");
-                            options.AddArgument("--ignore-certificate-errors");
-                            ChromeDriver driver = new ChromeDriver(HttpContext.Current.Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
                             driver.Navigate().GoToUrl(rowCM["UrlChuyenMuc"].ToString());
-
-                            for (int i = 1; i <= 10; i++)
-                            {
-                                string jsCode = "window.scrollTo({top: document.body.scrollHeight / " + 10 + " * " + i + ", behavior: \"smooth\"});";
-                                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                                js.ExecuteScript(jsCode);
-                                Thread.Sleep(1000);
-                            }
 
                             HtmlDocument html = new HtmlDocument();
                             html.LoadHtml(driver.PageSource);
-                            driver.Quit();
 
                             if (html == null)
                             {
@@ -160,24 +151,10 @@ namespace ThongTinDoiNgoai
                             {
                                 DataRow rowXpathCT = dsXpathCT.Tables[0].Rows[0];
 
-                                ChromeOptions options = new ChromeOptions();
-                                options.AddArgument("--headless");
-                                options.AddArgument("--no-sandbox");
-                                options.AddArgument("--ignore-certificate-errors");
-                                ChromeDriver driver = new ChromeDriver(HttpContext.Current.Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
                                 driver.Navigate().GoToUrl(item[0].ToString());
-
-                                for (int i = 1; i <= 10; i++)
-                                {
-                                    string jsCode = "window.scrollTo({top: document.body.scrollHeight / " + 10 + " * " + i + ", behavior: \"smooth\"});";
-                                    IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                                    js.ExecuteScript(jsCode);
-                                    Thread.Sleep(1000);
-                                }
 
                                 HtmlDocument html = new HtmlDocument();
                                 html.LoadHtml(driver.PageSource);
-                                driver.Quit();
 
                                 if (html == null)
                                 {
@@ -249,7 +226,7 @@ namespace ThongTinDoiNgoai
                                                     strSource = GiaoThuc + "://" + WebHost + "/" + strSource;
                                             }
 
-                                            string err = DownloadFile(strSource, DirUpload);
+                                            string err = DownloadFile(strSource.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", "."), DirUpload);
                                             if (err != "")
                                             {
                                                 string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource);
@@ -286,6 +263,7 @@ namespace ThongTinDoiNgoai
                     }
                 }
             }
+            driver.Quit();
         }
 
         private string LayNgay(string inputText)
@@ -295,7 +273,7 @@ namespace ThongTinDoiNgoai
             try
             {
                 //string inputText = " gg gd ngay cap nhat 07/9/2021 2:00:23 AM gdf dgd gdg";
-                string regex = @"((?<ngay>[0|1|2]?[0-9]|3[01])[/-](?<thang>0?[1-9]|1[012])[/-](?<nam>[1-9][0-9][0-9][0-9])[\s]?(?<gio>[0|1]?[0-9]|2[0-4])?[:]?(?<phut>[0-5][0-9])?[:]?(?<giay>[0-5][0-9])?[\s]?(?<buoi>am|pm|sa|ch)?)|((?<gio1>[0|1]?[0-9]|2[0-4])[:]?(?<phut1>[0-5][0-9])[:]?(?<giay1>[0-5][0-9])[\s]?(?<buoi1>am|pm|sa|ch)?[\s]?(?<ngay1>[0|1|2]?[0-9]|3[01])[/-](?<thang1>0?[1-9]|1[012])[/-](?<nam1>[1-9][0-9][0-9][0-9]))";
+                string regex = @"((?<ngay>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang>0?[1-9]|1[012])[/\-\.](?<nam>[1-9][0-9][0-9][0-9])[\s]?(?<gio>[0|1]?[0-9]|2[0-4])?[:]?(?<phut>[0-5][0-9])?[:]?(?<giay>[0-5][0-9])?[\s]?(?<buoi>am|pm|sa|ch)?)|((?<gio1>[0|1]?[0-9]|2[0-4])[:]?(?<phut1>[0-5][0-9])[:]?(?<giay1>[0-5][0-9])[\s]?(?<buoi1>am|pm|sa|ch)?[\s]?(?<ngay1>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang1>0?[1-9]|1[012])[/\-\.](?<nam1>[1-9][0-9][0-9][0-9]))";
                 MatchCollection matchCollection = Regex.Matches(inputText.ToLower(), regex);
                 if (matchCollection.Count > 0)
                 {
@@ -361,15 +339,22 @@ namespace ThongTinDoiNgoai
                         Directory.CreateDirectory(folderPath);
                     }
 
-                    string filename = url.Substring(url.LastIndexOf("/") + 1).Replace("%20", "_").Replace(" ", "_");
+                    string filename = "";
+                    if (url.ToLower().Contains(".jpg") || url.ToLower().Contains(".jpeg") || url.ToLower().Contains(".png") || url.ToLower().Contains(".gif") || url.ToLower().Contains(".tiff") || url.ToLower().Contains(".pdf"))
+                    {
+                        filename = Path.GetFileName(new Uri(url).AbsolutePath).Replace("%20", "_").Replace(" ", "_");
+                    }
+                    else
+                    {
+                        filename = url.Substring(url.LastIndexOf("/") + 1).Replace("%20", "_").Replace(" ", "_");
+                    }
+
                     if (filename.Contains("?"))
                     {
                         filename = filename.Replace(filename.Substring(filename.IndexOf("?"), filename.IndexOf("=") - filename.IndexOf("?") + 1), "_");
                         if (filename.Contains("&"))
                             filename = filename.Replace(filename.Substring(filename.IndexOf("&"), filename.IndexOf("=") - filename.IndexOf("&") + 1), "_");
                     }
-                    if (!filename.Contains("."))
-                        filename += ".jpg";
                     string filePath = HttpContext.Current.Server.MapPath("~/" + folderName + "/" + filename);
 
                     using (FileStream outputFileStream = new FileStream(filePath, FileMode.Create))

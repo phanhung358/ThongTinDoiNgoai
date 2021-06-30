@@ -1,10 +1,13 @@
 ﻿using FITC.Web.Component;
 using HtmlAgilityPack;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -159,12 +162,35 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
             try
             {
-                DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 1, 0, drpChuyenMuc.SelectedValue);
+                DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 3, drpWeb.SelectedValue);
                 if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
                 {
                     DataRow row = dsChuyenMuc.Tables[0].Rows[0];
 
-                    HtmlDocument html = htmlWeb.Load(row["UrlChuyenMuc"].ToString());
+                    ChromeOptions options = new ChromeOptions() { Proxy = null };
+                    options.AddArgument("--headless");
+                    options.AddArgument("--no-sandbox");
+                    options.AddArgument("--ignore-certificate-errors");
+                    ChromeDriver driver = new ChromeDriver(HttpContext.Current.Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
+                    driver.Navigate().GoToUrl(row["UrlChuyenMuc"].ToString());
+
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        string jsCode = "window.scrollTo({top: document.body.scrollHeight / " + 10 + " * " + i + ", behavior: \"smooth\"});";
+                        IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                        js.ExecuteScript(jsCode);
+                        Thread.Sleep(1000);
+                    }
+
+                    HtmlDocument html = new HtmlDocument();
+                    html.LoadHtml(driver.PageSource);
+                    driver.Quit();
+
+                    if (html == null)
+                    {
+                        ham.Alert("Không lấy được dữ liệu của chuyên mục!");
+                        return;
+                    }
                     html.DocumentNode.InnerHtml = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
 
                     string xds = txtDanhSach.Text.Replace("tbody/", "");
