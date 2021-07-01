@@ -168,14 +168,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
                         driver.Navigate().GoToUrl(row["UrlChuyenMuc"].ToString());
 
-                        for (int i = 1; i <= 10; i++)
-                        {
-                            string jsCode = "window.scrollTo({top: document.body.scrollHeight / " + 10 + " * " + i + ", behavior: \"smooth\"});";
-                            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                            js.ExecuteScript(jsCode);
-                            Thread.Sleep(1000);
-                        }
-
                         HtmlDocument html = new HtmlDocument();
                         html.LoadHtml(driver.PageSource);
 

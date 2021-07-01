@@ -64,7 +64,7 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                     {
                         foreach (var file in dsFile)
                         {
-                            string strSource = file.Attributes["url-img-full"] == null ? file.Attributes["src"].Value : file.Attributes["url-img-full"].Value;
+                            string strSource = file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? file.Attributes["src"].Value : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value;
                             string fileName = "";
                             if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
                             {

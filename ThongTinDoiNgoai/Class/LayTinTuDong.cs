@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -27,7 +28,8 @@ namespace ThongTinDoiNgoai
             options.AddArgument("--headless");
             options.AddArgument("--no-sandbox");
             options.AddArgument("--ignore-certificate-errors");
-            ChromeDriver driver = new ChromeDriver(HttpContext.Current.Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
+            string ThuMuc = ConfigurationManager.AppSettings["ThuMuc"] + "/ChromeDriver";
+            ChromeDriver driver = new ChromeDriver(ThuMuc, options, TimeSpan.FromMinutes(3));
 
             DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 3, webID);
             if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
@@ -97,6 +99,8 @@ namespace ThongTinDoiNgoai
                                                 BaiViet_Url = BaiViet_Url.Replace("http", "https");
                                             else if (rowCM["DiaChiWeb"].ToString().Substring(0, 5) != "https" && BaiViet_Url.Substring(0, 5) == "https")
                                                 BaiViet_Url = BaiViet_Url.Replace("https", "http");
+                                            if (!BaiViet_Url.Contains(rowCM["DiaChiWeb"].ToString()))
+                                                continue;
                                         }
                                         else if (BaiViet_Url.LastIndexOf(rowCM["DiaChiWeb"].ToString()) == -1)
                                         {
@@ -211,13 +215,13 @@ namespace ThongTinDoiNgoai
 
                                 if (NoiDung != null)
                                 {
-                                    string DirUpload = Static.GetPath() + "/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DiaChiWeb.Remove(0, DiaChiWeb.IndexOf("/") + 2) + "/";
+                                    string DirUpload = ConfigurationManager.AppSettings["ThuMuc"] + "/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DiaChiWeb.Remove(0, DiaChiWeb.IndexOf("/") + 2) + "/";
                                     var dsFile = NoiDung.SelectNodes(".//img");
                                     if (dsFile != null)
                                     {
                                         foreach (var file in dsFile)
                                         {
-                                            string strSource = file.Attributes["url-img-full"] == null ? file.Attributes["src"].Value : file.Attributes["url-img-full"].Value;
+                                            string strSource = file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? file.Attributes["src"].Value : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value;
                                             if (!strSource.Contains(WebHost))
                                             {
                                                 if (strSource.IndexOf("/") == 0)
@@ -248,7 +252,7 @@ namespace ThongTinDoiNgoai
                                 string sLoi = db.ExcuteSP("TTDN_BAIVIET_INSERT", obj);
                                 if (sLoi != "")
                                 {
-
+                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), "Lỗi lưu dữ liệu: " + sLoi, item[0].ToString());
                                 }
                                 if (item == dsTin[dsTin.Count - 1])
                                 {
@@ -333,7 +337,7 @@ namespace ThongTinDoiNgoai
 
                 using (resp)
                 {
-                    string folderPath = HttpContext.Current.Server.MapPath("~/" + folderName);
+                    string folderPath = folderName;
                     if (!Directory.Exists(folderPath))
                     {
                         Directory.CreateDirectory(folderPath);
@@ -355,7 +359,7 @@ namespace ThongTinDoiNgoai
                         if (filename.Contains("&"))
                             filename = filename.Replace(filename.Substring(filename.IndexOf("&"), filename.IndexOf("=") - filename.IndexOf("&") + 1), "_");
                     }
-                    string filePath = HttpContext.Current.Server.MapPath("~/" + folderName + "/" + filename);
+                    string filePath = folderName + "/" + filename;
 
                     using (FileStream outputFileStream = new FileStream(filePath, FileMode.Create))
                     {

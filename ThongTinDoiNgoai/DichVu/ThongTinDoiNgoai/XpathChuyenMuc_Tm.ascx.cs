@@ -174,14 +174,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     ChromeDriver driver = new ChromeDriver(HttpContext.Current.Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
                     driver.Navigate().GoToUrl(row["UrlChuyenMuc"].ToString());
 
-                    for (int i = 1; i <= 10; i++)
-                    {
-                        string jsCode = "window.scrollTo({top: document.body.scrollHeight / " + 10 + " * " + i + ", behavior: \"smooth\"});";
-                        IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                        js.ExecuteScript(jsCode);
-                        Thread.Sleep(1000);
-                    }
-
                     HtmlDocument html = new HtmlDocument();
                     html.LoadHtml(driver.PageSource);
                     driver.Quit();
