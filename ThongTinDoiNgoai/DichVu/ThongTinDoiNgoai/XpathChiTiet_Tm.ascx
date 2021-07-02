@@ -70,12 +70,12 @@
         background-color: rgba(0,0,0,0.4);
     }
 
-        .loading img {
-            position: relative;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
-        }
+    .loading img {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
 
     .d-none {
         display: none;
@@ -131,8 +131,10 @@
     </div>
 </div>
 
-<div class="loading d-none" runat="server" id="loading">
-    <img src="../../Css/Thickbox/fancybox_loading.gif" />
+<div id="divDanhSach" runat="server"></div>
+
+<div>
+    <asp:CheckBox AutoPostBack="true" ID="chkKhac" Text="Xpath khác" runat="server" />
 </div>
 
 <div style="text-align: center; padding-top: 10px; padding-bottom: 5px;">

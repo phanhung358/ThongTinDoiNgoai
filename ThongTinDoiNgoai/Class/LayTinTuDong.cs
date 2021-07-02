@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -30,6 +31,8 @@ namespace ThongTinDoiNgoai
             options.AddArgument("--ignore-certificate-errors");
             string ThuMuc = ConfigurationManager.AppSettings["ThuMuc"] + "/ChromeDriver";
             ChromeDriver driver = new ChromeDriver(ThuMuc, options, TimeSpan.FromMinutes(3));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            wait.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
 
             DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 3, webID);
             if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
@@ -132,12 +135,14 @@ namespace ThongTinDoiNgoai
                                 {
                                     string Loi = "Không lấy được đường dẫn (URL) của bài viết trong chuyên mục!";
                                     string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
+                                    continue;
                                 }
                             }
                             else
                             {
                                 string Loi = "Không lấy được danh sách tin của chuyên mục!";
                                 string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
+                                continue;
                             }
                         }
                     }
@@ -146,123 +151,135 @@ namespace ThongTinDoiNgoai
                         db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), ex.Message, rowCM["UrlChuyenMuc"].ToString());
                     }
 
-                    foreach (var item in dsTin)
+                    DataSet dsXpathCT = db.GetDataSet("TTDN_XPATH_CHITIET_SELECT", 0, rowCM["WebID"].ToString());
+                    if (dsXpathCT != null && dsXpathCT.Tables.Count > 0 && dsXpathCT.Tables[0].Rows.Count > 0)
                     {
-                        try
+                        for (int i = 0; i < dsXpathCT.Tables[0].Rows.Count; i++)
                         {
-                            DataSet dsXpathCT = db.GetDataSet("TTDN_XPATH_CHITIET_SELECT", 0, item[2].ToString(), item[1].ToString());
-                            if (dsXpathCT != null && dsXpathCT.Tables.Count > 0 && dsXpathCT.Tables[0].Rows.Count > 0)
+                            DataRow rowXpathCT = dsXpathCT.Tables[0].Rows[i];
+
+                            int count = 0;
+                            foreach (var item in dsTin)
                             {
-                                DataRow rowXpathCT = dsXpathCT.Tables[0].Rows[0];
-
-                                driver.Navigate().GoToUrl(item[0].ToString());
-
-                                HtmlDocument html = new HtmlDocument();
-                                html.LoadHtml(driver.PageSource);
-
-                                if (html == null)
+                                try
                                 {
-                                    string Loi = "Không lấy được chi tiết bài viết!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
-                                    continue;
-                                }
-                                html.DocumentNode.InnerHtml = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
+                                    driver.Navigate().GoToUrl(item[0].ToString());
 
-                                string XTomTat = rowXpathCT["TomTat"].ToString().Replace("tbody/", "");
-                                string XNoiDung = rowXpathCT["NoiDung"].ToString().Replace("tbody/", "");
-                                string XThoiGian = rowXpathCT["ThoiGian"].ToString().Replace("tbody/", "");
-                                string XTacGia = rowXpathCT["TacGia"].ToString().Replace("tbody/", "");
+                                    HtmlDocument html = new HtmlDocument();
+                                    html.LoadHtml(driver.PageSource);
 
-                                var TomTat = XTomTat != "" ? (html.DocumentNode.SelectSingleNode(XTomTat) != null ? html.DocumentNode.SelectSingleNode(XTomTat) : null) : null;
-                                var NoiDung = html.DocumentNode.SelectSingleNode(XNoiDung) != null ? html.DocumentNode.SelectSingleNode(XNoiDung) : null;
-                                var ThoiGian = XThoiGian != "" ? (html.DocumentNode.SelectSingleNode(XThoiGian) != null ? html.DocumentNode.SelectSingleNode(XThoiGian) : null) : null;
-                                var TacGia = XTacGia != "" ? (html.DocumentNode.SelectSingleNode(XTacGia) != null ? html.DocumentNode.SelectSingleNode(XTacGia) : null) : null;
-
-
-                                string tgian = null;
-                                string strNewsDatePosted = null;
-                                if (ThoiGian != null)
-                                {
-                                    strNewsDatePosted = ThoiGian.InnerText.Trim();
-                                    tgian = LayNgay(strNewsDatePosted);
-                                }
-
-                                if (!string.IsNullOrEmpty(XTomTat) && TomTat == null)
-                                {
-                                    string Loi = "Không lấy được tóm tắt bài viết!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
-                                }
-                                if (!string.IsNullOrEmpty(XNoiDung) && NoiDung == null)
-                                {
-                                    string Loi = "Không lấy được nội dung của bài viết!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
-                                }
-                                if (!string.IsNullOrEmpty(XThoiGian) && ThoiGian == null)
-                                {
-                                    string Loi = "Không lấy được thời gian đăng bài!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
-                                }
-
-                                string DiaChiWeb = "";
-                                DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, item[2].ToString());
-                                if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
-                                {
-                                    DataRow rowWeb = ds1.Tables[0].Rows[0];
-                                    DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
-                                }
-                                string WebHost = new Uri(item[0].ToString()).Host;
-                                string GiaoThuc = new Uri(item[0].ToString()).Scheme;
-
-                                if (NoiDung != null)
-                                {
-                                    string DirUpload = ConfigurationManager.AppSettings["ThuMuc"] + "/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DiaChiWeb.Remove(0, DiaChiWeb.IndexOf("/") + 2) + "/";
-                                    var dsFile = NoiDung.SelectNodes(".//img");
-                                    if (dsFile != null)
+                                    if (html == null)
                                     {
-                                        foreach (var file in dsFile)
-                                        {
-                                            string strSource = file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? file.Attributes["src"].Value : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value;
-                                            if (!strSource.Contains(WebHost))
-                                            {
-                                                if (strSource.IndexOf("/") == 0)
-                                                    strSource = GiaoThuc + "://" + WebHost + strSource;
-                                                else if (strSource.IndexOf("http") != 0)
-                                                    strSource = GiaoThuc + "://" + WebHost + "/" + strSource;
-                                            }
+                                        string Loi = "Không lấy được chi tiết bài viết!";
+                                        string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                                        continue;
+                                    }
+                                    html.DocumentNode.InnerHtml = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
 
-                                            string err = DownloadFile(strSource.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", "."), DirUpload);
-                                            if (err != "")
+                                    string XTomTat = rowXpathCT["TomTat"].ToString().Replace("tbody/", "");
+                                    string XNoiDung = rowXpathCT["NoiDung"].ToString().Replace("tbody/", "");
+                                    string XThoiGian = rowXpathCT["ThoiGian"].ToString().Replace("tbody/", "");
+                                    string XTacGia = rowXpathCT["TacGia"].ToString().Replace("tbody/", "");
+
+                                    var TomTat = XTomTat != "" ? (html.DocumentNode.SelectSingleNode(XTomTat) != null ? html.DocumentNode.SelectSingleNode(XTomTat) : null) : null;
+                                    var NoiDung = html.DocumentNode.SelectSingleNode(XNoiDung) != null ? html.DocumentNode.SelectSingleNode(XNoiDung) : null;
+                                    var ThoiGian = XThoiGian != "" ? (html.DocumentNode.SelectSingleNode(XThoiGian) != null ? html.DocumentNode.SelectSingleNode(XThoiGian) : null) : null;
+                                    var TacGia = XTacGia != "" ? (html.DocumentNode.SelectSingleNode(XTacGia) != null ? html.DocumentNode.SelectSingleNode(XTacGia) : null) : null;
+
+
+                                    string tgian = null;
+                                    string strNewsDatePosted = null;
+                                    if (ThoiGian != null)
+                                    {
+                                        strNewsDatePosted = ThoiGian.InnerText.Trim();
+                                        tgian = LayNgay(strNewsDatePosted);
+                                    }
+
+                                    //if (!string.IsNullOrEmpty(XTomTat) && TomTat == null)
+                                    //{
+                                    //    string Loi = "Không lấy được tóm tắt bài viết!";
+                                    //    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                                    //}
+                                    //if (!string.IsNullOrEmpty(XNoiDung) && NoiDung == null)
+                                    //{
+                                    //    string Loi = "Không lấy được nội dung của bài viết!";
+                                    //    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                                    //}
+                                    //if (!string.IsNullOrEmpty(XThoiGian) && ThoiGian == null)
+                                    //{
+                                    //    string Loi = "Không lấy được thời gian đăng bài!";
+                                    //    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                                    //}
+
+                                    string DiaChiWeb = "";
+                                    DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, item[2].ToString());
+                                    if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+                                    {
+                                        DataRow rowWeb = ds1.Tables[0].Rows[0];
+                                        DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
+                                    }
+                                    string WebHost = new Uri(item[0].ToString()).Host;
+                                    string GiaoThuc = new Uri(item[0].ToString()).Scheme;
+
+                                    if (NoiDung != null)
+                                    {
+                                        string DirUpload = ConfigurationManager.AppSettings["ThuMuc"] + "/UploadFiles/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DiaChiWeb.Remove(0, DiaChiWeb.IndexOf("/") + 2) + "/";
+                                        var dsFile = NoiDung.SelectNodes(".//img");
+                                        if (dsFile != null)
+                                        {
+                                            foreach (var file in dsFile)
                                             {
-                                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource);
+                                                string strSource = file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? file.Attributes["src"].Value : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value;
+                                                if (!strSource.Contains(WebHost))
+                                                {
+                                                    if (strSource.IndexOf("/") == 0)
+                                                        strSource = GiaoThuc + "://" + WebHost + strSource;
+                                                    else if (strSource.IndexOf("http") != 0)
+                                                        strSource = GiaoThuc + "://" + WebHost + "/" + strSource;
+                                                }
+
+                                                string err = DownloadFile(strSource.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", "."), DirUpload);
+                                                if (err != "")
+                                                {
+                                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource);
+                                                }
                                             }
                                         }
                                     }
-                                }
 
-                                object[] obj = new object[9];
-                                obj[0] = item[3].ToString();
-                                obj[1] = TomTat != null ? TomTat.InnerText : null;
-                                obj[2] = NoiDung != null ? NoiDung.InnerHtml : null;
-                                obj[3] = ThoiGian != null ? tgian : null;
-                                obj[4] = TacGia != null ? TacGia.InnerText : null;
-                                obj[5] = item[0].ToString();
-                                obj[6] = NoiDung?.InnerHtml.Length;
-                                obj[7] = item[1].ToString();
-                                obj[8] = item[2].ToString();
-                                string sLoi = db.ExcuteSP("TTDN_BAIVIET_INSERT", obj);
-                                if (sLoi != "")
-                                {
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), "Lỗi lưu dữ liệu: " + sLoi, item[0].ToString());
+                                    if (NoiDung == null && ThoiGian == null)
+                                    {
+                                        count++;
+                                    }
+                                    else
+                                    {
+                                        object[] obj = new object[9];
+                                        obj[0] = item[3].ToString();
+                                        obj[1] = TomTat != null ? TomTat.InnerText : null;
+                                        obj[2] = NoiDung != null ? NoiDung.InnerHtml : null;
+                                        obj[3] = ThoiGian != null ? tgian : null;
+                                        obj[4] = TacGia != null ? TacGia.InnerText : null;
+                                        obj[5] = item[0].ToString();
+                                        obj[6] = NoiDung?.InnerHtml.Length;
+                                        obj[7] = item[1].ToString();
+                                        obj[8] = item[2].ToString();
+                                        string sLoi = db.ExcuteSP("TTDN_BAIVIET_INSERT", obj);
+                                        if (sLoi != "")
+                                        {
+                                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), "Lỗi lưu dữ liệu: " + sLoi, item[0].ToString());
+                                        }
+                                    }
                                 }
-                                if (item == dsTin[dsTin.Count - 1])
+                                catch (Exception ex)
                                 {
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_UPDATE_THOIGIANDONGBO", item[1].ToString());
+                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, item[0].ToString());
                                 }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, item[0].ToString());
+                            db.ExcuteSP("TTDN_CHUYENMUC_UPDATE_THOIGIANDONGBO", rowCM["ChuyenMucID"].ToString());
+                            if (count == dsTin.Count && dsTin.Count != 0)
+                            {
+                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), "Không lấy được thông tin của từng bài viết!", rowCM["UrlChuyenMuc"].ToString());
+                            }
                         }
                     }
                 }
@@ -270,20 +287,21 @@ namespace ThongTinDoiNgoai
             driver.Quit();
         }
 
-        private string LayNgay(string inputText)
+        public string LayNgay(string inputText)
         {
+            inputText = inputText.Replace(",", "").Replace("|", "");
             inputText = inputText.ToLower();
             string kq = "";
             try
             {
                 //string inputText = " gg gd ngay cap nhat 07/9/2021 2:00:23 AM gdf dgd gdg";
-                string regex = @"((?<ngay>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang>0?[1-9]|1[012])[/\-\.](?<nam>[1-9][0-9][0-9][0-9])[\s]?(?<gio>[0|1]?[0-9]|2[0-4])?[:]?(?<phut>[0-5][0-9])?[:]?(?<giay>[0-5][0-9])?[\s]?(?<buoi>am|pm|sa|ch)?)|((?<gio1>[0|1]?[0-9]|2[0-4])[:]?(?<phut1>[0-5][0-9])[:]?(?<giay1>[0-5][0-9])[\s]?(?<buoi1>am|pm|sa|ch)?[\s]?(?<ngay1>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang1>0?[1-9]|1[012])[/\-\.](?<nam1>[1-9][0-9][0-9][0-9]))";
+                string regex = @"((?<ngay>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang>0?[1-9]|1[012])[/\-\.](?<nam>[1-9][0-9][0-9][0-9])[\s]?(?<gio>[0|1]?[0-9]|2[0-4])?[:]?(?<phut>[0-5][0-9])?[:]?(?<giay>[0-5][0-9])?[\s]?(?<buoi>am|pm|sa|ch)?)|((?<gio1>[0|1]?[0-9]|2[0-4])[:]?(?<phut1>[0-5][0-9])[:]?(?<giay1>[0-5][0-9])?[\s]?(?<buoi1>am|pm|sa|ch)?[\s]?(?<ngay1>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang1>0?[1-9]|1[012])[/\-\.](?<nam1>[1-9][0-9][0-9][0-9]))";
                 MatchCollection matchCollection = Regex.Matches(inputText.ToLower(), regex);
                 if (matchCollection.Count > 0)
                 {
                     string ngayThang = matchCollection[0].Value; // 07/9/2021 14:00:00
                 }
-                CacHamChung ham = new CacHamChung();
+
                 foreach (Match match in matchCollection)
                 {
                     if (match.Groups["thang"].Value != "")
@@ -301,9 +319,9 @@ namespace ThongTinDoiNgoai
                         kq = kq + match.Groups["thang1"].Value;
                         kq = kq + "/" + match.Groups["ngay1"].Value;
                         kq = kq + "/" + match.Groups["nam1"].Value;
-                        kq = kq + " " + (match.Groups["gio1"].Value == "" ? "00" : match.Groups["gio"].Value);
-                        kq = kq + ":" + (match.Groups["phut1"].Value == "" ? "00" : match.Groups["phut"].Value);
-                        kq = kq + ":" + (match.Groups["giay1"].Value == "" ? "00" : match.Groups["giay"].Value);
+                        kq = kq + " " + (match.Groups["gio1"].Value == "" ? "00" : match.Groups["gio1"].Value);
+                        kq = kq + ":" + (match.Groups["phut1"].Value == "" ? "00" : match.Groups["phut1"].Value);
+                        kq = kq + ":" + (match.Groups["giay1"].Value == "" ? "00" : match.Groups["giay1"].Value);
                         kq = kq + " " + match.Groups["buoi1"].Value;
                     }
                 }

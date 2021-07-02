@@ -78,13 +78,22 @@ namespace QuanLyVanBan.DichVu.DuLieu
         protected global::System.Web.UI.WebControls.TextBox txtTacGia;
 
         /// <summary>
-        /// loading control.
+        /// divDanhSach control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl loading;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDanhSach;
+
+        /// <summary>
+        /// chkKhac control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkKhac;
 
         /// <summary>
         /// btnConnect control.

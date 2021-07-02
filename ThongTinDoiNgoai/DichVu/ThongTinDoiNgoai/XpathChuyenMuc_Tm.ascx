@@ -37,9 +37,6 @@
         </td>
     </tr>
 </table>
-<div class="loading d-none" runat="server" id="loading">
-    <img src="../../Css/Thickbox/fancybox_loading.gif" />
-</div>
 
 <div style="text-align: center; padding-top: 10px; padding-bottom: 5px;">
     <asp:Button ID="btnSuKien" runat="server" CssClass="button" Text="Sự kiện" OnClick="btnSuKien_Click"  />

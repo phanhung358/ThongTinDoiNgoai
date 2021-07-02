@@ -108,9 +108,11 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                                 else
                                 {
                                     if (file.Attributes["width"] != null && !string.IsNullOrEmpty(file.Attributes["width"].Value))
+                                    {
                                         if (Convert.ToInt32(file.Attributes["width"].Value) > 920)
                                             img = img.Replace(file.Attributes["width"].Value, "920");
-                                        else if (image.Width > 500)
+                                    }    
+                                    else if (image.Width > 500)
                                             img = img.Replace(">", " width=\"920\">");
                                     if (file.Attributes["height"] != null && !string.IsNullOrEmpty(file.Attributes["height"].Value))
                                         img = img.Replace(file.Attributes["height"].Value, "auto");

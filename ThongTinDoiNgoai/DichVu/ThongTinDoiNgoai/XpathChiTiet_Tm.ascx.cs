@@ -22,6 +22,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
         string sChuyenMucID = "0";
         protected void Page_Load(object sender, EventArgs e)
         {
+            divDanhSach.Style.Add("display", "none");
             if (Request.QueryString["WebID"] != null && Request.QueryString["ChuyenMucID"] != null)
             {
                 sWebID = Request.QueryString["WebID"];
@@ -67,6 +68,12 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     txtThoiGian.Text = row["ThoiGian"].ToString();
                     txtDinhDangThoiGian.Text = row["DinhDangThoiGian"].ToString();
                     txtTacGia.Text = row["TacGia"].ToString();
+                }
+
+                StringBuilder str = new StringBuilder();
+                for (int i = 0; i < 5; i++)
+                {
+
                 }
             }
             catch { }
