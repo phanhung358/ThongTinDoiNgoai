@@ -142,7 +142,6 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
             return buffer;
         }
 
-
         public System.Drawing.Image LoadImage(string url)
         {
             byte[] bytes = ReadAllBytes(url);

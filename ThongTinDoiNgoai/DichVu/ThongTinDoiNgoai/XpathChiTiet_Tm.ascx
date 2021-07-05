@@ -80,7 +80,19 @@
     .d-none {
         display: none;
     }
+
+    td {
+        padding: 1.5px 0;
+    }
+
+    tr:nth-child(5n+2) td {
+        padding-top: 10px;
+    }
 </style>
+
+<div style="width: 100%; clear: both" class="Dong_Table">
+    <asp:HiddenField ID="txtXpathID" runat="server" Value="0" />
+</div>
 
 <div style="width: 100%; clear: both" class="Dong_Table">
     <div class="Dong_Cell" style="width: 115px;">Trang web:<sup>*</sup></div>
@@ -133,8 +145,14 @@
 
 <div id="divDanhSach" runat="server"></div>
 
-<div>
-    <asp:CheckBox AutoPostBack="true" ID="chkKhac" Text="Xpath khác" runat="server" />
+
+<div style="width: 100%; clear: both" class="Dong_Table">
+    <div class="Dong_Cell" style="width: 115px;"></div>
+    <div class="Dong_Cell">
+        <div>
+            <asp:CheckBox AutoPostBack="true" ID="chkKhac" Text="Xpath khác" runat="server" OnCheckedChanged="chkKhac_CheckedChanged" />
+        </div>
+    </div>
 </div>
 
 <div style="text-align: center; padding-top: 10px; padding-bottom: 5px;">

@@ -31,8 +31,8 @@ namespace QuanLyVanBan.DichVu.DuLieu
             if (!IsPostBack)
             {
                 addDanhMuc();
-                addSua();
             }
+                addSua();
         }
 
         private void addDanhMuc()
@@ -63,6 +63,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     DataRow row = ds.Tables[0].Rows[0];
+                    txtXpathID.Value = row["XpathID"].ToString();
                     txtTomTat.Text = row["TomTat"].ToString();
                     txtNoiDung.Text = row["NoiDung"].ToString();
                     txtThoiGian.Text = row["ThoiGian"].ToString();
@@ -70,11 +71,175 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     txtTacGia.Text = row["TacGia"].ToString();
                 }
 
-                StringBuilder str = new StringBuilder();
-                for (int i = 0; i < 5; i++)
-                {
+                divDanhSach.Controls.Clear();
 
+                Table tbl = new Table();
+                tbl.Width = Unit.Percentage(100);
+                tbl.CellPadding = 0;
+                tbl.CellSpacing = 0;
+                tbl.BorderWidth = 0;
+
+                TableCell tblCell = new TableCell();
+                TableRow tblRow = new TableRow();
+
+                int k = 1;
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 1)
+                {
+                    chkKhac.Checked = true;
+                    chkKhac_CheckedChanged(null, null);
+                    for (k = 1; k < ds.Tables[0].Rows.Count; k++)
+                    {
+                        DataRow row = ds.Tables[0].Rows[k];
+
+                        tblRow = new TableRow();
+
+                        tblCell = new TableCell();
+                        HiddenField hidden = new HiddenField();
+                        hidden.ID = "XpathID_" + k.ToString();
+                        hidden.Value = row["XpathID"].ToString();
+                        tblCell.Controls.Add(hidden);
+                        tblRow.Controls.Add(tblCell);
+                        tbl.Controls.Add(tblRow);
+
+                        tblRow = new TableRow();
+
+                        tblCell = new TableCell();
+                        tblCell.Width = 115;
+                        tblCell.Text = "Xpath Tóm tắt " + k.ToString();
+                        tblRow.Controls.Add(tblCell);
+
+                        tblCell = new TableCell();
+                        TextBox txtTomTat = new TextBox();
+                        txtTomTat.Width = Unit.Percentage(100);
+                        txtTomTat.ID = "TomTat_" + k.ToString();
+                        txtTomTat.Text = row["TomTat"].ToString();
+                        tblCell.Controls.Add(txtTomTat);
+                        tblRow.Controls.Add(tblCell);
+                        tbl.Controls.Add(tblRow);
+
+                        tblRow = new TableRow();
+
+                        tblCell = new TableCell();
+                        tblCell.Width = 115;
+                        tblCell.Text = "Xpath Nội dung " + k.ToString();
+                        tblRow.Controls.Add(tblCell);
+
+                        tblCell = new TableCell();
+                        TextBox txtNoiDung = new TextBox();
+                        txtNoiDung.Width = Unit.Percentage(100);
+                        txtNoiDung.ID = "NoiDung_" + k.ToString();
+                        txtNoiDung.Text = row["NoiDung"].ToString();
+                        tblCell.Controls.Add(txtNoiDung);
+                        tblRow.Controls.Add(tblCell);
+                        tbl.Controls.Add(tblRow);
+
+                        tblRow = new TableRow();
+
+                        tblCell = new TableCell();
+                        tblCell.Width = 115;
+                        tblCell.Text = "Xpath Thời gian " + k.ToString();
+                        tblRow.Controls.Add(tblCell);
+
+                        tblCell = new TableCell();
+                        TextBox txtThoiGian = new TextBox();
+                        txtThoiGian.Width = Unit.Percentage(100);
+                        txtThoiGian.ID = "ThoiGian_" + k.ToString();
+                        txtThoiGian.Text = row["ThoiGian"].ToString();
+                        tblCell.Controls.Add(txtThoiGian);
+                        tblRow.Controls.Add(tblCell);
+                        tbl.Controls.Add(tblRow);
+
+                        tblRow = new TableRow();
+
+                        tblCell = new TableCell();
+                        tblCell.Width = 115;
+                        tblCell.Text = "Xpath Tác giả " + k.ToString();
+                        tblRow.Controls.Add(tblCell);
+
+                        tblCell = new TableCell();
+                        TextBox txtTacGia = new TextBox();
+                        txtTacGia.Width = Unit.Percentage(100);
+                        txtTacGia.ID = "TacGia_" + k.ToString();
+                        txtTacGia.Text = row["TacGia"].ToString();
+                        tblCell.Controls.Add(txtTacGia);
+                        tblRow.Controls.Add(tblCell);
+                        tbl.Controls.Add(tblRow);
+                    }
                 }
+
+                for (int i = k; i < 4; i++)
+                {
+                    tblRow = new TableRow();
+
+                    tblCell = new TableCell();
+                    HiddenField hidden = new HiddenField();
+                    hidden.ID = "XpathID_" + i.ToString();
+                    hidden.Value = "0";
+                    tblCell.Controls.Add(hidden);
+                    tblRow.Controls.Add(tblCell);
+                    tbl.Controls.Add(tblRow);
+
+                    tblRow = new TableRow();
+
+                    tblCell = new TableCell();
+                    tblCell.Width = 115;
+                    tblCell.Text = "Xpath Tóm tắt " + i.ToString();
+                    tblRow.Controls.Add(tblCell);
+
+                    tblCell = new TableCell();
+                    TextBox txtTomTat = new TextBox();
+                    txtTomTat.Width = Unit.Percentage(100);
+                    txtTomTat.ID = "TomTat_" + i.ToString();
+                    tblCell.Controls.Add(txtTomTat);
+                    tblRow.Controls.Add(tblCell);
+                    tbl.Controls.Add(tblRow);
+
+                    tblRow = new TableRow();
+
+                    tblCell = new TableCell();
+                    tblCell.Width = 115;
+                    tblCell.Text = "Xpath Nội dung " + i.ToString();
+                    tblRow.Controls.Add(tblCell);
+
+                    tblCell = new TableCell();
+                    TextBox txtNoiDung = new TextBox();
+                    txtNoiDung.Width = Unit.Percentage(100);
+                    txtNoiDung.ID = "NoiDung_" + i.ToString();
+                    tblCell.Controls.Add(txtNoiDung);
+                    tblRow.Controls.Add(tblCell);
+                    tbl.Controls.Add(tblRow);
+
+                    tblRow = new TableRow();
+
+                    tblCell = new TableCell();
+                    tblCell.Width = 115;
+                    tblCell.Text = "Xpath Thời gian " + i.ToString();
+                    tblRow.Controls.Add(tblCell);
+
+                    tblCell = new TableCell();
+                    TextBox txtThoiGian = new TextBox();
+                    txtThoiGian.Width = Unit.Percentage(100);
+                    txtThoiGian.ID = "ThoiGian_" + i.ToString();
+                    tblCell.Controls.Add(txtThoiGian);
+                    tblRow.Controls.Add(tblCell);
+                    tbl.Controls.Add(tblRow);
+
+                    tblRow = new TableRow();
+
+                    tblCell = new TableCell();
+                    tblCell.Width = 115;
+                    tblCell.Text = "Xpath Tác giả " + i.ToString();
+                    tblRow.Controls.Add(tblCell);
+
+                    tblCell = new TableCell();
+                    TextBox txtTacGia = new TextBox();
+                    txtTacGia.Width = Unit.Percentage(100);
+                    txtTacGia.ID = "TacGia_" + i.ToString();
+                    tblCell.Controls.Add(txtTacGia);
+                    tblRow.Controls.Add(tblCell);
+                    tbl.Controls.Add(tblRow);
+                }
+                divDanhSach.Controls.Add(tbl);
             }
             catch { }
         }
@@ -106,11 +271,10 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 }
                 object[] obj = new object[8];
 
-
-                obj[0] = txtTomTat.Text.Trim();
-                obj[1] = txtNoiDung.Text.Trim();
-                obj[2] = txtThoiGian.Text.Trim();
-                obj[3] = txtDinhDangThoiGian.Text.Trim();
+                obj[0] = txtXpathID.Value;
+                obj[1] = txtTomTat.Text.Trim();
+                obj[2] = txtNoiDung.Text.Trim();
+                obj[3] = txtThoiGian.Text.Trim();
                 obj[4] = txtTacGia.Text.Trim();
                 obj[5] = drpChuyenMuc.SelectedValue;
                 obj[6] = drpWeb.SelectedValue;
@@ -118,7 +282,17 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 string sLoi = db.ExcuteSP("TTDN_XPATH_CHITIET_INSERT", obj);
                 if (sLoi == "")
                 {
-                    ScriptManager.RegisterClientScriptBlock(this.FindControl("btnThemMoi"), this.GetType(), "Message_Close", "alert('Cập nhật thành công !'); self.parent.tb_remove();", true);
+                    if (chkKhac.Checked)
+                    {
+                        sLoi = Luu(drpWeb.SelectedValue, drpChuyenMuc.SelectedValue);
+                    }
+                    if (sLoi == "")
+                        ScriptManager.RegisterClientScriptBlock(this.FindControl("btnThemMoi"), this.GetType(), "Message_Close", "alert('Cập nhật thành công !'); self.parent.tb_remove();", true);
+                    else
+                    {
+                        ham.Alert(this, strLoi.Replace("'", "\\\""), "btnThemMoi");
+                        return;
+                    }
                 }
                 else
                 {
@@ -278,6 +452,56 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 ham.Alert("Lỗi: " + ex.Message);
             }
             driver.Quit();
+        }
+
+        protected void chkKhac_CheckedChanged(object sender, EventArgs e)
+        {
+            divDanhSach.Style.Add("display", "none");
+            if (chkKhac.Checked)
+            {
+                divDanhSach.Style.Remove("display");
+            }
+        }
+
+        private string Luu(string WebID, string ChuyenMucID)
+        {
+            string sLoi = "";
+
+            for (int i = 1; i < 4; i++)
+            {
+                HiddenField txtXpathID = (HiddenField)FindControl("XpathID_" + i.ToString());
+                TextBox txtTomTat = (TextBox)FindControl("TomTat_" + i.ToString());
+                TextBox txtNoiDung = (TextBox)FindControl("NoiDung_" + i.ToString());
+                TextBox txtThoiGian = (TextBox)FindControl("ThoiGian_" + i.ToString());
+                TextBox txtTacGia = (TextBox)FindControl("TacGia_" + i.ToString());
+
+                object[] obj = new object[8];
+
+                obj[0] = txtXpathID.Value;
+                obj[1] = txtTomTat.Text.Trim();
+                obj[2] = txtNoiDung.Text.Trim();
+                obj[3] = txtThoiGian.Text.Trim();
+                obj[4] = txtTacGia.Text.Trim();
+                obj[5] = drpChuyenMuc.SelectedValue;
+                obj[6] = drpWeb.SelectedValue;
+                obj[7] = TUONGTAC.TenTaiKhoan;
+
+                if (!string.IsNullOrEmpty(txtTomTat.Text) || !string.IsNullOrEmpty(txtNoiDung.Text) || !string.IsNullOrEmpty(txtThoiGian.Text) || !string.IsNullOrEmpty(txtTacGia.Text))
+                {
+                    sLoi = db.ExcuteSP("TTDN_XPATH_CHITIET_INSERT", obj);
+                    if (sLoi != "")
+                        return sLoi;
+                }
+                else
+                {
+                    if (txtXpathID.Value != "0")
+                        sLoi = db.ExcuteSP("TTDN_XPATH_CHITIET_DELETE", txtXpathID.Value);
+                    if (sLoi != "")
+                        return sLoi;
+                }
+            }
+
+            return sLoi;
         }
     }
 }
