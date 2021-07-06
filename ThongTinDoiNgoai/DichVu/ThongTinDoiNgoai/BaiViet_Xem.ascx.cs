@@ -64,17 +64,17 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                     {
                         foreach (var file in dsFile)
                         {
-                            string strSource = file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? file.Attributes["src"].Value : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value;
+                            string strSource = HttpUtility.UrlDecode(file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? file.Attributes["src"].Value : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value, Encoding.UTF8);
                             string fileName = "";
                             if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
                             {
                                 if (!strSource.Contains(DiaChiWeb))
                                     strSource = DiaChiWeb + (strSource.IndexOf("/") == 0 ? strSource : "/" + strSource);
-                                fileName = Path.GetFileName(new Uri(strSource).AbsolutePath).Replace("%20", "_").Replace(" ", "_");
+                                fileName = Path.GetFileName(new Uri(strSource).AbsolutePath).Replace(" ", "_");
                             }
                             else
                             {
-                                fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace("%20", "_").Replace(" ", "_").Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
+                                fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace(" ", "_").Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
                             }
 
                             if (fileName.Contains("?"))

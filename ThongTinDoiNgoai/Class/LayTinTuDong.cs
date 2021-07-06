@@ -31,8 +31,8 @@ namespace ThongTinDoiNgoai
                 options.AddArgument("--no-sandbox");
                 options.AddArgument("--ignore-certificate-errors");
                 string ThuMuc = ConfigurationManager.AppSettings["ThuMuc"] + "/ChromeDriver";
-                ChromeDriver driver = new ChromeDriver(ThuMuc, options, TimeSpan.FromMinutes(3));
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+                ChromeDriver driver = new ChromeDriver(ThuMuc, options, TimeSpan.FromMinutes(1));
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
                 wait.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
 
                 string[] dsTag = { "<TABLE", "<TR", "<TD", "<DIV", "<A", "<P", "<SPAN", "<STRONG", "<EM", "<TITLE", "<SCRIPT", "</TABLE>", "</TR>", "</TD>", "</DIV>", "</A>", "</P>", "</SPAN>", "</STRONG>", "</EM>", "</TITLE>", "</SCRIPT>" };
@@ -58,7 +58,7 @@ namespace ThongTinDoiNgoai
                                 if (html == null)
                                 {
                                     string Loi = "Không lấy được dữ liệu của chuyên mục!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
+                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString(), "");
                                     continue;
                                 }
                                 foreach (var tag in dsTag)
@@ -140,21 +140,21 @@ namespace ThongTinDoiNgoai
                                     if (count == DanhSach.Count)
                                     {
                                         string Loi = "Không lấy được đường dẫn (URL) của bài viết trong chuyên mục!";
-                                        string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
+                                        string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString(), "");
                                         continue;
                                     }
                                 }
                                 else
                                 {
                                     string Loi = "Không lấy được danh sách tin của chuyên mục!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString(), html.DocumentNode.InnerHtml);
+                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString(), string.IsNullOrEmpty(html.DocumentNode.InnerHtml) ? "Rỗng!" : html.DocumentNode.InnerHtml);
                                     continue;
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), ex.Message, rowCM["UrlChuyenMuc"].ToString());
+                            db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), ex.Message, rowCM["UrlChuyenMuc"].ToString(), "");
                         }
 
                         int count1 = 0;
@@ -171,7 +171,7 @@ namespace ThongTinDoiNgoai
                                 if (html == null)
                                 {
                                     string Loi = "Không lấy được chi tiết bài viết!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, item[0].ToString());
+                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, item[0].ToString(), "");
                                     continue;
                                 }
                                 foreach (var tag in dsTag)
@@ -221,18 +221,20 @@ namespace ThongTinDoiNgoai
                                         //    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCT["WebID"].ToString(), rowXpathCT["ChuyenMucID"].ToString(), Loi, item[0].ToString());
                                         //}
 
-                                        string DiaChiWeb = "";
-                                        DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, item[2].ToString());
-                                        if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+                                        if (NoiDung == null && ThoiGian == null)
                                         {
-                                            DataRow rowWeb = ds1.Tables[0].Rows[0];
-                                            DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
+                                            count1++;
                                         }
-                                        string WebHost = new Uri(item[0].ToString()).Host;
-                                        string GiaoThuc = new Uri(item[0].ToString()).Scheme;
-
-                                        if (NoiDung != null)
+                                        else if (NoiDung != null && !string.IsNullOrEmpty(tgian))
                                         {
+                                            string DiaChiWeb = "";
+                                            DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, item[2].ToString());
+                                            if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+                                            {
+                                                DataRow rowWeb = ds1.Tables[0].Rows[0];
+                                                DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
+                                            }
+
                                             string DirUpload = ConfigurationManager.AppSettings["ThuMuc"] + "/UploadFiles/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DiaChiWeb.Remove(0, DiaChiWeb.IndexOf("/") + 2) + "/";
                                             var dsFile = NoiDung.SelectNodes(".//img");
                                             if (dsFile != null)
@@ -240,29 +242,29 @@ namespace ThongTinDoiNgoai
                                                 foreach (var file in dsFile)
                                                 {
                                                     string strSource = file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? file.Attributes["src"].Value : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value;
-                                                    if (!strSource.Contains(WebHost))
+                                                    if (!strSource.Contains(DiaChiWeb))
                                                     {
                                                         if (strSource.IndexOf("/") == 0)
-                                                            strSource = GiaoThuc + "://" + WebHost + strSource;
-                                                        else if (strSource.IndexOf("http") != 0)
-                                                            strSource = GiaoThuc + "://" + WebHost + "/" + strSource;
+                                                            strSource = DiaChiWeb.ToString() + strSource;
+                                                        else if (strSource.IndexOf("../") == 0)
+                                                            strSource = DiaChiWeb.ToString() + "/" + strSource.Replace("../", "");
+                                                        else if (strSource.IndexOf("~/") == 0)
+                                                            strSource = DiaChiWeb.ToString() + strSource.Replace("~/", "/");
+                                                        else if (strSource.IndexOf("./") == 0)
+                                                            strSource = DiaChiWeb.ToString() + strSource.Replace("./", "/");
                                                     }
 
-                                                    string err = DownloadFile(strSource.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", "."), DirUpload);
-                                                    if (err != "")
+                                                    if (!string.IsNullOrEmpty(strSource))
                                                     {
-                                                        string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource);
+                                                        string err = DownloadFile(HttpUtility.UrlDecode(strSource.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", "."), Encoding.UTF8), DirUpload);
+                                                        if (err != "")
+                                                        {
+                                                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource, "");
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        if (NoiDung == null && ThoiGian == null)
-                                        {
-                                            count1++;
-                                        }
-                                        else
-                                        {
                                             object[] obj = new object[9];
                                             obj[0] = item[3].ToString();
                                             obj[1] = TomTat != null ? TomTat.InnerText : null;
@@ -276,7 +278,7 @@ namespace ThongTinDoiNgoai
                                             string sLoi = db.ExcuteSP("TTDN_BAIVIET_INSERT", obj);
                                             if (sLoi != "")
                                             {
-                                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), "Lỗi lưu dữ liệu: " + sLoi, item[0].ToString());
+                                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), "Lỗi lưu dữ liệu: " + sLoi, item[0].ToString(), "");
                                             }
                                         }
                                     }
@@ -284,13 +286,13 @@ namespace ThongTinDoiNgoai
                             }
                             catch (Exception ex)
                             {
-                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, item[0].ToString());
+                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, item[0].ToString(), "");
                             }
                         }
                         db.ExcuteSP("TTDN_CHUYENMUC_UPDATE_THOIGIANDONGBO", rowCM["ChuyenMucID"].ToString());
-                        if (count1 == dsTin.Count && dsTin.Count != 0)
+                        if (count1 == dsTin.Count * dsXpathCT.Tables[0].Rows.Count && dsTin.Count != 0)
                         {
-                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), "Không lấy được thông tin của từng bài viết!", rowCM["UrlChuyenMuc"].ToString());
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), "Không lấy được thông tin của từng bài viết!", rowCM["UrlChuyenMuc"].ToString(), "");
                         }
                     }
                 }
@@ -298,7 +300,7 @@ namespace ThongTinDoiNgoai
             }
             catch(Exception ex)
             {
-                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", 0, 0, ex.Message, "");
+                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", 0, 0, ex.Message, "", "");
             }
         }
 
