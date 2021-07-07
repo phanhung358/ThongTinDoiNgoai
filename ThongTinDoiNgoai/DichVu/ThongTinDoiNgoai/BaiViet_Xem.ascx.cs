@@ -68,24 +68,15 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                             string fileName = "";
                             if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
                             {
-                                if (!strSource.Contains(DiaChiWeb))
-                                    strSource = DiaChiWeb + (strSource.IndexOf("/") == 0 ? strSource : "/" + strSource);
                                 fileName = Path.GetFileName(new Uri(strSource).AbsolutePath).Replace(" ", "_");
                             }
                             else
                             {
                                 fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace(" ", "_").Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
                             }
-
-                            if (fileName.Contains("?"))
-                            {
-                                fileName = fileName.Replace(fileName.Substring(fileName.IndexOf("?"), fileName.IndexOf("=") - fileName.IndexOf("?") + 1), "_");
-                                if (fileName.Contains("&"))
-                                    fileName = fileName.Replace(fileName.Substring(fileName.IndexOf("&"), fileName.IndexOf("=") - fileName.IndexOf("&") + 1), "_");
-                            }
-                            string strSourceRep = DirUpload + fileName;
+                            string strSourceRep = DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName));
                             string img = file.OuterHtml.Replace(file.Attributes["src"].Value, strSourceRep);
-                            
+
                             if (File.Exists(Server.MapPath(strSourceRep)))
                             {
                                 System.Drawing.Image image = LoadImage(Server.MapPath(strSourceRep));
@@ -111,9 +102,9 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                                     {
                                         if (Convert.ToInt32(file.Attributes["width"].Value) > 920)
                                             img = img.Replace(file.Attributes["width"].Value, "920");
-                                    }    
+                                    }
                                     else if (image.Width > 500)
-                                            img = img.Replace(">", " width=\"920\">");
+                                        img = img.Replace(">", " width=\"920\">");
                                     if (file.Attributes["height"] != null && !string.IsNullOrEmpty(file.Attributes["height"].Value))
                                         img = img.Replace(file.Attributes["height"].Value, "auto");
                                 }
@@ -124,7 +115,7 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                     }
                 }
 
-                str.AppendFormat("<div class='bodytext margin-bottom-lg'>{0}</div>", NoiDung.DocumentNode.InnerHtml);
+                str.AppendFormat("<div class='bodytext margin-bottom-lg'>{0}</div>", row["NoiDung"].ToString());
                 str.AppendFormat("<div class='margin-bottom-lg'><p class='h5 text-right'>{0}</p></div>", row["TacGia"].ToString());
 
                 divDanhSach.InnerHtml = str.ToString();
@@ -153,6 +144,14 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
             }
 
             return image;
+        }
+
+        public string ChuyenTuCoDauSangKoDau(string strUrl)
+        {
+            string str = strUrl.Trim().ToLower();
+            while (str.LastIndexOf("  ") > 0)
+                str = str.Replace("  ", "");
+            return str.Replace(" ", "-").Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "-").Replace("=", "").Replace("(", "").Replace(")", "").Replace("+", "").Replace(",", "").Replace(">", "").Replace("<", "").Replace("'", "").Replace("đ", "d").Replace("á", "a").Replace("à", "a").Replace("ạ", "a").Replace("ả", "a").Replace("ã", "a").Replace("ă", "a").Replace("ắ", "a").Replace("ằ", "a").Replace("ặ", "a").Replace("ẳ", "a").Replace("ẵ", "a").Replace("â", "a").Replace("ấ", "a").Replace("ầ", "a").Replace("ậ", "a").Replace("ẩ", "a").Replace("ẫ", "a").Replace("ạ", "a").Replace("ê", "e").Replace("ế", "e").Replace("ề", "e").Replace("ể", "e").Replace("ễ", "e").Replace("ệ", "e").Replace("e", "e").Replace("é", "e").Replace("è", "e").Replace("ẹ", "e").Replace("ẻ", "e").Replace("ẽ", "e").Replace("i", "i").Replace("í", "i").Replace("ì", "i").Replace("ị", "i").Replace("ỉ", "i").Replace("ĩ", "i").Replace("o", "o").Replace("ó", "o").Replace("ò", "o").Replace("ọ", "o").Replace("ỏ", "o").Replace("õ", "o").Replace("ô", "o").Replace("ố", "o").Replace("ồ", "o").Replace("ộ", "o").Replace("ổ", "o").Replace("ỗ", "o").Replace("ơ", "o").Replace("ớ", "o").Replace("ờ", "o").Replace("ợ", "o").Replace("ở", "o").Replace("ỡ", "o").Replace("u", "u").Replace("ú", "u").Replace("ù", "u").Replace("ụ", "u").Replace("ủ", "u").Replace("ũ", "u").Replace("ư", "u").Replace("ứ", "u").Replace("ừ", "u").Replace("ự", "u").Replace("ử", "u").Replace("ữ", "u").Replace("y", "y").Replace("ý", "y").Replace("ỳ", "y").Replace("ỵ", "y").Replace("ỷ", "y").Replace("ỹ", "y").Replace("/", "-").Replace("?", "-").Replace("\"", "");
         }
     }
 }
