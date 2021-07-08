@@ -273,8 +273,8 @@ namespace ThongTinDoiNgoai
                                                                 fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace(" ", "_").Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
                                                             }
 
-                                                            string strSourceRep = DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName));
-                                                            string img = file.OuterHtml.Replace(file.Attributes["src"].Value, strSourceRep);
+                                                            string strSourceRep = DirUpload + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName));
+                                                            string img = file.OuterHtml.Replace(file.Attributes["src"].Value, DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName)));
 
                                                             if (File.Exists(strSourceRep))
                                                             {

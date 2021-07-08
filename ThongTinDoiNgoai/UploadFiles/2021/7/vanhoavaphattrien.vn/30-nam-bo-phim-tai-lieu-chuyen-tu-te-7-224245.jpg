@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="csrf-token" content="">
+
+    <link rel="icon" type="image/png" href="/uploads/images/setting/tongthuky/2021/05/12/icon-trong-dong-sen-1620826852.png?ver=1624567106">
+    
+
+
+<script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"WebPage"}</script>
+
+    
+    <link href="https://vanhoavaphattrien.vn/themes/webblog/public/css/app.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+    <style>
+        :root {
+            --color-primary: #E43635;
+            --color-secondary: #38A762        }
+
+        .count_cmt{
+display:none !important;
+}
+#header_3 {
+    z-index: 8;
+}
+@font-face {
+  font-family: 'iCielBCCubano-Normal';
+  src: url('/frontend/fonts/iCielBCCubano-Normal/iCielBCCubano-Normal.eot?#iefix') format('embedded-opentype'),  
+  url('/frontend/fonts/iCielBCCubano-Normal/iCielBCCubano-Normal.otf')  format('opentype'),
+       url('/frontend/fonts/iCielBCCubano-Normal/iCielBCCubano-Normal.woff') format('woff'), 
+       url('/frontend/fonts/iCielBCCubano-Normal/iCielBCCubano-Normal.ttf')  format('truetype'), 
+       url('/frontend/fonts/iCielBCCubano-Normal/iCielBCCubano-Normal.svg#iCielBCCubano-Normal') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.topbar-body .header-top-right .group-search{
+margin-top:0;
+}
+
+.topbar-body .header-top-right .search {
+    width: 100%;
+    float: left;
+}
+
+.box-navigation .title a, .box-navigation span{
+font-size:18px;
+}
+.tin_mau_vang_box {
+    background: #dfdfdf;
+}
+
+#tin_noi_bat_6 .box-news-larger .thumb-art {
+    width: 100%;
+}
+#tin_noi_bat_6 .tnb_meta {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    padding: 25px;
+    padding-left: 20%;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: all .3s;
+    color: #ffffff;
+    z-index: 2;
+}
+#tin_noi_bat_6 .tnb_meta a,
+#tin_noi_bat_6 .tnb_meta a:hover,
+#tin_noi_bat_6 .tnb_meta a:focus{
+ font-size: 38px;
+    color: #ffffff !important;
+ font-family: "UVN Giong Song";
+font-weight: 700 !important;
+}
+.wrapper-topstory .box-news-larger {
+    position: relative;
+}
+
+#header_3 .navbar-default a.link-home {
+    background-image: url(/frontend/images/home.png?ver=3);
+text-indent: -9999px;
+background-position: -3px -3px;
+}
+.ndt-logo{
+margin: 0 auto;
+}
+.ndt-logo img {
+    display: block;
+    text-align: left;
+        float: left;
+    margin: 0 auto;
+}
+
+.footer_cf{
+    background-color: #dd0026;
+  color: #FFF;
+    padding: 10px 0;
+}
+.header-top-right .search button[type=submit]{
+    background-color: #dd0026;
+}
+
+.footer_cf a{
+    color: #FFF;
+}
+
+.ndt-header .ndt-logo img {
+      margin-top: 5px !important;
+}
+
+
+.ndt-header .promotions{
+margin-top: 0;
+}
+.style_img_left .content .title {
+
+    display: inline-block;
+}
+.breadcrumbs a {
+    text-transform: uppercase;
+}
+.box-cate-featured .item-news .description {
+
+    display: block;
+
+}
+.item-news-common p.meta-news {
+    margin: 5px 0;
+}
+
+
+@media (min-width: 1199px)
+{
+.moi_cap_nhat .style_img_left .content {
+
+    height: auto;
+
+}
+}
+
+
+@media (max-width: 767px){
+.footer_cf {
+
+    text-align: left;
+    padding-left: 15px;
+}
+.footer_cf p {
+margin-bottom: 0px;
+}
+#header_3 .ndt-logo-mobile img {
+
+    margin: 0;
+float:left;
+
+}
+#header_3 .navbar-header {
+
+}
+.logo-footer img {
+
+    max-height: 100px;
+
+}
+}
+
+.mega-menu .category-name a {
+    font-family: iCielBCCubano-Normal,sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+}
+.widget-area .widget .box-title .title a {
+    font-weight: 400;
+}
+.widget-area .widget .box-title .title {
+    font-family: iCielBCCubano-Normal,Helvetica,Arial;
+    font-weight: 400;
+}
+.header-top-right .news_hot_item {
+    background-color: #00a751;
+}
+
+.header-top-right .news-new-item {
+    background-color: #ed1d24;
+}
+
+
+.article-detail .article-content img {
+        margin: 0 auto;
+}
+
+.title_button a{
+    width: 135px;
+}
+.infographic .video-mask {
+    display:none;
+}
+.woodmart-info-box .info-box-content label {
+    font-weight:400
+}
+.menu_footer .menus>li>a {
+    font-weight: 400;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-family: iCielBCCubano-Normal,sans-serif;
+}
+.category-popup .category-menu > ul > li > a {
+    font-family: iCielBCCubano-Normal,sans-serif;
+        font-weight: 400;
+}
+.horizontal-megamenu > .menu-item > .menu-link .nav-link-text {
+    font-weight:400;
+}
+@media screen and (max-width: 991px){
+    .header-logo {
+        height: 60px;
+    }
+}
+.header-wrap-inner.sticky .mobile-logo .header-logo {
+    height: 50px;
+    width: auto;
+}
+.title-box-category , .block-title a , .widget .widget-title{
+    font-family: iCielBCCubano-Normal,sans-serif;
+    color: var(--color-primary);
+    font-weight:400;
+}
+.topbar_threadhot label {
+        background: var(--color-primary) !important;
+    border-left: 5px solid var(--color-primary);
+}
+.box-quote .image-wrapper{
+    display:none
+}
+.box-quote .box-news:after {
+    content:"\f10e";
+    font-family:'FontAwesome';
+    color:#c5c5c5;
+    position: absolute;
+    bottom: -15px;
+    right: 0;
+}
+.box-quote .box-news
+{    margin-bottom: 15px;
+    padding-bottom: 10px;
+    
+}
+.box-quote .box-news:before {
+    content:"";
+    width:90%;
+    height:1px;
+    background: #c5c5c5;
+    display: block;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    
+}
+.content-box-category .box-news {
+    border-bottom: none;
+}
+footer.footer-type-2 .menu_footer .menus>li>a:before {
+    height: 10px;
+    
+}
+.article-detail .image figcaption {
+    color: #0965c7;
+    font-weight: bold;
+}
+.image-wrapper .cat {
+    display:none;
+}
+
+.multimedia-plus.multimedia-mobile {
+    background: #d14c52;
+}
+.multimedia-plus.multimedia-mobile .title-box-category .parent-cate a {
+    color: #ffffff;
+}
+.title-box-category .inner-title:before {
+    content: "";
+    width: 100%;
+    height: 2px;
+    background: var(--color-primary);
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+}
+.header-type-2 .header-bottom-row {
+    border-bottom: 0px solid var(--color-primary);
+    background: var(--color-primary);
+}
+.horizontal-megamenu>.menu-item>.menu-link .nav-link-text, .horizontal-megamenu>.menu-item.menu-more .info-box-icon {
+    color: #fff;
+}
+.video-type-2 .title-box-category .parent-cate, .video-type-2 .subcate-children a {
+    color: #fff;
+}
+.multimedia-plus.multimedia-mobile .title-box-category .sub-cate {
+    color: #ffffff;
+    font-size: 13px;
+}
+.article-detail .article-title {
+    font-size: 26px;
+}
+.article-detail .sapo {
+    text-align: justify;
+        font-size: 13px;
+    line-height: 20px;
+}
+.article-detail .article-content {
+    font-size: 14px;
+    line-height: 23px;
+    float: left;
+    width: 100%;
+}
+.article-detail em {
+    font-size: 14px;
+}
+.chu_ky_bv, .chu_ky_bv * {
+    font-size: 14px;
+    line-height: 23px;
+}
+.widget .widget-title {
+        display: flex;
+    align-items: flex-end;
+    margin-bottom: 15px;
+}
+.widget .widget-title:after {
+    content: "";
+    height: 1px;
+    background: var(--color-primary);
+    flex: 1 auto;
+    margin-left: 5px;
+}
+.widget .widget-title .inner-title{
+    display: inline-block;
+    width: auto;
+    margin-bottom: 0;
+    color: #fff;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    font-size: 16px;
+    line-height: 1.1;
+    padding: 7px 30px 7px 20px;
+    background: var(--color-primary);
+}
+.widget .widget-title .inner-title:before {
+    content: "";
+    width: 2px;
+    height: 15px;
+    background-color: #fff;
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    bottom: 0;
+}
+.header-type-2 .menu-item.active >.menu-link {
+        background: #ca0a0a;
+}
+.horizontal-megamenu>.menu-item.active>.menu-link .nav-link-text:after {
+    content:none
+}
+.header-type-2 .horizontal-megamenu>.menu-item>.menu-link.link-home {
+    width:45px
+}
+@media screen and (min-width: 1400px){
+    .header-logo {
+        width:230px;
+    }
+    .header-type-2 .header-logo {
+        margin:10px 0;
+    }
+}
+
+@media screen and (min-width: 1366px){
+    .horizontal-megamenu>.menu-item>.menu-link .nav-link-text {
+    font-size: 15px;
+}
+}        
+    </style>
+
+    <script>
+        var WN_Data = {
+            user_id: null,
+            user: null,
+            session_id: "fShUyuYHSOcMYZKx11qQSi021fAgp54eKMHl1sWX",
+        };
+    </script>
+
+    
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-F1ZSSR53ZN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-F1ZSSR53ZN');
+</script>        
+</head>
+<body class=" ">
+        <div class="kode-content">
+        <div class="container">
+            <div class="error-404">
+                <div class="page-404">
+                    <p>404</p>
+                    <span>Trang này không tồn tại!</span>
+                </div>
+
+                <a href="/" class="go-back">Về trang chủ</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
