@@ -3,6 +3,8 @@
     margin: 0;
     font-family: tahoma, arial;
 }
+a;td;div{text-decoration:none;color:#111;}
+
 
 .vien {
     width: 990px;
@@ -25,39 +27,8 @@
     font-weight: 600;
 }
 
-.ttdn-control-vien {
-    display: flex;
-}
-
-.ttdn-control-nen {
-    display: flex;
-}
-
-.ttdn-control-nen > div {
-    flex-direction: row;
-    width: 50%;
-    display: flex;
-}
-
-.ttdn-control-nen > div > div {
-    flex-direction: row;
-}
-
-.ttdn-control-nen > div .ttdn-control-text {
-    font-size: 15px;
-    font-weight: bold;
-    width: 25%;
-}
-
-.ttdn-control-nen > div .ttdn-control-doituong {
-    font-size: 15px;
-    width: 75%;
-}
-
 .ttdn-nen {
     width: 100%;
-    height: 80vh;
-    overflow-y: auto;
 }
 
 .ttdn-chitiet-tieude {
@@ -99,3 +70,76 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-weight: 700;
     margin-bottom: 10px !important;
 }
+
+.banner {
+    background-color: #03a9f4;
+    height:100px;
+}
+.ttdn-vien{}
+.ttdn-demuc {text-align:center;
+             font-weight:bold;
+}
+.ttdn-dong-chan {
+    background-color: white;
+    padding:10px 0;
+    display: flex;
+}
+.ttdn-dong-le {
+    padding: 10px 0;
+    background-color: #F4F4F4;
+    display: flex;
+}
+.ttdn-anhdaidien-trai {
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+.ttdn-noidung-phai {
+    flex: 0 0 80%;
+    max-width: 80%;
+}
+.ttdn-anhdaidien-trai img {
+    width: 180px;
+    height: 120px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+.ttdn-dong-chan:hover, .ttdn-dong-le:hover {
+    background-color: antiquewhite;
+}
+.ttdn-dongtieude {
+}
+.ttdn-tieude{font-weight:bold;}
+.ttdn-thoigian {
+    font-style:italic;
+    text-align:right;
+}
+.ttdn-dongnoidung{}
+.ttdn-tomtat {
+    text-align: justify;
+    padding-top: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.ttdn-xemchitiet {
+    font-style: italic;
+    text-align: right
+}
+.Vien_Khung{padding:5px;
+            background-color:#ccc6;
+}
+.Tin_PhanTrang_HienTai {
+    padding: 0 3px;
+    color: red;
+    text-decoration: none;
+}
+.Tin_PhanTrang {
+    padding: 0 3px;
+    text-decoration: none;
+}
+.footer {
+    background-color: #03a9f4;
+    height: 100px;
+}
+.tin{padding:7px 0;}

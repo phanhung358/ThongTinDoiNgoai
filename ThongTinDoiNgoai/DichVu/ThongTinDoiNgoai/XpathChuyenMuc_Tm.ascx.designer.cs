@@ -42,6 +42,15 @@ namespace QuanLyVanBan.DichVu.DuLieu
         protected global::System.Web.UI.WebControls.TextBox txtDanhSach;
 
         /// <summary>
+        /// txtAnhDaiDien control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAnhDaiDien;
+
+        /// <summary>
         /// txtBaiViet_Url1 control.
         /// </summary>
         /// <remarks>

@@ -15,33 +15,6 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
     {
 
         /// <summary>
-        /// divControl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divControl;
-
-        /// <summary>
-        /// drpTrangWeb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drpTrangWeb;
-
-        /// <summary>
-        /// drpChuyenMuc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drpChuyenMuc;
-
-        /// <summary>
         /// divDanhSach control.
         /// </summary>
         /// <remarks>

@@ -69,6 +69,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     txtBaiViet_Url1.Text = row["BaiViet_Url"].ToString();
                     txtBaiViet_Url2.Text = row["BaiViet_Url1"].ToString();
                     txtBaiViet_Url3.Text = row["BaiViet_Url2"].ToString();
+                    txtAnhDaiDien.Text = row["AnhDaiDien"].ToString();
                 }
                 else
                 {
@@ -104,7 +105,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     ham.Alert(this, strLoi.Replace("'", "\\\""), "btnThemMoi");
                     return;
                 }
-                object[] obj = new object[7];
+                object[] obj = new object[8];
 
 
                 obj[0] = txtDanhSach.Text.Trim();
@@ -114,6 +115,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 obj[4] = drpChuyenMuc.SelectedValue;
                 obj[5] = drpWeb.SelectedValue;
                 obj[6] = TUONGTAC.TenTaiKhoan;
+                obj[7] = txtAnhDaiDien.Text.Trim();
 
                 string sLoi = db.ExcuteSP("TTDN_XPATH_CHUYENMUC_INSERT", obj);
                 if (sLoi == "")

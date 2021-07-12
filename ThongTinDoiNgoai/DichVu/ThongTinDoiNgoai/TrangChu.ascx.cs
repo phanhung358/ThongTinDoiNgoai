@@ -18,24 +18,9 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
         {
             if (!IsPostBack)
             {
-                addDanhMuc();
+                
             }
             addData();
-        }
-
-        private void addDanhMuc()
-        {
-            drpTrangWeb.Items.Add(new ListItem("[Tất cả]", "0"));
-            DataSet dsLoaiVanBan = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0);
-            if (dsLoaiVanBan != null && dsLoaiVanBan.Tables.Count > 0 && dsLoaiVanBan.Tables[0].Rows.Count > 0)
-            {
-                for (int i = 0; i < dsLoaiVanBan.Tables[0].Rows.Count; i++)
-                {
-                    DataRow row = dsLoaiVanBan.Tables[0].Rows[i];
-                    drpTrangWeb.Items.Add(new ListItem(row["TenWeb"].ToString() + " (" + row["DiaChiWeb"].ToString() + ")", row["WebID"].ToString()));
-                }
-            }
-            drpChuyenMuc.Items.Add(new ListItem("[Tất cả]", "0"));
         }
 
         #region Các hàm phân trang
@@ -151,7 +136,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                 StringBuilder str = new StringBuilder();
                 str.Append("<div class='ttdn-nen'>");
                 //=============================================
-                using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1, 0, drpTrangWeb.SelectedValue, drpChuyenMuc.SelectedValue))
+                using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1))
                 {
                     if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                     {
@@ -178,13 +163,19 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                                 str.Append("<div class='ttdn-dong-chan'>");
                             else
                                 str.Append("<div class='ttdn-dong-le'>");
+                            str.Append("<div class='ttdn-anhdaidien-trai'>");
+                            str.AppendFormat("<img src='{0}' />", string.IsNullOrEmpty(row["AnhDaiDien"].ToString()) ? Static.AppPath() + "/Images/no_image.png" : row["AnhDaiDien"].ToString());
+                            str.Append("</div>");
+                            str.Append("<div class='ttdn-noidung-phai'>");
                             str.Append("<div class='ttdn-dongtieude'>");
-                            str.AppendFormat("<div class='ttdn-tieude'>{0}</div>", DateTime.Parse(row["ThoiGian"].ToString()).ToString("dd/MM/yyyy - HH:mm"));
-                            str.AppendFormat("<div class='ttdn-thoigian'>{0}</div>", row["TieuDe"].ToString());
+                            str.AppendFormat("<div class='ttdn-tieude'>{0}</div>", row["TieuDe"].ToString());
+                            str.AppendFormat("<div class='ttdn-thoigian'>{0}</div>", DateTime.Parse(row["ThoiGian"].ToString()).ToString("dd/MM/yyyy - HH:mm"));
+                           
                             str.Append("</div>");
                             str.Append("<div class='ttdn-dongnoidung'>");
                             str.AppendFormat("<div class='ttdn-tomtat'>{0}</div>", row["TomTat"].ToString());
                             str.AppendFormat("<div class='ttdn-xemchitiet'><a href='/?id={0}'>Xem chi tiết</a></div>", row["BaiVietID"].ToString());
+                            str.Append("</div>");
                             str.Append("</div>");
                             str.Append("</div>");
                         }
@@ -206,7 +197,6 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
         private void addData_ChiTiet()
         {
             tblPhanTrang.Visible = false;
-            divControl.Visible = false;
             string id = Request.QueryString["id"];
             string ChuyenMucID = "0";
 
@@ -245,27 +235,6 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
             str.Append("</div>");
 
             divDanhSach.InnerHtml = str.ToString();
-        }
-
-        protected void drpTrangWeb_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            drpChuyenMuc.Items.Clear();
-            drpChuyenMuc.Items.Add(new ListItem("[Tất cả]", "0"));
-            DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 2, drpTrangWeb.SelectedValue);
-            if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
-            {
-                for (int i = 0; i < dsChuyenMuc.Tables[0].Rows.Count; i++)
-                {
-                    DataRow row = dsChuyenMuc.Tables[0].Rows[i];
-                    drpChuyenMuc.Items.Add(new ListItem(row["TenChuyenMuc"].ToString() + " (" + row["UrlChuyenMuc"].ToString() + ")", row["ChuyenMucID"].ToString()));
-                }
-            }
-            addData();
-        }
-
-        protected void drpChuyenMuc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            addData();
         }
     }
 }

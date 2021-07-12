@@ -2,24 +2,6 @@
 
 <div class="ttdn-vien">
     <div class="ttdn-demuc">Thông tin đối ngoại</div>
-    <div class="ttdn-control-vien" id="divControl" runat="server">
-        <div class="ttdn-control-nen">
-            <div class="ttdn-control1">
-                <div class="ttdn-control-text">Trang web</div>
-                <div class="ttdn-control-doituong">
-                    <asp:DropDownList Width="100%" ID="drpTrangWeb" runat="server" AutoPostBack="true" OnSelectedIndexChanged="drpTrangWeb_SelectedIndexChanged">
-                    </asp:DropDownList>
-                </div>
-            </div>
-            <div class="ttdn-control2">
-                <div class="ttdn-control-text">Chuyên mục</div>
-                <div class="ttdn-control-doituong">
-                    <asp:DropDownList Width="100%" ID="drpChuyenMuc" runat="server" AutoPostBack="true" OnSelectedIndexChanged="drpChuyenMuc_SelectedIndexChanged">
-                    </asp:DropDownList>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <div id="divDanhSach" runat="server"></div>
 <table style="width: 100%" class="Vien_Khung" id="tblPhanTrang" runat="server" border="0">
