@@ -46,18 +46,18 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                 if (!string.IsNullOrEmpty(row["TomTat"].ToString()))
                     str.AppendFormat("<div class='hometext m-bottom'>{0}</div>", row["TomTat"].ToString());
 
+                string DiaChiWeb = "";
+                DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, row["WebID"].ToString());
+                if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+                {
+                    DataRow rowWeb = ds1.Tables[0].Rows[0];
+                    DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
+                }
+
+                HtmlDocument NoiDung = new HtmlDocument();
+                NoiDung.LoadHtml(row["NoiDung"].ToString());
                 try
                 {
-                    string DiaChiWeb = "";
-                    DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, row["WebID"].ToString());
-                    if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
-                    {
-                        DataRow rowWeb = ds1.Tables[0].Rows[0];
-                        DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
-                    }
-
-                    HtmlDocument NoiDung = new HtmlDocument();
-                    NoiDung.LoadHtml(row["NoiDung"].ToString());
                     if (NoiDung != null)
                     {
                         string DirUpload = Static.GetPath() + "/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DiaChiWeb.Remove(0, DiaChiWeb.IndexOf("/") + 2) + "/";
@@ -66,17 +66,7 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                         {
                             foreach (var file in dsFile)
                             {
-                                string strSource = HttpUtility.UrlDecode(file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? file.Attributes["src"].Value : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value, Encoding.UTF8);
-                                //string fileName = "";
-                                //if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
-                                //{
-                                //    fileName = Path.GetFileName(new Uri(strSource).AbsolutePath).Replace(" ", "_");
-                                //}
-                                //else
-                                //{
-                                //    fileName = strSource.Substring(strSource.LastIndexOf("/") + 1).Replace(" ", "_").Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
-                                //}
-                                //string strSourceRep = DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName));
+                                string strSource = HttpUtility.UrlDecode(file.Attributes["src"].Value, Encoding.UTF8);
                                 string img = file.OuterHtml;
 
                                 if (File.Exists(Server.MapPath(strSource)))
@@ -103,10 +93,10 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                                         if (file.Attributes["width"] != null && !string.IsNullOrEmpty(file.Attributes["width"].Value))
                                         {
                                             if (Convert.ToInt32(file.Attributes["width"].Value) > 920)
-                                                img = img.Replace(file.Attributes["width"].Value, "920");
+                                                img = img.Replace(file.Attributes["width"].Value, "100%");
                                         }
                                         else if (image.Width > 920)
-                                            img = img.Replace(">", " width=\"920\">");
+                                            img = img.Replace(">", " width=\"100%\">");
                                         if (file.Attributes["height"] != null && !string.IsNullOrEmpty(file.Attributes["height"].Value))
                                             img = img.Replace(file.Attributes["height"].Value, "auto");
                                     }
@@ -122,7 +112,7 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
 
                 }
 
-                str.AppendFormat("<div class='bodytext margin-bottom-lg'>{0}</div>", row["NoiDung"].ToString());
+                str.AppendFormat("<div class='bodytext margin-bottom-lg'>{0}</div>", NoiDung.DocumentNode.InnerHtml);
                 str.AppendFormat("<div class='margin-bottom-lg'><p class='h5 text-right'>{0}</p></div>", row["TacGia"].ToString());
 
                 divDanhSach.InnerHtml = str.ToString();
