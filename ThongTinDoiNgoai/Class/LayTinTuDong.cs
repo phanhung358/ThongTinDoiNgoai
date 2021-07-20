@@ -22,6 +22,11 @@ namespace ThongTinDoiNgoai
         { }
         public void ThucHien(string webID)
         {
+            HtmlWeb htmlWeb = new HtmlWeb()
+            {
+                AutoDetectEncoding = false,
+                OverrideEncoding = Encoding.UTF8
+            };
             FITC_CDataBase db = new FITC_CDataBase(Static.GetConnect());
             try
             {
@@ -39,6 +44,7 @@ namespace ThongTinDoiNgoai
                 DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 3, webID);
                 if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
                 {
+                    string CheDoDacBiet = "False";
                     for (int j = 0; j < dsChuyenMuc.Tables[0].Rows.Count; j++)
                     {
                         List<object[]> dsTin = new List<object[]>();
@@ -49,11 +55,17 @@ namespace ThongTinDoiNgoai
                             if (dsXpathCM != null && dsXpathCM.Tables.Count > 0 && dsXpathCM.Tables[0].Rows.Count > 0)
                             {
                                 DataRow rowXpathCM = dsXpathCM.Tables[0].Rows[0];
-
-                                driver.Navigate().GoToUrl(rowCM["UrlChuyenMuc"].ToString());
-
+                                CheDoDacBiet = rowXpathCM["CheDoDacBiet"].ToString();
                                 HtmlDocument html = new HtmlDocument();
-                                html.LoadHtml(driver.PageSource);
+                                if (CheDoDacBiet == "False")
+                                {
+                                    driver.Navigate().GoToUrl(rowCM["UrlChuyenMuc"].ToString());
+                                    html.LoadHtml(driver.PageSource);
+                                }
+                                else
+                                {
+                                    html = htmlWeb.Load(rowCM["UrlChuyenMuc"].ToString());
+                                }
 
                                 if (html == null)
                                 {
@@ -147,27 +159,29 @@ namespace ThongTinDoiNgoai
 
                                         if (BaiViet_Url != null)
                                         {
+                                            BaiViet_Url = BaiViet_Url.Replace("www.", "");
+                                            string DiaChiWeb = rowCM["DiaChiWeb"].ToString().Replace("www.", "");
                                             if (BaiViet_Url.Contains("http"))
                                             {
-                                                if (rowCM["DiaChiWeb"].ToString().Substring(0, 5) == "https" && BaiViet_Url.Substring(0, 5) != "https")
+                                                if (DiaChiWeb.Substring(0, 5) == "https" && BaiViet_Url.Substring(0, 5) != "https")
                                                     BaiViet_Url = BaiViet_Url.Replace("http", "https");
-                                                else if (rowCM["DiaChiWeb"].ToString().Substring(0, 5) != "https" && BaiViet_Url.Substring(0, 5) == "https")
+                                                else if (DiaChiWeb.Substring(0, 5) != "https" && BaiViet_Url.Substring(0, 5) == "https")
                                                     BaiViet_Url = BaiViet_Url.Replace("https", "http");
-                                                if (!BaiViet_Url.Contains(rowCM["DiaChiWeb"].ToString()))
+                                                if (!BaiViet_Url.Contains(DiaChiWeb))
                                                     continue;
                                             }
-                                            else if (BaiViet_Url.LastIndexOf(rowCM["DiaChiWeb"].ToString()) == -1)
+                                            else if (BaiViet_Url.LastIndexOf(DiaChiWeb) == -1)
                                             {
                                                 if (BaiViet_Url.IndexOf("/") == 0)
-                                                    BaiViet_Url = rowCM["DiaChiWeb"].ToString() + BaiViet_Url;
+                                                    BaiViet_Url = DiaChiWeb + BaiViet_Url;
                                                 else if (BaiViet_Url.IndexOf("../") == 0)
-                                                    BaiViet_Url = rowCM["DiaChiWeb"].ToString() + "/" + BaiViet_Url.Replace("../", "");
+                                                    BaiViet_Url = DiaChiWeb + "/" + BaiViet_Url.Replace("../", "");
                                                 else if (BaiViet_Url.IndexOf("~/") == 0)
-                                                    BaiViet_Url = rowCM["DiaChiWeb"].ToString() + BaiViet_Url.Replace("~/", "/");
+                                                    BaiViet_Url = DiaChiWeb + BaiViet_Url.Replace("~/", "/");
                                                 else if (BaiViet_Url.IndexOf("./") == 0)
-                                                    BaiViet_Url = rowCM["DiaChiWeb"].ToString() + BaiViet_Url.Replace("./", "/");
+                                                    BaiViet_Url = DiaChiWeb + BaiViet_Url.Replace("./", "/");
                                                 else
-                                                    BaiViet_Url = rowCM["DiaChiWeb"].ToString() + "/" + BaiViet_Url;
+                                                    BaiViet_Url = DiaChiWeb + "/" + BaiViet_Url;
                                             }
 
                                             object[] obj = new object[5];
@@ -209,10 +223,16 @@ namespace ThongTinDoiNgoai
                         {
                             try
                             {
-                                driver.Navigate().GoToUrl(item[0].ToString());
-
                                 HtmlDocument html = new HtmlDocument();
-                                html.LoadHtml(driver.PageSource);
+                                if (CheDoDacBiet == "False")
+                                {
+                                    driver.Navigate().GoToUrl(item[0].ToString());
+                                    html.LoadHtml(driver.PageSource);
+                                }
+                                else
+                                {
+                                    html = htmlWeb.Load(item[0].ToString());
+                                }
 
                                 if (html == null)
                                 {

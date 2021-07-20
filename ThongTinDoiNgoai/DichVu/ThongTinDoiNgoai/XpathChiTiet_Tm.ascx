@@ -156,7 +156,6 @@
 </div>
 
 <div style="text-align: center; padding-top: 10px; padding-bottom: 5px;">
-    <asp:Button ID="btnConnect" runat="server" CssClass="button" Text="Kiểm tra" OnClick="btnConnect_Click" />
     <asp:Button ID="btnThemMoi" runat="server" CssClass="button" Text="Cập nhật" OnClick="btnThemMoi_Click" />
 </div>
 

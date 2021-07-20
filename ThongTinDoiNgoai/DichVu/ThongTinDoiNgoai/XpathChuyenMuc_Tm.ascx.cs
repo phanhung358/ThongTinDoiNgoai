@@ -70,6 +70,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     txtBaiViet_Url2.Text = row["BaiViet_Url1"].ToString();
                     txtBaiViet_Url3.Text = row["BaiViet_Url2"].ToString();
                     txtAnhDaiDien.Text = row["AnhDaiDien"].ToString();
+                    chkCheDoDacBiet.Checked = row["CheDoDacBiet"].ToString() == "True" ? true : false;
                 }
                 else
                 {
@@ -105,7 +106,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     ham.Alert(this, strLoi.Replace("'", "\\\""), "btnThemMoi");
                     return;
                 }
-                object[] obj = new object[8];
+                object[] obj = new object[9];
 
 
                 obj[0] = txtDanhSach.Text.Trim();
@@ -116,6 +117,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 obj[5] = drpWeb.SelectedValue;
                 obj[6] = TUONGTAC.TenTaiKhoan;
                 obj[7] = txtAnhDaiDien.Text.Trim();
+                obj[8] = chkCheDoDacBiet.Checked;
 
                 string sLoi = db.ExcuteSP("TTDN_XPATH_CHUYENMUC_INSERT", obj);
                 if (sLoi == "")
@@ -151,85 +153,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         drpChuyenMuc.Items.Add(new ListItem(row["TenChuyenMuc"].ToString() + " (" + row["UrlChuyenMuc"].ToString() + ")", row["ChuyenMucID"].ToString()));
                     }
                 }
-            }
-        }
-
-        protected void btnConnect_Click(object sender, EventArgs e)
-        {
-            HtmlWeb htmlWeb = new HtmlWeb()
-            {
-                AutoDetectEncoding = false,
-                OverrideEncoding = Encoding.UTF8
-            };
-
-            try
-            {
-                DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 3, drpWeb.SelectedValue);
-                if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
-                {
-                    DataRow row = dsChuyenMuc.Tables[0].Rows[0];
-
-                    ChromeOptions options = new ChromeOptions() { Proxy = null };
-                    options.AddArgument("--headless");
-                    options.AddArgument("--no-sandbox");
-                    options.AddArgument("--ignore-certificate-errors");
-                    ChromeDriver driver = new ChromeDriver(HttpContext.Current.Server.MapPath(Static.AppPath() + "/ChromeDriver"), options, TimeSpan.FromMinutes(3));
-                    driver.Navigate().GoToUrl(row["UrlChuyenMuc"].ToString());
-
-                    HtmlDocument html = new HtmlDocument();
-                    html.LoadHtml(driver.PageSource);
-                    driver.Quit();
-
-                    if (html == null)
-                    {
-                        ham.Alert("Không lấy được dữ liệu của chuyên mục!");
-                        return;
-                    }
-                    html.DocumentNode.InnerHtml = html.DocumentNode.InnerHtml.Replace("<TABLE", "<table").Replace("<TR", "<tr").Replace("<TD", "<td").Replace("<DIV", "<div").Replace("<A", "<a").Replace("<P", "<p").Replace("<SPAN", "<span").Replace("<STRONG", "<strong").Replace("<EM", "<em").Replace("<TITLE", "<title").Replace("<SCRIPT", "<script").Replace("</TABLE", "</table").Replace("</TR", "</tr").Replace("</TD", "</td").Replace("</DIV", "</div").Replace("</A", "</a").Replace("</P", "</p").Replace("</SPAN", "</span").Replace("</STRONG", "</strong").Replace("</EM", "</em").Replace("</TITLE", "</title").Replace("</SCRIPT", "</script").Replace("<TBODY>", "").Replace("</TBODY>", "").Replace("<tbody>", "").Replace("</tbody>", "");
-
-                    string xds = txtDanhSach.Text.Replace("tbody/", "");
-                    string XDanhSach = xds.LastIndexOf(']') == xds.Length - 1 ? xds.Remove(xds.LastIndexOf('['), xds.Length - xds.LastIndexOf('[')) : xds;
-                    string xbv = txtBaiViet_Url1.Text.Replace("tbody/", "").Replace(XDanhSach, ".");
-                    string xbv1 = txtBaiViet_Url2.Text.Replace("tbody/", "").Replace(XDanhSach, ".");
-                    string xbv2 = txtBaiViet_Url3.Text.Replace("tbody/", "").Replace(XDanhSach, ".");
-                    string XBaiViet_Url = xbv.IndexOf('[') == 1 ? xbv.Remove(1, xbv.IndexOf(']')) : xbv;
-                    string XBaiViet_Url1 = xbv1.IndexOf('[') == 1 ? xbv1.Remove(1, xbv1.IndexOf(']')) : xbv1;
-                    string XBaiViet_Url2 = xbv2.IndexOf('[') == 1 ? xbv2.Remove(1, xbv2.IndexOf(']')) : xbv2;
-
-                    var DanhSach = html.DocumentNode.SelectNodes(XDanhSach) != null ? html.DocumentNode.SelectNodes(XDanhSach).ToList() : null;
-                    if (DanhSach != null)
-                    {
-                        foreach (var item in DanhSach)
-                        {
-                            string BaiViet_Url = null;
-                            if (!string.IsNullOrEmpty(XBaiViet_Url) && item.SelectSingleNode(XBaiViet_Url) != null)
-                                BaiViet_Url = item.SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&");
-                            else if (!string.IsNullOrEmpty(XBaiViet_Url1) && item.SelectSingleNode(XBaiViet_Url1) != null)
-                                BaiViet_Url = item.SelectSingleNode(XBaiViet_Url1).Attributes["href"].Value.Replace("&amp;", "&");
-                            else if (!string.IsNullOrEmpty(XBaiViet_Url2) && item.SelectSingleNode(XBaiViet_Url2) != null)
-                                BaiViet_Url = item.SelectSingleNode(XBaiViet_Url2).Attributes["href"].Value.Replace("&amp;", "&");
-                            else
-                                BaiViet_Url = null;
-
-                            if (BaiViet_Url == null)
-                            {
-                                ham.Alert("Lỗi: Xpath không đúng!");
-                                return;
-                            }
-                        }
-                        ham.Alert("Thông báo: Kiểm tra hoàn tất, Xpath này có thể sử dụng được.");
-                        return;
-                    }
-                    else
-                    {
-                        ham.Alert("Lỗi: Xpath không đúng!");
-                        return;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ham.Alert("Lỗi: " + ex.Message);
             }
         }
 

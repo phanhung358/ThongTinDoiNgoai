@@ -42,11 +42,16 @@
         <asp:TextBox ID="txtBaiViet_Url3" runat="server" Width="100%"></asp:TextBox>
         </td>
     </tr>
+    <tr>
+        <td style="text-align:right">Chế độ đặc biệt:</td>
+        <td>
+        <asp:CheckBox ID="chkCheDoDacBiet" runat="server" Width="100%"></asp:CheckBox>
+        </td>
+    </tr>
 </table>
 
 <div style="text-align: center; padding-top: 10px; padding-bottom: 5px;">
     <asp:Button ID="btnSuKien" runat="server" CssClass="button" Text="Sự kiện" OnClick="btnSuKien_Click"  />
-    <asp:Button ID="btnConnect" runat="server" CssClass="button" Text="Kiểm tra" OnClick="btnConnect_Click" />
     <asp:Button ID="btnThemMoi" runat="server" CssClass="button" Text="Cập nhật" OnClick="btnThemMoi_Click" />
     <asp:Button ID="btnLayTuTrangKhac" runat="server" Text="Lấy từ trang khác" CssClass="button" />
 </div>

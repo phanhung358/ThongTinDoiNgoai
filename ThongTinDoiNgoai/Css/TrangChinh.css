@@ -3,8 +3,16 @@
     margin: 0;
     font-family: tahoma, arial;
 }
-a;td;div{text-decoration:none;color:#111;}
 
+a, td, div {
+    text-decoration:none;
+    color:#111;
+}
+
+a:hover {
+    color: red;
+    text-decoration: underline;
+}
 
 .vien {
     width: 990px;
@@ -122,9 +130,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-.ttdn-xemchitiet {
+.ttdn-xemchitiet a {
     font-style: italic;
-    text-align: right
+    float: right;
+    color: blue;
 }
 .Vien_Khung{padding:5px;
             background-color:#ccc6;
@@ -142,4 +151,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     background-color: #03a9f4;
     height: 100px;
 }
-.tin{padding:7px 0;}
+.tin {
+    padding: 7px 0 7px 13px;
+    list-style-type: none;
+    background: url(Home/bulet_xo.png) no-repeat;
+    background-position: left 10px;
+    background-size: 9px;
+}
+
+.ttdn-tinkhac-demuc {
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: underline;
+}
