@@ -1,7 +1,9 @@
 ﻿using FITC.Web.Component;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -214,7 +216,81 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                 if (!string.IsNullOrEmpty(row["TomTat"].ToString()))
                     str.AppendFormat("<div class='ttdn-chitiet-tomtat'>{0}</div>", row["TomTat"].ToString());
 
-                str.AppendFormat("<div class='ttdn-chitiet-noidung'>{0}</div>", row["NoiDung"].ToString());
+                string DiaChiWeb = "";
+                DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, row["WebID"].ToString());
+                if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+                {
+                    DataRow rowWeb = ds1.Tables[0].Rows[0];
+                    DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
+                }
+                HtmlDocument NoiDung = new HtmlDocument();
+                NoiDung.LoadHtml(row["NoiDung"].ToString());
+                try
+                {
+                    if (NoiDung != null)
+                    {
+                        string DirUpload = Static.GetPath() + "/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DiaChiWeb.Remove(0, DiaChiWeb.IndexOf("/") + 2) + "/";
+                        var dsFile = NoiDung.DocumentNode.SelectNodes(".//img");
+                        if (dsFile != null)
+                        {
+                            foreach (var file in dsFile)
+                            {
+                                string strSource = HttpUtility.UrlDecode(file.Attributes["src"].Value, Encoding.UTF8);
+                                string img = file.OuterHtml;
+
+                                if (File.Exists(Server.MapPath(strSource)))
+                                {
+                                    System.Drawing.Image image = LoadImage(Server.MapPath(strSource));
+
+                                    if (file.Attributes["style"] != null)
+                                    {
+                                        string[] st = file.Attributes["style"].Value.Split(';');
+                                        string newstyle = "";
+                                        int c = 0;
+                                        foreach (var css in st)
+                                        {
+                                            if (css.Contains("width") && Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 920)
+                                                newstyle += "width: 100%;";
+                                            else if (css.Contains("height"))
+                                            {
+                                                newstyle += "height: auto;";
+                                                c++;
+                                            }    
+                                            else
+                                            {
+                                                newstyle += css == "" ? "" : css + ";";
+                                                c++;
+                                            }    
+                                        }
+                                        if (c == st.Length)
+                                            newstyle += "width: 100%;";
+                                        img = img.Replace(file.Attributes["style"].Value, newstyle);
+                                    }
+                                    else
+                                    {
+                                        if (file.Attributes["width"] != null && !string.IsNullOrEmpty(file.Attributes["width"].Value))
+                                        {
+                                            if (Convert.ToInt32(file.Attributes["width"].Value) > 920)
+                                                img = img.Replace(string.Format("width=\"{0}\"", file.Attributes["width"].Value), "width=\"100%\"");
+                                        }
+                                        else if (image.Width > 920)
+                                            img = img.Replace(">", " width=\"100%\">");
+                                        if (file.Attributes["height"] != null && !string.IsNullOrEmpty(file.Attributes["height"].Value))
+                                            img = img.Replace(string.Format("height=\"{0}\"", file.Attributes["height"].Value), "height=\"auto\"");
+                                    }
+                                }
+
+                                NoiDung.DocumentNode.InnerHtml = NoiDung.DocumentNode.InnerHtml.Replace(file.OuterHtml, img);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                str.AppendFormat("<div class='ttdn-chitiet-noidung'>{0}</div>", NoiDung.DocumentNode.InnerHtml);
                 str.AppendFormat("<div class='ttdn-chitiet-tacgia'><p>{0}</p></div>", row["TacGia"].ToString());
             }
             str.Append("</div>");
@@ -235,6 +311,30 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
             str.Append("</div>");
 
             divDanhSach.InnerHtml = str.ToString();
+        }
+
+        public byte[] ReadAllBytes(string fileName)
+        {
+            byte[] buffer = null;
+            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                buffer = new byte[fs.Length];
+                fs.Read(buffer, 0, (int)fs.Length);
+            }
+            return buffer;
+        }
+
+        public System.Drawing.Image LoadImage(string url)
+        {
+            byte[] bytes = ReadAllBytes(url);
+
+            System.Drawing.Image image;
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                image = System.Drawing.Image.FromStream(ms);
+            }
+
+            return image;
         }
     }
 }

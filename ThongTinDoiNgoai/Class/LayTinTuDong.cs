@@ -159,14 +159,17 @@ namespace ThongTinDoiNgoai
 
                                         if (BaiViet_Url != null)
                                         {
-                                            BaiViet_Url = BaiViet_Url.Replace("www.", "");
-                                            string DiaChiWeb = rowCM["DiaChiWeb"].ToString().Replace("www.", "");
+                                            string DiaChiWeb = rowCM["DiaChiWeb"].ToString();
                                             if (BaiViet_Url.Contains("http"))
                                             {
                                                 if (DiaChiWeb.Substring(0, 5) == "https" && BaiViet_Url.Substring(0, 5) != "https")
                                                     BaiViet_Url = BaiViet_Url.Replace("http", "https");
                                                 else if (DiaChiWeb.Substring(0, 5) != "https" && BaiViet_Url.Substring(0, 5) == "https")
                                                     BaiViet_Url = BaiViet_Url.Replace("https", "http");
+                                                if (!DiaChiWeb.Contains("www") && BaiViet_Url.Contains("www"))
+                                                    BaiViet_Url = BaiViet_Url.Replace("www.", "");
+                                                else if (DiaChiWeb.Contains("www") && !BaiViet_Url.Contains("www"))
+                                                    BaiViet_Url = BaiViet_Url.Replace("://", "://www.");
                                                 if (!BaiViet_Url.Contains(DiaChiWeb))
                                                     continue;
                                             }
@@ -376,13 +379,14 @@ namespace ThongTinDoiNgoai
 
         public string LayNgay(string inputText)
         {
-            inputText = inputText.Replace(",", "").Replace("|", "");
-            inputText = inputText.ToLower();
+            inputText = inputText.Replace(",", "").Replace("|", "").Replace(" - ", " ").Trim();
+            Regex trimmer = new Regex(@"\s\s+"); // Xóa khoảng trắng thừa trong chuỗi
+            inputText = trimmer.Replace(inputText, " ");
             string kq = "";
             try
             {
                 //string inputText = " gg gd ngay cap nhat 07/9/2021 2:00:23 AM gdf dgd gdg";
-                string regex = @"((?<ngay>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang>0?[1-9]|1[012])[/\-\.](?<nam>[1-9][0-9][0-9][0-9])[\s]?(?<gio>[0|1]?[0-9]|2[0-4])?[:]?(?<phut>[0-5][0-9])?[:]?(?<giay>[0-5][0-9])?[\s]?(?<buoi>am|pm|sa|ch)?)|((?<gio1>[0|1]?[0-9]|2[0-4])[:]?(?<phut1>[0-5][0-9])[:]?(?<giay1>[0-5][0-9])?[\s]?(?<buoi1>am|pm|sa|ch)?[\s]?(?<ngay1>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang1>0?[1-9]|1[012])[/\-\.](?<nam1>[1-9][0-9][0-9][0-9]))";
+                string regex = @"((?<ngay>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang>0?[1-9]|1[012])[/\-\.](?<nam>[1-9][0-9][0-9][0-9])[\s]?(?<gio>2[0-4]|[0|1]?[0-9])?[:]?(?<phut>[0-5][0-9])?[:]?(?<giay>[0-5][0-9])?[\s]?(?<buoi>am|pm|sa|ch)?)|((?<gio1>2[0-4]|[0|1]?[0-9])[:]?(?<phut1>[0-5][0-9])[:]?(?<giay1>[0-5][0-9])?[\s]?(?<buoi1>am|pm|sa|ch)?[\s]?(?<ngay1>[0|1|2]?[0-9]|3[01])[/\-\.](?<thang1>0?[1-9]|1[012])[/\-\.](?<nam1>[1-9][0-9][0-9][0-9]))";
                 MatchCollection matchCollection = Regex.Matches(inputText.ToLower(), regex);
                 if (matchCollection.Count > 0)
                 {
@@ -431,11 +435,13 @@ namespace ThongTinDoiNgoai
                 try
                 {
                     HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                    req.Proxy = null;
                     resp = (HttpWebResponse)req.GetResponse();
                 }
                 catch (Exception)
                 {
                     HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                    req.Proxy = null;
                     req.UserAgent = "Mozilla/5.0";
                     resp = (HttpWebResponse)req.GetResponse();
                 }

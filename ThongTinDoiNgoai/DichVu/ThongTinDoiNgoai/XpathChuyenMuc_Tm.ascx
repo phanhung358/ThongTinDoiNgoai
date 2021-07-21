@@ -19,12 +19,6 @@
         </td>
     </tr>
     <tr>
-        <td style="text-align:right">Xpath ảnh đại diện:<sup>*</sup></td>
-        <td>
-        <asp:TextBox ID="txtAnhDaiDien" runat="server" Width="100%"></asp:TextBox>
-        </td>
-    </tr>
-    <tr>
         <td style="text-align:right">Xpath URL bài viết 1:<sup>*</sup></td>
         <td>
         <asp:TextBox ID="txtBaiViet_Url1" runat="server" Width="100%"></asp:TextBox>
@@ -40,6 +34,12 @@
         <td style="text-align:right">Xpath URL bài viết 3:</td>
         <td>
         <asp:TextBox ID="txtBaiViet_Url3" runat="server" Width="100%"></asp:TextBox>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:right">Xpath ảnh đại diện:<sup>*</sup></td>
+        <td>
+        <asp:TextBox ID="txtAnhDaiDien" runat="server" Width="100%"></asp:TextBox>
         </td>
     </tr>
     <tr>

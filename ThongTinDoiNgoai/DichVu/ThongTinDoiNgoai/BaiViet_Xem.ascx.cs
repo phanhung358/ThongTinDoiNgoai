@@ -73,19 +73,28 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                                 {
                                     System.Drawing.Image image = LoadImage(Server.MapPath(strSource));
 
-                                    if (file.Attributes["style"] != null && (file.Attributes["style"].Value.Contains("width") || file.Attributes["style"].Value.Contains("height")))
+                                    if (file.Attributes["style"] != null)
                                     {
                                         string[] st = file.Attributes["style"].Value.Split(';');
                                         string newstyle = "";
+                                        int c = 0;
                                         foreach (var css in st)
                                         {
                                             if (css.Contains("width") && Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 920)
-                                                newstyle += "width: 920px;";
+                                                newstyle += "width: 100%;";
                                             else if (css.Contains("height"))
+                                            {
                                                 newstyle += "height: auto;";
+                                                c++;
+                                            }
                                             else
+                                            {
                                                 newstyle += css == "" ? "" : css + ";";
+                                                c++;
+                                            }
                                         }
+                                        if (c == st.Length)
+                                            newstyle += "width: 100%;";
                                         img = img.Replace(file.Attributes["style"].Value, newstyle);
                                     }
                                     else
@@ -93,12 +102,12 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                                         if (file.Attributes["width"] != null && !string.IsNullOrEmpty(file.Attributes["width"].Value))
                                         {
                                             if (Convert.ToInt32(file.Attributes["width"].Value) > 920)
-                                                img = img.Replace(file.Attributes["width"].Value, "100%");
+                                                img = img.Replace(string.Format("width=\"{0}\"", file.Attributes["width"].Value), "width=\"100%\"");
                                         }
                                         else if (image.Width > 920)
                                             img = img.Replace(">", " width=\"100%\">");
                                         if (file.Attributes["height"] != null && !string.IsNullOrEmpty(file.Attributes["height"].Value))
-                                            img = img.Replace(file.Attributes["height"].Value, "auto");
+                                            img = img.Replace(string.Format("height=\"{0}\"", file.Attributes["height"].Value), "height=\"auto\"");
                                     }
                                 }
 
