@@ -3,27 +3,20 @@
 <div class="Vien_Khung">
     <table border="0" style="width: 100%">
         <tr>
-            <td style="width: 90px">Tên trang web:<span style="color: Red;">*</span>
+            <td style="width: 100px">Nhóm thông tin:
             </td>
-            <td>
-                <asp:TextBox ID="txtTenWeb" runat="server" CssClass="textbox" Width="99%" autocomplete="off"></asp:TextBox>
+            <td style="width: 150px">
+                <asp:DropDownList ID="drpNhom" runat="server" AutoPostBack="true" OnSelectedIndexChanged="drpNhom_SelectedIndexChanged" Width="100%">
+                    <asp:ListItem Value="0">[Tất cả]</asp:ListItem>
+                    <asp:ListItem Value="1">Thông tin đối ngoại</asp:ListItem>
+                    <asp:ListItem Value="2">Thông tin báo chí</asp:ListItem>
+                </asp:DropDownList>
             </td>
-        </tr>
-        <tr>
-            <td style="width: 90px">Địa chỉ(url):<span style="color: Red;">*</span>
-            </td>
-            <td>
-                <asp:TextBox ID="txtDiaChiWeb" runat="server" CssClass="textbox" Width="99%" autocomplete="off"></asp:TextBox>
-            </td>
+            <td style="text-align: right">
+            <asp:ImageButton ID="imgThemMoi" runat="server" ImageUrl="~/Images/imgThemMoi.png" />
+        </td>
         </tr>
     </table>
-    <div style="text-align: center; padding-top: 10px">
-        <asp:Button ID="btnThemMoi" runat="server" CssClass="button" Text="Thêm mới" OnClick="btnThemMoi_Click" />
-        <asp:Button ID="btnCapNhat" runat="server" CssClass="button" Text="Cập nhật" Visible="false" OnClick="btnCapNhat_Click" />
-        <asp:Button ID="btnHuyBo" runat="server" CssClass="button" Text="Hủy bỏ" Visible="false" OnClick="btnHuyBo_Click" />
-        <asp:Button ID="Button1" runat="server" Style="display: none;" />
-        <asp:HiddenField ID="hidID" runat="server" />
-    </div>
 </div>
 <div id="divDanhSach" runat="server"></div>
 <table style="width: 100%" class="Vien_Khung" id="tblPhanTrang" runat="server" border="0">

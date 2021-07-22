@@ -70,7 +70,7 @@ namespace ThongTinDoiNgoai
                                 if (html == null)
                                 {
                                     string Loi = "Không lấy được dữ liệu của chuyên mục!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString(), "");
+                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
                                     continue;
                                 }
                                 foreach (var tag in dsTag)
@@ -138,7 +138,7 @@ namespace ThongTinDoiNgoai
                                                 string err = DownloadFile(HttpUtility.UrlDecode(strSource, Encoding.UTF8), DirUpload);
                                                 if (err != "")
                                                 {
-                                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCM["WebID"].ToString(), rowXpathCM["ChuyenMucID"].ToString(), err, strSource, "");
+                                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCM["WebID"].ToString(), rowXpathCM["ChuyenMucID"].ToString(), err, strSource);
                                                 }
                                                 else
                                                 {
@@ -203,21 +203,21 @@ namespace ThongTinDoiNgoai
                                     if (count == DanhSach.Count)
                                     {
                                         string Loi = "Không lấy được đường dẫn (URL) của bài viết trong chuyên mục!";
-                                        string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString(), "");
+                                        string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
                                         continue;
                                     }
                                 }
                                 else
                                 {
                                     string Loi = "Không lấy được danh sách tin của chuyên mục!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString(), string.IsNullOrEmpty(html.DocumentNode.InnerHtml) ? "Rỗng!" : html.DocumentNode.InnerHtml);
+                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, rowCM["UrlChuyenMuc"].ToString());
                                     continue;
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), ex.Message, rowCM["UrlChuyenMuc"].ToString(), "");
+                            db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), ex.Message, rowCM["UrlChuyenMuc"].ToString());
                         }
 
                         int count1 = 0;
@@ -240,7 +240,7 @@ namespace ThongTinDoiNgoai
                                 if (html == null)
                                 {
                                     string Loi = "Không lấy được chi tiết bài viết!";
-                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, item[0].ToString(), "");
+                                    string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), Loi, item[0].ToString());
                                     continue;
                                 }
                                 foreach (var tag in dsTag)
@@ -302,7 +302,7 @@ namespace ThongTinDoiNgoai
                                                         string err = DownloadFile(HttpUtility.UrlDecode(strSource, Encoding.UTF8), DirUpload);
                                                         if (err != "")
                                                         {
-                                                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource, "");
+                                                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource);
                                                         }
                                                         else
                                                         {
@@ -346,7 +346,7 @@ namespace ThongTinDoiNgoai
                                             string sLoi = db.ExcuteSP("TTDN_BAIVIET_INSERT", obj);
                                             if (sLoi != "")
                                             {
-                                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), "Lỗi lưu dữ liệu: " + sLoi, item[0].ToString(), "");
+                                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), "Lỗi lưu dữ liệu: " + sLoi, item[0].ToString());
                                             }
                                         }
                                         else
@@ -359,13 +359,13 @@ namespace ThongTinDoiNgoai
                             }
                             catch (Exception ex)
                             {
-                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, item[0].ToString(), "");
+                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, item[0].ToString());
                             }
                         }
                         
                         if (count1 == dsTin.Count * dsXpathCT.Tables[0].Rows.Count && dsTin.Count != 0)
                         {
-                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), "Không lấy được thông tin của từng bài viết!", rowCM["UrlChuyenMuc"].ToString(), "");
+                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowCM["WebID"].ToString(), rowCM["ChuyenMucID"].ToString(), "Không lấy được thông tin của từng bài viết!", rowCM["UrlChuyenMuc"].ToString());
                         }
                     }
                 }
@@ -373,13 +373,13 @@ namespace ThongTinDoiNgoai
             }
             catch(Exception ex)
             {
-                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", 0, 0, ex.Message, "", "");
+                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", 0, 0, ex.Message, "");
             }
         }
 
         public string LayNgay(string inputText)
         {
-            inputText = inputText.Replace(",", "").Replace("|", "").Replace(" - ", " ").Trim();
+            inputText = inputText.Replace(",", "").Replace("|", "").Replace(" - ", " ").Replace("h", ":").Trim();
             Regex trimmer = new Regex(@"\s\s+"); // Xóa khoảng trắng thừa trong chuỗi
             inputText = trimmer.Replace(inputText, " ");
             string kq = "";

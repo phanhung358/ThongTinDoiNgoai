@@ -23,22 +23,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
             addData();
         }
 
-        private string hopLe()
-        {
-            if (txtTenWeb.Text.Trim().Length == 0)
-            {
-                txtTenWeb.Focus();
-                return "Vui lòng nhập tên trang web!";
-            }
-            if (txtDiaChiWeb.Text.Trim().Length == 0)
-            {
-                txtDiaChiWeb.Focus();
-                return "Vui lòng nhập địa chỉ trang web(url)!";
-            }
-
-            return "";
-        }
-
         #region Các hàm phân trang
         private void PhanTrang(int TongSoTin, int SoTinTrenTrang, int TrangHienTai, Label lblPhanTrang)
         {
@@ -148,6 +132,8 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
         private void addData()
         {
+            imgThemMoi.Attributes["onclick"] = string.Format("return thickboxPopup('Thêm mới trang web', '{0}?control={1}&btn={2}&NhomID={3}','650','500');", Static.AppPath() + "/home/popup.aspx", "/DichVu/ThongTinDoiNgoai/TrangWeb_Tm.ascx", btnSuKien.ClientID, drpNhom.SelectedValue);
+
             divDanhSach.Controls.Clear();
             Table tbl = new Table();
             tbl.Width = Unit.Percentage(100);
@@ -199,7 +185,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
             tbl.Controls.Add(tblRow);
 
             tblPhanTrang.Visible = false;
-            using (DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0))
+            using (DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", drpNhom.SelectedValue))
             {
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
@@ -249,7 +235,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         imgSua.ID = "Sua_" + row["WebID"].ToString();
                         imgSua.ToolTip = "Click để sửa";
                         imgSua.ImageUrl = Static.AppPath() + "/images/edit.gif";
-                        imgSua.Click += new ImageClickEventHandler(imgSua_Click);
+                        imgSua.Attributes["onclick"] = string.Format("return thickboxPopup('Chỉnh sửa trang web', '{0}?control={1}&btn={2}&WebID={3}','650','500');", Static.AppPath() + "/home/popup.aspx", "/DichVu/ThongTinDoiNgoai/TrangWeb_Tm.ascx", btnSuKien.ClientID, row["WebID"].ToString());
                         tblCell.Controls.Add(imgSua);
                         tblCell.HorizontalAlign = HorizontalAlign.Center;
                         tblRow.Controls.Add(tblCell);
@@ -297,7 +283,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     ham.Alert(this, strLoi.Replace("'", "\\\""), "btnSuKien");
                     return;
                 }
-                btnHuyBo_Click(null, null);
                 addData();
             }
             catch (Exception ex)
@@ -306,111 +291,9 @@ namespace QuanLyVanBan.DichVu.DuLieu
             }
         }
 
-        private void imgSua_Click(object sender, ImageClickEventArgs e)
+        protected void drpNhom_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                ImageButton btnImg = (ImageButton)sender;
-                string strID = btnImg.ID.Remove(0, btnImg.ID.LastIndexOf('_') + 1);
-                using (DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, strID))
-                {
-                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                    {
-                        btnCapNhat.Visible = true;
-                        btnHuyBo.Visible = true;
-                        btnThemMoi.Visible = false;
-
-                        hidID.Value = ds.Tables[0].Rows[0]["WebID"].ToString().Trim();
-                        txtTenWeb.Text = ds.Tables[0].Rows[0]["TenWeb"].ToString().Trim();
-                        txtDiaChiWeb.Text = ds.Tables[0].Rows[0]["DiaChiWeb"].ToString().Trim();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ham.Alert(this, ex.Message.Replace("'", "\\\""), "btnSuKien");
-            }
-        }
-
-        protected void btnThemMoi_Click(object sender, EventArgs e)
-        {
-
-            string strLoi = "";
-            strLoi = this.hopLe();
-            if (strLoi != "")
-            {
-                ham.Alert(this, strLoi.Replace("'", "\\\""), "btnSuKien");
-                return;
-            }
-            else
-            {
-                DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 2, hidID.Value, txtDiaChiWeb.Text.Trim());
-                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                {
-                    ham.Alert(this, string.Format("Địa chỉ trang web(url) \"{0}\" đã tồn tại!", txtDiaChiWeb.Text.Trim()), "btnSuKien");
-                    return;
-                }
-            }
-
-            strLoi = db.ExcuteSP("TTDN_TRANGWEB_INSERT", txtTenWeb.Text.Trim(), txtDiaChiWeb.Text.Trim(), "Phan Hùng");
-            if (strLoi != "")
-            {
-                ham.Alert(this, strLoi.Replace("'", "\\\""), "btnSuKien");
-                return;
-            }
-            else
-            {
-                ham.Alert(this, "Cập nhật thành công!", "btnSuKien");
-                txtTenWeb.Text = "";
-                txtDiaChiWeb.Text = "";
-            }
             addData();
-        }
-
-        protected void btnCapNhat_Click(object sender, EventArgs e)
-        {
-            string strLoi = "";
-            strLoi = this.hopLe();
-            if (strLoi != "")
-            {
-                ham.Alert(this, strLoi.Replace("'", "\\\""), "btnSuKien");
-                return;
-            }
-            else
-            {
-                DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 2, hidID.Value, txtDiaChiWeb.Text.Trim());
-                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                {
-                    ham.Alert(this, string.Format("Địa chỉ trang web(url) \"{0}\" đã tồn tại!", txtDiaChiWeb.Text.Trim()), "btnSuKien");
-                    return;
-                }
-            }
-
-            strLoi = db.ExcuteSP("TTDN_TRANGWEB_UPDATE", hidID.Value, txtTenWeb.Text.Trim(), txtDiaChiWeb.Text.Trim(), "Phan Hùng");
-            if (strLoi != "")
-            {
-                ham.Alert(this, strLoi.Replace("'", "\\\""), "btnSuKien");
-                return;
-            }
-            else
-            {
-                ham.Alert(this, "Cập nhật thành công!", "btnSuKien");
-                txtTenWeb.Text = "";
-                txtDiaChiWeb.Text = "";
-                btnThemMoi.Visible = true;
-                btnCapNhat.Visible = false;
-                btnHuyBo.Visible = false;
-            }
-            addData();
-        }
-
-        protected void btnHuyBo_Click(object sender, EventArgs e)
-        {
-            txtTenWeb.Text = "";
-            txtDiaChiWeb.Text = "";
-            btnThemMoi.Visible = true;
-            btnCapNhat.Visible = false;
-            btnHuyBo.Visible = false;
         }
     }
 }
