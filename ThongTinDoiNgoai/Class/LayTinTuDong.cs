@@ -33,11 +33,11 @@ namespace ThongTinDoiNgoai
                 string ThuMuc = ConfigurationManager.AppSettings["ThuMuc"].Replace("\\", "/") + "/ChromeDriver";
                 ChromeDriverService DeviceDriver = ChromeDriverService.CreateDefaultService(ThuMuc);
                 ChromeOptions options = new ChromeOptions() { Proxy = null };
-                options.AddArgument("--headless");
+                //options.AddArgument("--headless");
                 options.AddArgument("--no-sandbox");
                 options.AddArgument("--ignore-certificate-errors");
                 ChromeDriver driver = new ChromeDriver(DeviceDriver, options, TimeSpan.FromMinutes(1));
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
                 wait.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
 
                 string[] dsTag = { "<TABLE", "<TR", "<TD", "<DIV", "<A", "<P", "<SPAN", "<STRONG", "<EM", "<TITLE", "<SCRIPT", "</TABLE>", "</TR>", "</TD>", "</DIV>", "</A>", "</P>", "</SPAN>", "</STRONG>", "</EM>", "</TITLE>", "</SCRIPT>" };

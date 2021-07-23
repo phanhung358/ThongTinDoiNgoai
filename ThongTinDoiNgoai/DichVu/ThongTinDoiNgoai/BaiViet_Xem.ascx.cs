@@ -80,21 +80,30 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                                         int c = 0;
                                         foreach (var css in st)
                                         {
-                                            if (css.Contains("width") && Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 920)
-                                                newstyle += "width: 100%;";
-                                            else if (css.Contains("height"))
+                                            if (css.Contains("width") && !css.Contains("max-width"))
                                             {
-                                                newstyle += "height: auto;";
-                                                c++;
+                                                if (Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 920)
+                                                    newstyle += "width: 100%; ";
+                                                else
+                                                    newstyle += css.Trim() + "; ";
                                             }
                                             else
                                             {
-                                                newstyle += css == "" ? "" : css + ";";
-                                                c++;
+
+                                                if (css.Contains("height"))
+                                                {
+                                                    newstyle += "height: auto; ";
+                                                    c++;
+                                                }
+                                                else
+                                                {
+                                                    newstyle += css.Trim() == "" ? "" : css.Trim() + "; ";
+                                                    c++;
+                                                }
                                             }
                                         }
                                         if (c == st.Length)
-                                            newstyle += "width: 100%;";
+                                            newstyle += "width: 100%; ";
                                         img = img.Replace(file.Attributes["style"].Value, newstyle);
                                     }
                                     else
