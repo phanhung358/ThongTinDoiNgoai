@@ -37,8 +37,9 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
         private void addDanhMuc()
         {
+            drpWeb.Items.Clear();
             drpWeb.Items.Add(new ListItem("[Tất cả]", "0"));
-            DataSet dsWeb = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0);
+            DataSet dsWeb = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", drpNhom.SelectedValue.ToString());
             if (dsWeb != null && dsWeb.Tables.Count > 0 && dsWeb.Tables[0].Rows.Count > 0)
             {
                 for (int i = 0; i < dsWeb.Tables[0].Rows.Count; i++)
@@ -200,7 +201,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
             tbl.Controls.Add(tblRow);
 
             tblPhanTrang.Visible = false;
-            using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1, 0, drpWeb.SelectedValue.ToString(), drpChuyenMuc.SelectedValue.ToString()))
+            using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1, 0, drpWeb.SelectedValue.ToString(), drpChuyenMuc.SelectedValue.ToString(), drpNhom.SelectedValue.ToString()))
             {
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
@@ -281,7 +282,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
             else
             {
                 drpChuyenMuc.Items.Add(new ListItem("[Tất cả]", "0"));
-                DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 0, drpWeb.SelectedValue);
+                DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 0, drpWeb.SelectedValue, 0, drpNhom.SelectedValue.ToString());
                 if (dsChuyenMuc != null && dsChuyenMuc.Tables.Count > 0 && dsChuyenMuc.Tables[0].Rows.Count > 0)
                 {
                     for (int i = 0; i < dsChuyenMuc.Tables[0].Rows.Count; i++)
@@ -757,6 +758,12 @@ namespace QuanLyVanBan.DichVu.DuLieu
             {
             }
             return false;
+        }
+
+        protected void drpNhom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            addDanhMuc();
+            addData();
         }
     }
 }

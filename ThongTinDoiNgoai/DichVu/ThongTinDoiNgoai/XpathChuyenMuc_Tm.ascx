@@ -37,9 +37,15 @@
         </td>
     </tr>
     <tr>
-        <td style="text-align:right">Xpath ảnh đại diện:<sup>*</sup></td>
+        <td style="text-align:right">Xpath ảnh đại diện:</td>
         <td>
         <asp:TextBox ID="txtAnhDaiDien" runat="server" Width="100%"></asp:TextBox>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:right">Xpath thời gian:</td>
+        <td>
+        <asp:TextBox ID="txtThoiGian" runat="server" Width="100%"></asp:TextBox>
         </td>
     </tr>
     <tr>

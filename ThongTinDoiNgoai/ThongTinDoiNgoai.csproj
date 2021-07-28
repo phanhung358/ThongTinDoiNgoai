@@ -332,6 +332,7 @@
     <Content Include="Images\Img_ThemMoi.png" />
     <Content Include="Images\map.png" />
     <Content Include="Images\new.gif" />
+    <Content Include="Images\no_image.png" />
     <Content Include="Images\pdf.gif" />
     <Content Include="Images\ppt.gif" />
     <Content Include="Images\rar.gif" />

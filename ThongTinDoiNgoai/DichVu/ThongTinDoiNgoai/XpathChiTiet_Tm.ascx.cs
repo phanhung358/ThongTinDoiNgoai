@@ -254,8 +254,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 sLoi = "Chưa chọn chuyên mục!";
             if (txtNoiDung.Text.Trim() == "")
                 sLoi = "Chưa nhập Xpath nội dung bài viết!";
-            if (txtThoiGian.Text.Trim() == "")
-                sLoi = "Chưa nhập Xpath thời gian!";
             return sLoi;
         }
 

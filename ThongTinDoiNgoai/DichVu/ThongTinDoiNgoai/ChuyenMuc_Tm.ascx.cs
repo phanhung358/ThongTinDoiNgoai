@@ -89,6 +89,11 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     ham.Alert(this, strLoi.Replace("'", "\\\""), "btnThemMoi");
                     return;
                 }
+
+                string UrlChuyenMuc = txtUrlChuyenMuc.Text.Trim();
+                if (txtUrlChuyenMuc.Text.Trim().EndsWith("/"))
+                    UrlChuyenMuc = txtUrlChuyenMuc.Text.Trim().Substring(0, txtUrlChuyenMuc.Text.Trim().Length - 1);
+
                 object[] obj = new object[5];
                 obj[0] = sChuyenMucID;
                 obj[1] = txtTenChuyenMuc.Text.Trim();

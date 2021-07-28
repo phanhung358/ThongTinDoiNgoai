@@ -8,7 +8,7 @@
             <td style="width: 150px">
                 <asp:DropDownList ID="drpNhom" runat="server" AutoPostBack="true" OnSelectedIndexChanged="drpNhom_SelectedIndexChanged" Width="100%">
                     <asp:ListItem Value="0">[Tất cả]</asp:ListItem>
-                    <asp:ListItem Value="1">Thông tin đối ngoại</asp:ListItem>
+                    <asp:ListItem Value="1" Selected="True">Thông tin đối ngoại</asp:ListItem>
                     <asp:ListItem Value="2">Thông tin báo chí</asp:ListItem>
                 </asp:DropDownList>
             </td>

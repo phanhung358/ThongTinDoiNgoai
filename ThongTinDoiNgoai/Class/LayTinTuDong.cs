@@ -33,7 +33,7 @@ namespace ThongTinDoiNgoai
                 string ThuMuc = ConfigurationManager.AppSettings["ThuMuc"].Replace("\\", "/") + "/ChromeDriver";
                 ChromeDriverService DeviceDriver = ChromeDriverService.CreateDefaultService(ThuMuc);
                 ChromeOptions options = new ChromeOptions() { Proxy = null };
-                //options.AddArgument("--headless");
+                options.AddArgument("--headless");
                 options.AddArgument("--no-sandbox");
                 options.AddArgument("--ignore-certificate-errors");
                 ChromeDriver driver = new ChromeDriver(DeviceDriver, options, TimeSpan.FromMinutes(1));
@@ -85,10 +85,12 @@ namespace ThongTinDoiNgoai
                                 string xbv1 = rowXpathCM["BaiViet_Url1"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
                                 string xbv2 = rowXpathCM["BaiViet_Url2"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
                                 string xadd = rowXpathCM["AnhDaiDien"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
+                                string xtg = rowXpathCM["ThoiGian"].ToString().Replace("tbody/", "").Replace(XDanhSach, ".");
                                 string XBaiViet_Url = xbv.IndexOf('[') == 1 ? xbv.Remove(1, xbv.IndexOf(']')) : xbv;
                                 string XBaiViet_Url1 = xbv1.IndexOf('[') == 1 ? xbv1.Remove(1, xbv1.IndexOf(']')) : xbv1;
                                 string XBaiViet_Url2 = xbv2.IndexOf('[') == 1 ? xbv2.Remove(1, xbv2.IndexOf(']')) : xbv2;
                                 string XAnhDaiDien = xadd.IndexOf('[') == 1 ? xadd.Remove(1, xadd.IndexOf(']')) : xadd;
+                                string XThoiGian = xtg.IndexOf('[') == 1 ? xtg.Remove(1, xtg.IndexOf(']')) : xtg;
 
                                 var DanhSach = html.DocumentNode.SelectNodes(XDanhSach) != null ? html.DocumentNode.SelectNodes(XDanhSach).ToList() : null;
                                 if (DanhSach != null)
@@ -99,6 +101,7 @@ namespace ThongTinDoiNgoai
                                         string BaiViet_Url = null;
                                         string TieuDe = null;
                                         string AnhDaiDien = "";
+                                        string ThoiGian = "";
                                         if (!string.IsNullOrEmpty(XBaiViet_Url) && item.SelectSingleNode(XBaiViet_Url) != null)
                                         {
                                             BaiViet_Url = item.SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
@@ -155,7 +158,11 @@ namespace ThongTinDoiNgoai
                                                     AnhDaiDien = DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName, Encoding.UTF8));
                                                 }
                                             }
-                                        }    
+                                        }
+                                        if (!string.IsNullOrEmpty(XThoiGian) && item.SelectSingleNode(XThoiGian) != null)
+                                        {
+                                            ThoiGian = LayNgay(item.SelectSingleNode(XThoiGian).InnerText.Trim());
+                                        }
 
                                         if (BaiViet_Url != null)
                                         {
@@ -187,12 +194,13 @@ namespace ThongTinDoiNgoai
                                                     BaiViet_Url = DiaChiWeb + "/" + BaiViet_Url;
                                             }
 
-                                            object[] obj = new object[5];
+                                            object[] obj = new object[6];
                                             obj[0] = HttpUtility.UrlDecode(BaiViet_Url);
                                             obj[1] = rowXpathCM["ChuyenMucID"].ToString();
                                             obj[2] = rowXpathCM["WebID"].ToString();
                                             obj[3] = TieuDe;
                                             obj[4] = AnhDaiDien;
+                                            obj[5] = ThoiGian;
                                             dsTin.Add(obj);
                                         }
                                         else
@@ -274,7 +282,7 @@ namespace ThongTinDoiNgoai
                                             tgian = LayNgay(strNewsDatePosted);
                                         }
                                         
-                                        if (NoiDung != null && !string.IsNullOrEmpty(tgian))
+                                        if (NoiDung != null && !string.IsNullOrEmpty(NoiDung.InnerHtml) && (!string.IsNullOrEmpty(item[5].ToString()) || !string.IsNullOrEmpty(tgian)))
                                         {
                                             string DirUpload = ConfigurationManager.AppSettings["ThuMuc"].Replace("\\", "/") + "/UploadFiles/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + rowCM["DiaChiWeb"].ToString().Remove(0, rowCM["DiaChiWeb"].ToString().IndexOf("/") + 2) + "/";
                                             var dsFile = NoiDung.SelectNodes(".//img");
@@ -299,34 +307,58 @@ namespace ThongTinDoiNgoai
                                                     strSource = strSource.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
                                                     if (!string.IsNullOrEmpty(strSource))
                                                     {
-                                                        string err = DownloadFile(HttpUtility.UrlDecode(strSource, Encoding.UTF8), DirUpload);
-                                                        if (err != "")
+                                                        string fileName = "";
+                                                        if (strSource.Contains("data:image/png;base64"))
                                                         {
-                                                            string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource);
+                                                            var anh = Base64ToImage(strSource.Replace("data:image/png;base64,", ""));
+                                                            fileName = ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(item[3].ToString() + (dsFile.IndexOf(file) + 1).ToString() + ".png", Encoding.UTF8));
+                                                            try
+                                                            {
+                                                                using (var m = new MemoryStream())
+                                                                {
+                                                                    anh.Save(m, System.Drawing.Imaging.ImageFormat.Png);
+                                                                    var png = System.Drawing.Image.FromStream(m);
+                                                                    png.Save(DirUpload + fileName);
+                                                                }
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+                                                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), ex.Message, strSource);
+                                                                goto TiepTuc;
+                                                            }
                                                         }
                                                         else
                                                         {
-                                                            string fileName = "";
-                                                            if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
+                                                            string err = DownloadFile(HttpUtility.UrlDecode(strSource, Encoding.UTF8), DirUpload);
+                                                            if (err != "")
                                                             {
-                                                                fileName = Path.GetFileName(new Uri(strSource).AbsolutePath);
+                                                                string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource);
+                                                                goto TiepTuc;
                                                             }
                                                             else
                                                             {
-                                                                fileName = strSource.Substring(strSource.LastIndexOf("/") + 1);
+                                                                if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
+                                                                {
+                                                                    fileName = Path.GetFileName(new Uri(strSource).AbsolutePath);
+                                                                }
+                                                                else
+                                                                {
+                                                                    fileName = strSource.Substring(strSource.LastIndexOf("/") + 1);
+                                                                }
                                                             }
-
-                                                            string img = file.OuterHtml;
-                                                            if (file.Attributes["src"] != null)
-                                                            {
-                                                                img = img.Replace(file.Attributes["src"].Value, DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName, Encoding.UTF8)));
-                                                            }    
-                                                            else
-                                                            {
-                                                                img = img.Replace(">", " src='" +  DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName, Encoding.UTF8)) + "'>");
-                                                            }
-                                                            NoiDung.InnerHtml = NoiDung.InnerHtml.Replace(file.OuterHtml, img);
                                                         }
+
+                                                        string img = file.OuterHtml;
+                                                        if (file.Attributes["src"] != null)
+                                                        {
+                                                            img = img.Replace(file.Attributes["src"].Value, DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName, Encoding.UTF8)));
+                                                        }
+                                                        else
+                                                        {
+                                                            img = img.Replace(">", " src='" + DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName, Encoding.UTF8)) + "'>");
+                                                        }
+                                                        NoiDung.InnerHtml = NoiDung.InnerHtml.Replace(file.OuterHtml, img);
+                                                        TiepTuc:;
                                                     }
                                                 }
                                             }
@@ -335,7 +367,7 @@ namespace ThongTinDoiNgoai
                                             obj[0] = item[3].ToString();
                                             obj[1] = TomTat != null ? TomTat.InnerText : null;
                                             obj[2] = NoiDung != null ? NoiDung.InnerHtml : null;
-                                            obj[3] = ThoiGian != null ? tgian : null;
+                                            obj[3] = !string.IsNullOrEmpty(item[5].ToString()) ? item[5].ToString() : (ThoiGian != null ? tgian : null);
                                             obj[4] = TacGia != null ? TacGia.InnerText : null;
                                             obj[5] = item[0].ToString();
                                             obj[6] = NoiDung?.InnerHtml.Length;
@@ -375,6 +407,15 @@ namespace ThongTinDoiNgoai
             {
                 string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", 0, 0, ex.Message, "");
             }
+        }
+
+        public System.Drawing.Image Base64ToImage(string base64String)
+        {
+            byte[] imageBytes = Convert.FromBase64String(base64String);
+            MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length);
+            ms.Write(imageBytes, 0, imageBytes.Length);
+            System.Drawing.Image image = System.Drawing.Image.FromStream(ms, true);
+            return image;
         }
 
         public string LayNgay(string inputText)
@@ -508,7 +549,7 @@ namespace ThongTinDoiNgoai
             string str = strUrl.Trim().ToLower();
             while (str.LastIndexOf("  ") > 0)
                 str = str.Replace("  ", "");
-            return str.Replace(" ", "-").Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "-").Replace("=", "").Replace("(", "").Replace(")", "").Replace("+", "").Replace(",", "").Replace(">", "").Replace("<", "").Replace("'", "").Replace("đ", "d").Replace("á", "a").Replace("à", "a").Replace("ạ", "a").Replace("ả", "a").Replace("ã", "a").Replace("ă", "a").Replace("ắ", "a").Replace("ằ", "a").Replace("ặ", "a").Replace("ẳ", "a").Replace("ẵ", "a").Replace("â", "a").Replace("ấ", "a").Replace("ầ", "a").Replace("ậ", "a").Replace("ẩ", "a").Replace("ẫ", "a").Replace("ạ", "a").Replace("ê", "e").Replace("ế", "e").Replace("ề", "e").Replace("ể", "e").Replace("ễ", "e").Replace("ệ", "e").Replace("e", "e").Replace("é", "e").Replace("è", "e").Replace("ẹ", "e").Replace("ẻ", "e").Replace("ẽ", "e").Replace("i", "i").Replace("í", "i").Replace("ì", "i").Replace("ị", "i").Replace("ỉ", "i").Replace("ĩ", "i").Replace("o", "o").Replace("ó", "o").Replace("ò", "o").Replace("ọ", "o").Replace("ỏ", "o").Replace("õ", "o").Replace("ô", "o").Replace("ố", "o").Replace("ồ", "o").Replace("ộ", "o").Replace("ổ", "o").Replace("ỗ", "o").Replace("ơ", "o").Replace("ớ", "o").Replace("ờ", "o").Replace("ợ", "o").Replace("ở", "o").Replace("ỡ", "o").Replace("u", "u").Replace("ú", "u").Replace("ù", "u").Replace("ụ", "u").Replace("ủ", "u").Replace("ũ", "u").Replace("ư", "u").Replace("ứ", "u").Replace("ừ", "u").Replace("ự", "u").Replace("ử", "u").Replace("ữ", "u").Replace("y", "y").Replace("ý", "y").Replace("ỳ", "y").Replace("ỵ", "y").Replace("ỷ", "y").Replace("ỹ", "y").Replace("/", "-").Replace("?", "-").Replace("\"", "");
+            return str.Replace(" ", "-").Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "-").Replace("=", "").Replace("(", "").Replace(")", "").Replace("+", "").Replace(",", "").Replace(">", "").Replace("<", "").Replace("'", "").Replace("đ", "d").Replace("á", "a").Replace("à", "a").Replace("ạ", "a").Replace("ả", "a").Replace("ã", "a").Replace("ă", "a").Replace("ắ", "a").Replace("ằ", "a").Replace("ặ", "a").Replace("ẳ", "a").Replace("ẵ", "a").Replace("â", "a").Replace("ấ", "a").Replace("ầ", "a").Replace("ậ", "a").Replace("ẩ", "a").Replace("ẫ", "a").Replace("ạ", "a").Replace("ê", "e").Replace("ế", "e").Replace("ề", "e").Replace("ể", "e").Replace("ễ", "e").Replace("ệ", "e").Replace("e", "e").Replace("é", "e").Replace("è", "e").Replace("ẹ", "e").Replace("ẻ", "e").Replace("ẽ", "e").Replace("i", "i").Replace("í", "i").Replace("ì", "i").Replace("ị", "i").Replace("ỉ", "i").Replace("ĩ", "i").Replace("o", "o").Replace("ó", "o").Replace("ò", "o").Replace("ọ", "o").Replace("ỏ", "o").Replace("õ", "o").Replace("ô", "o").Replace("ố", "o").Replace("ồ", "o").Replace("ộ", "o").Replace("ổ", "o").Replace("ỗ", "o").Replace("ơ", "o").Replace("ớ", "o").Replace("ờ", "o").Replace("ợ", "o").Replace("ở", "o").Replace("ỡ", "o").Replace("u", "u").Replace("ú", "u").Replace("ù", "u").Replace("ụ", "u").Replace("ủ", "u").Replace("ũ", "u").Replace("ư", "u").Replace("ứ", "u").Replace("ừ", "u").Replace("ự", "u").Replace("ử", "u").Replace("ữ", "u").Replace("y", "y").Replace("ý", "y").Replace("ỳ", "y").Replace("ỵ", "y").Replace("ỷ", "y").Replace("ỹ", "y").Replace("/", "-").Replace("?", "-").Replace("\"", "").Replace(":", "-").Replace(";", "-").Replace("--", "-");
         }
     }
 }

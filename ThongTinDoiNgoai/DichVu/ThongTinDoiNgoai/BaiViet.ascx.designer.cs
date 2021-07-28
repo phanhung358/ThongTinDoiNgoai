@@ -15,6 +15,15 @@ namespace QuanLyVanBan.DichVu.DuLieu
     {
 
         /// <summary>
+        /// drpNhom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drpNhom;
+
+        /// <summary>
         /// drpWeb control.
         /// </summary>
         /// <remarks>

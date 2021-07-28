@@ -12,6 +12,15 @@
 
 <table style="width: 100%" class="Vien_Khung">
     <tr>
+        <td style="width: 100px">Nhóm thông tin:
+        </td>
+        <td style="width: 150px">
+            <asp:DropDownList ID="drpNhom" runat="server" AutoPostBack="true" OnSelectedIndexChanged="drpNhom_SelectedIndexChanged" Width="100%">
+                <asp:ListItem Value="0">[Tất cả]</asp:ListItem>
+                <asp:ListItem Value="1" Selected="True">Thông tin đối ngoại</asp:ListItem>
+                <asp:ListItem Value="2">Thông tin báo chí</asp:ListItem>
+            </asp:DropDownList>
+        </td>
         <td style="width: 65px;">Trang web:</td>
         <td style="width:300px">
             <asp:DropDownList ID="drpWeb" CssClass="js-example-basic-single" runat="server" Width="100%" AutoPostBack="true" OnSelectedIndexChanged="drpWeb_SelectedIndexChanged"></asp:DropDownList>
