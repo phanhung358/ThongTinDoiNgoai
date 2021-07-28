@@ -60,7 +60,6 @@ namespace QuanLyVanBan.DichVu.ThongTinDoiNgoai
                 {
                     if (NoiDung != null)
                     {
-                        string DirUpload = Static.GetPath() + "/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DiaChiWeb.Remove(0, DiaChiWeb.IndexOf("/") + 2) + "/";
                         var dsFile = NoiDung.DocumentNode.SelectNodes(".//img");
                         if (dsFile != null)
                         {

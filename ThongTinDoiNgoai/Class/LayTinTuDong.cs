@@ -138,23 +138,23 @@ namespace ThongTinDoiNgoai
                                             if (!string.IsNullOrEmpty(strSource))
                                             {
                                                 string DirUpload = ConfigurationManager.AppSettings["ThuMuc"].Replace("\\", "/") + "/UploadFiles/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + rowCM["DiaChiWeb"].ToString().Remove(0, rowCM["DiaChiWeb"].ToString().IndexOf("/") + 2) + "/";
-                                                string err = DownloadFile(HttpUtility.UrlDecode(strSource, Encoding.UTF8), DirUpload);
+                                                string fileName = "";
+                                                if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
+                                                {
+                                                    fileName = Path.GetFileName(new Uri(HttpUtility.UrlDecode(strSource, Encoding.UTF8)).AbsolutePath);
+                                                }
+                                                else
+                                                {
+                                                    fileName = HttpUtility.UrlDecode(strSource, Encoding.UTF8).Substring(strSource.LastIndexOf("/") + 1);
+                                                }
+
+                                                string err = DownloadFile(HttpUtility.UrlDecode(strSource, Encoding.UTF8), DirUpload, fileName);
                                                 if (err != "")
                                                 {
                                                     string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", rowXpathCM["WebID"].ToString(), rowXpathCM["ChuyenMucID"].ToString(), err, strSource);
                                                 }
                                                 else
                                                 {
-                                                    string fileName = "";
-                                                    if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
-                                                    {
-                                                        fileName = Path.GetFileName(new Uri(strSource).AbsolutePath);
-                                                    }
-                                                    else
-                                                    {
-                                                        fileName = strSource.Substring(strSource.LastIndexOf("/") + 1);
-                                                    }
-
                                                     AnhDaiDien = DirUpload.Substring(DirUpload.IndexOf("/UploadFiles/")) + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(fileName, Encoding.UTF8));
                                                 }
                                             }
@@ -281,8 +281,13 @@ namespace ThongTinDoiNgoai
                                             strNewsDatePosted = ThoiGian.InnerText.Trim();
                                             tgian = LayNgay(strNewsDatePosted);
                                         }
+
+                                        string scheck = null;
+                                        Regex regex = new Regex(@"^(0?[1-9]|1[012])[\/](0?[1-9]|[12]\d|3[01])[\/]([1-9]\d\d\d)[\s](2[0-4]|[01]?\d[:][0-5]\d[:][0-5]\d)[\s]?(am|pm)?");
+                                        if (!string.IsNullOrEmpty(tgian))
+                                            scheck = regex.Replace(tgian, "");
                                         
-                                        if (NoiDung != null && !string.IsNullOrEmpty(NoiDung.InnerHtml) && (!string.IsNullOrEmpty(item[5].ToString()) || !string.IsNullOrEmpty(tgian)))
+                                        if (NoiDung != null && !string.IsNullOrEmpty(NoiDung.InnerHtml) && (!string.IsNullOrEmpty(item[5].ToString()) || scheck == ""))
                                         {
                                             string DirUpload = ConfigurationManager.AppSettings["ThuMuc"].Replace("\\", "/") + "/UploadFiles/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + rowCM["DiaChiWeb"].ToString().Remove(0, rowCM["DiaChiWeb"].ToString().IndexOf("/") + 2) + "/";
                                             var dsFile = NoiDung.SelectNodes(".//img");
@@ -312,6 +317,10 @@ namespace ThongTinDoiNgoai
                                                         {
                                                             var anh = Base64ToImage(strSource.Replace("data:image/png;base64,", ""));
                                                             fileName = ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(item[3].ToString() + (dsFile.IndexOf(file) + 1).ToString() + ".png", Encoding.UTF8));
+                                                            
+                                                            if (File.Exists(DirUpload + fileName))
+                                                                goto ThayDoiDuongDan;
+
                                                             try
                                                             {
                                                                 using (var m = new MemoryStream())
@@ -329,25 +338,27 @@ namespace ThongTinDoiNgoai
                                                         }
                                                         else
                                                         {
-                                                            string err = DownloadFile(HttpUtility.UrlDecode(strSource, Encoding.UTF8), DirUpload);
+                                                            if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
+                                                            {
+                                                                fileName = Path.GetFileName(new Uri(HttpUtility.UrlDecode(strSource, Encoding.UTF8)).AbsolutePath);
+                                                            }
+                                                            else
+                                                            {
+                                                                fileName = HttpUtility.UrlDecode(strSource, Encoding.UTF8).Substring(strSource.LastIndexOf("/") + 1);
+                                                            }
+
+                                                            if (File.Exists(DirUpload + fileName))
+                                                                goto ThayDoiDuongDan;
+
+                                                            string err = DownloadFile(HttpUtility.UrlDecode(strSource, Encoding.UTF8), DirUpload, fileName);
                                                             if (err != "")
                                                             {
                                                                 string s = db.ExcuteSP("TTDN_CHUYENMUC_LOI_INSERT", item[2].ToString(), item[1].ToString(), err, strSource);
                                                                 goto TiepTuc;
                                                             }
-                                                            else
-                                                            {
-                                                                if (strSource.ToLower().Contains(".jpg") || strSource.ToLower().Contains(".jpeg") || strSource.ToLower().Contains(".png") || strSource.ToLower().Contains(".gif") || strSource.ToLower().Contains(".tiff") || strSource.ToLower().Contains(".pdf"))
-                                                                {
-                                                                    fileName = Path.GetFileName(new Uri(strSource).AbsolutePath);
-                                                                }
-                                                                else
-                                                                {
-                                                                    fileName = strSource.Substring(strSource.LastIndexOf("/") + 1);
-                                                                }
-                                                            }
                                                         }
 
+                                                        ThayDoiDuongDan:;
                                                         string img = file.OuterHtml;
                                                         if (file.Attributes["src"] != null)
                                                         {
@@ -465,7 +476,7 @@ namespace ThongTinDoiNgoai
             return kq;
         }
 
-        private string DownloadFile(string url, string folderName)
+        private string DownloadFile(string url, string folderName, string filename)
         {
             try
             {
@@ -493,16 +504,6 @@ namespace ThongTinDoiNgoai
                     if (!Directory.Exists(folderPath))
                     {
                         Directory.CreateDirectory(folderPath);
-                    }
-
-                    string filename = "";
-                    if (url.ToLower().Contains(".jpg") || url.ToLower().Contains(".jpeg") || url.ToLower().Contains(".png") || url.ToLower().Contains(".gif") || url.ToLower().Contains(".tiff") || url.ToLower().Contains(".pdf"))
-                    {
-                        filename = Path.GetFileName(new Uri(url).AbsolutePath);
-                    }
-                    else
-                    {
-                        filename = url.Substring(url.LastIndexOf("/") + 1);
                     }
 
                     string filePath = folderName + ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(filename, Encoding.UTF8));
