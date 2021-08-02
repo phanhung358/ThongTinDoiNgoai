@@ -64,6 +64,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 {
                     DataRow row = ds.Tables[0].Rows[0];
                     txtXpathID.Value = row["XpathID"].ToString();
+                    txtTieuDe.Text = row["TieuDe"].ToString();
                     txtTomTat.Text = row["TomTat"].ToString();
                     txtNoiDung.Text = row["NoiDung"].ToString();
                     txtThoiGian.Text = row["ThoiGian"].ToString();
@@ -98,6 +99,22 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         hidden.ID = "XpathID_" + k.ToString();
                         hidden.Value = row["XpathID"].ToString();
                         tblCell.Controls.Add(hidden);
+                        tblRow.Controls.Add(tblCell);
+                        tbl.Controls.Add(tblRow);
+
+                        tblRow = new TableRow();
+
+                        tblCell = new TableCell();
+                        tblCell.Width = 115;
+                        tblCell.Text = "Xpath Tiêu đề " + k.ToString();
+                        tblRow.Controls.Add(tblCell);
+
+                        tblCell = new TableCell();
+                        TextBox txtTieuDe = new TextBox();
+                        txtTieuDe.Width = Unit.Percentage(100);
+                        txtTieuDe.ID = "TieuDe_" + k.ToString();
+                        txtTieuDe.Text = row["TieuDe"].ToString();
+                        tblCell.Controls.Add(txtTieuDe);
                         tblRow.Controls.Add(tblCell);
                         tbl.Controls.Add(tblRow);
 
@@ -176,6 +193,21 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     hidden.ID = "XpathID_" + i.ToString();
                     hidden.Value = "0";
                     tblCell.Controls.Add(hidden);
+                    tblRow.Controls.Add(tblCell);
+                    tbl.Controls.Add(tblRow);
+
+                    tblRow = new TableRow();
+
+                    tblCell = new TableCell();
+                    tblCell.Width = 115;
+                    tblCell.Text = "Xpath Tiêu đề " + i.ToString();
+                    tblRow.Controls.Add(tblCell);
+
+                    tblCell = new TableCell();
+                    TextBox txtTieuDe = new TextBox();
+                    txtTieuDe.Width = Unit.Percentage(100);
+                    txtTieuDe.ID = "TieuDe_" + i.ToString();
+                    tblCell.Controls.Add(txtTieuDe);
                     tblRow.Controls.Add(tblCell);
                     tbl.Controls.Add(tblRow);
 
@@ -267,7 +299,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                     ham.Alert(this, strLoi.Replace("'", "\\\""), "btnThemMoi");
                     return;
                 }
-                object[] obj = new object[8];
+                object[] obj = new object[9];
 
                 obj[0] = txtXpathID.Value;
                 obj[1] = txtTomTat.Text.Trim();
@@ -277,6 +309,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 obj[5] = drpChuyenMuc.SelectedValue;
                 obj[6] = drpWeb.SelectedValue;
                 obj[7] = TUONGTAC.TenTaiKhoan;
+                obj[8] = txtTieuDe.Text.Trim();
                 string sLoi = db.ExcuteSP("TTDN_XPATH_CHITIET_INSERT", obj);
                 if (sLoi == "")
                 {
@@ -344,8 +377,9 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 TextBox txtNoiDung = (TextBox)FindControl("NoiDung_" + i.ToString());
                 TextBox txtThoiGian = (TextBox)FindControl("ThoiGian_" + i.ToString());
                 TextBox txtTacGia = (TextBox)FindControl("TacGia_" + i.ToString());
+                TextBox txtTieuDe = (TextBox)FindControl("TieuDe_" + i.ToString());
 
-                object[] obj = new object[8];
+                object[] obj = new object[9];
 
                 obj[0] = txtXpathID.Value;
                 obj[1] = txtTomTat.Text.Trim();
@@ -355,8 +389,9 @@ namespace QuanLyVanBan.DichVu.DuLieu
                 obj[5] = drpChuyenMuc.SelectedValue;
                 obj[6] = drpWeb.SelectedValue;
                 obj[7] = TUONGTAC.TenTaiKhoan;
+                obj[7] = txtTieuDe.Text.Trim();
 
-                if (!string.IsNullOrEmpty(txtTomTat.Text) || !string.IsNullOrEmpty(txtNoiDung.Text) || !string.IsNullOrEmpty(txtThoiGian.Text) || !string.IsNullOrEmpty(txtTacGia.Text))
+                if (!string.IsNullOrEmpty(txtTomTat.Text) || !string.IsNullOrEmpty(txtNoiDung.Text) || !string.IsNullOrEmpty(txtThoiGian.Text) || !string.IsNullOrEmpty(txtTacGia.Text) || !string.IsNullOrEmpty(txtTieuDe.Text))
                 {
                     sLoi = db.ExcuteSP("TTDN_XPATH_CHITIET_INSERT", obj);
                     if (sLoi != "")

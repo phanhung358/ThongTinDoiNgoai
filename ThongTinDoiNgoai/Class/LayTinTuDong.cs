@@ -267,11 +267,13 @@ namespace ThongTinDoiNgoai
                                         string XNoiDung = rowXpathCT["NoiDung"].ToString().Replace("tbody/", "");
                                         string XThoiGian = rowXpathCT["ThoiGian"].ToString().Replace("tbody/", "");
                                         string XTacGia = rowXpathCT["TacGia"].ToString().Replace("tbody/", "");
+                                        string XTieuDe = rowXpathCT["TieuDe"].ToString().Replace("tbody/", "");
 
                                         var TomTat = XTomTat != "" ? (html.DocumentNode.SelectSingleNode(XTomTat) != null ? html.DocumentNode.SelectSingleNode(XTomTat) : null) : null;
                                         var NoiDung = html.DocumentNode.SelectSingleNode(XNoiDung) != null ? html.DocumentNode.SelectSingleNode(XNoiDung) : null;
                                         var ThoiGian = XThoiGian != "" ? (html.DocumentNode.SelectSingleNode(XThoiGian) != null ? html.DocumentNode.SelectSingleNode(XThoiGian) : null) : null;
                                         var TacGia = XTacGia != "" ? (html.DocumentNode.SelectSingleNode(XTacGia) != null ? html.DocumentNode.SelectSingleNode(XTacGia) : null) : null;
+                                        var TieuDe = XTieuDe != "" ? (html.DocumentNode.SelectSingleNode(XTieuDe) != null ? html.DocumentNode.SelectSingleNode(XTieuDe) : null) : null;
 
 
                                         string tgian = null;
@@ -295,7 +297,7 @@ namespace ThongTinDoiNgoai
                                             {
                                                 foreach (var file in dsFile)
                                                 {
-                                                    string strSource = file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? file.Attributes["src"].Value : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value;
+                                                    string strSource = file.Attributes["url-img-full"] == null ? (file.Attributes["data-src"] == null ? (file.Attributes["src"] == null ? "" : file.Attributes["src"].Value) : file.Attributes["data-src"].Value) : file.Attributes["url-img-full"].Value;
                                                     if (!strSource.Contains(rowCM["DiaChiWeb"].ToString()))
                                                     {
                                                         if (strSource.IndexOf("//") == 0)
@@ -318,8 +320,8 @@ namespace ThongTinDoiNgoai
                                                             var anh = Base64ToImage(strSource.Replace("data:image/png;base64,", ""));
                                                             fileName = ChuyenTuCoDauSangKoDau(HttpUtility.UrlDecode(item[3].ToString() + (dsFile.IndexOf(file) + 1).ToString() + ".png", Encoding.UTF8));
                                                             
-                                                            if (File.Exists(DirUpload + fileName))
-                                                                goto ThayDoiDuongDan;
+                                                            //if (File.Exists(DirUpload + fileName))
+                                                            //    goto ThayDoiDuongDan;
 
                                                             try
                                                             {
@@ -347,8 +349,8 @@ namespace ThongTinDoiNgoai
                                                                 fileName = HttpUtility.UrlDecode(strSource, Encoding.UTF8).Substring(strSource.LastIndexOf("/") + 1);
                                                             }
 
-                                                            if (File.Exists(DirUpload + fileName))
-                                                                goto ThayDoiDuongDan;
+                                                            //if (File.Exists(DirUpload + fileName))
+                                                            //    goto ThayDoiDuongDan;
 
                                                             string err = DownloadFile(HttpUtility.UrlDecode(strSource, Encoding.UTF8), DirUpload, fileName);
                                                             if (err != "")
@@ -358,7 +360,7 @@ namespace ThongTinDoiNgoai
                                                             }
                                                         }
 
-                                                        ThayDoiDuongDan:;
+                                                        //ThayDoiDuongDan:;
                                                         string img = file.OuterHtml;
                                                         if (file.Attributes["src"] != null)
                                                         {
@@ -374,8 +376,12 @@ namespace ThongTinDoiNgoai
                                                 }
                                             }
 
-                                            object[] obj = new object[10];
-                                            obj[0] = item[3].ToString();
+                                            string sTieuDe = item[3].ToString();
+                                            if (TieuDe != null && !string.IsNullOrEmpty(TieuDe.InnerText) && TieuDe.InnerText.Trim().ToLower().Contains(item[3].ToString().Trim().ToLower().Remove(item[3].ToString().Trim().Length - 3, 3)) && !TieuDe.InnerText.Trim().ToLower().Equals(item[3].ToString().Trim().ToLower()))
+                                                sTieuDe = TieuDe.InnerText.Trim();
+
+                                            object[] obj = new object[10];   
+                                            obj[0] = sTieuDe;
                                             obj[1] = TomTat != null ? TomTat.InnerText : null;
                                             obj[2] = NoiDung != null ? NoiDung.InnerHtml : null;
                                             obj[3] = !string.IsNullOrEmpty(item[5].ToString()) ? item[5].ToString() : (ThoiGian != null ? tgian : null);

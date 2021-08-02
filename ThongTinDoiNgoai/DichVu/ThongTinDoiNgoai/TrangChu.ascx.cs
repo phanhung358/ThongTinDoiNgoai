@@ -135,6 +135,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
         {
             if (Request.QueryString["id"] == null)
             {
+                drpSoTin1.Visible = false;
                 StringBuilder str = new StringBuilder();
                 str.Append("<div class='ttdn-nen'>");
                 //=============================================
@@ -198,7 +199,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
 
         private void addData_ChiTiet()
         {
-            tblPhanTrang.Visible = false;
+            drpSoTin.Visible = false;
             string id = Request.QueryString["id"];
             string ChuyenMucID = "0";
 
@@ -306,9 +307,24 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
             DataSet dsKhac = db.GetDataSet("TTDN_BAIVIET_SELECT", 2, id, 0, ChuyenMucID);
             if (dsKhac != null && dsKhac.Tables.Count > 0 && dsKhac.Tables[0].Rows.Count > 0)
             {
+                //Phân trang===============================================
+                int iSoTin = int.Parse(drpSoTin1.SelectedValue) * (Static.PhanTrangThu - 1);
+                if (dsKhac.Tables[0].Rows.Count <= iSoTin && Static.PhanTrangThu != 1)
+                    Static.PhanTrangThu = Static.PhanTrangThu - 1;
+
+                int TrangHienTai = Static.PhanTrangThu;
+                int TongSoTin = dsKhac.Tables[0].Rows.Count;
+                int SoTinTrenTrang = Convert.ToInt32(drpSoTin1.SelectedValue);
+                PhanTrang(TongSoTin, SoTinTrenTrang, TrangHienTai, lblPhanTrang);
+                int TuBanGhi = (TrangHienTai - 1) * SoTinTrenTrang;
+                int DenBanGhi = (TrangHienTai * SoTinTrenTrang) > TongSoTin ? TongSoTin : TrangHienTai * SoTinTrenTrang;
+                if (TongSoTin > SoTinTrenTrang)
+                    tblPhanTrang.Visible = true;
+                //End phân trang==========================================
+
                 str.Append("<div class='ttdn-tinkhac-demuc'>Tin khác:</div>");
                 str.Append("<ul class='danhsach'>");
-                for (int i = 0; i < dsKhac.Tables[0].Rows.Count; i++)
+                for (int i = TuBanGhi; i < DenBanGhi; i++)
                 {
                     DataRow row = dsKhac.Tables[0].Rows[i];
 

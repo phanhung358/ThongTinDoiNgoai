@@ -13,8 +13,8 @@
                 </asp:DropDownList>
             </td>
             <td style="text-align: right">
-            <asp:ImageButton ID="imgThemMoi" runat="server" ImageUrl="~/Images/imgThemMoi.png" />
-        </td>
+                <asp:ImageButton ID="imgThemMoi" runat="server" ImageUrl="~/Images/imgThemMoi.png" />
+            </td>
         </tr>
     </table>
 </div>

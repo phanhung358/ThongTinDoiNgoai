@@ -109,7 +109,14 @@
 </div>
 
 <div style="width: 100%; clear: both" class="Dong_Table">
-    <div class="Dong_Cell" style="width: 115px;">Xpath Tóm tắt:<sup>*</sup></div>
+    <div class="Dong_Cell" style="width: 115px;">Xpath Tiêu đề:</div>
+    <div class="Dong_Cell">
+        <asp:TextBox ID="txtTieuDe" runat="server" Width="100%"></asp:TextBox>
+    </div>
+</div>
+
+<div style="width: 100%; clear: both" class="Dong_Table">
+    <div class="Dong_Cell" style="width: 115px;">Xpath Tóm tắt:</div>
     <div class="Dong_Cell">
         <asp:TextBox ID="txtTomTat" runat="server" Width="100%"></asp:TextBox>
     </div>
@@ -123,16 +130,16 @@
 </div>
 
 <div style="width: 100%; clear: both" class="Dong_Table">
-    <div class="Dong_Cell" style="width: 115px;">Xpath Thời gian:<sup>*</sup></div>
+    <div class="Dong_Cell" style="width: 115px;">Định dạng Thời gian:</div>
     <div class="Dong_Cell">
-        <asp:TextBox ID="txtThoiGian" runat="server" Width="100%"></asp:TextBox>
+        <asp:TextBox ID="txtDinhDangThoiGian" runat="server" Width="100%"></asp:TextBox>
     </div>
 </div>
 
-<div style="width: 100%; clear: both; display: none" class="Dong_Table">
-    <div class="Dong_Cell" style="width: 115px;">Định dạng thời gian:</div>
+<div style="width: 100%; clear: both" class="Dong_Table">
+    <div class="Dong_Cell" style="width: 115px;">Xpath Thời gian:<sup>*</sup></div>
     <div class="Dong_Cell">
-        <asp:TextBox ID="txtDinhDangThoiGian" runat="server" Width="100%"></asp:TextBox>
+        <asp:TextBox ID="txtThoiGian" runat="server" Width="100%"></asp:TextBox>
     </div>
 </div>
 
@@ -158,11 +165,3 @@
 <div style="text-align: center; padding-top: 10px; padding-bottom: 5px;">
     <asp:Button ID="btnThemMoi" runat="server" CssClass="button" Text="Cập nhật" OnClick="btnThemMoi_Click" />
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#ctl11_btnConnect").click(function () {
-            $("#ctl11_loading").removeClass("d-none");
-        });
-    });
-</script>

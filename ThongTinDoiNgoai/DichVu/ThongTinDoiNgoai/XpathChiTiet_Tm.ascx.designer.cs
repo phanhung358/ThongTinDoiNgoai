@@ -42,6 +42,15 @@ namespace QuanLyVanBan.DichVu.DuLieu
         protected global::System.Web.UI.WebControls.DropDownList drpChuyenMuc;
 
         /// <summary>
+        /// txtTieuDe control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTieuDe;
+
+        /// <summary>
         /// txtTomTat control.
         /// </summary>
         /// <remarks>
@@ -60,15 +69,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
         protected global::System.Web.UI.WebControls.TextBox txtNoiDung;
 
         /// <summary>
-        /// txtThoiGian control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtThoiGian;
-
-        /// <summary>
         /// txtDinhDangThoiGian control.
         /// </summary>
         /// <remarks>
@@ -76,6 +76,15 @@ namespace QuanLyVanBan.DichVu.DuLieu
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDinhDangThoiGian;
+
+        /// <summary>
+        /// txtThoiGian control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtThoiGian;
 
         /// <summary>
         /// txtTacGia control.
