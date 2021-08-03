@@ -153,7 +153,6 @@ D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\System.Web.Http.dll
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\System.Web.Http.WebHost.dll
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\System.Web.Optimization.dll
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\WebGrease.dll
-D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\FITC.Web.Component.pdb
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\NLog.xml
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\System.Web.Optimization.xml
 D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\Antlr3.Runtime.pdb
@@ -266,7 +265,6 @@ D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\WebDriver.dll
 D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\WebDriverManager.dll
 D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\WebGrease.dll
 D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\AngleSharp.xml
-D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\FITC.Web.Component.pdb
 D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\ICSharpCode.SharpZipLib.pdb
 D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\ICSharpCode.SharpZipLib.xml
 D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\Microsoft.Win32.Registry.xml
@@ -290,3 +288,5 @@ D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.csproj.Core
 D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.csproj.CopyComplete
 D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.dll
 D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\obj\Debug\ThongTinDoiNgoai.pdb
+D:\Text\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\FITC.Web.Component.dll
+D:\Projects\ThongTinDoiNgoai\ThongTinDoiNgoai\bin\FITC.Web.Component.dll

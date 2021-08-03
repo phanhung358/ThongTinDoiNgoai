@@ -53,8 +53,9 @@
     <Reference Include="EsbUsers.Sso">
       <HintPath>..\..\DanhMucChung\DanhMucChung\bin\EsbUsers.Sso.dll</HintPath>
     </Reference>
-    <Reference Include="FITC.Web.Component">
-      <HintPath>..\..\DanhMucChung\DanhMucChung\bin\FITC.Web.Component.dll</HintPath>
+    <Reference Include="FITC.Web.Component, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\ADMIN\Documents\Zalo Received Files\FITC.Web.Component.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>C:\Users\USER\Desktop\HtmlAgilityPack.dll</HintPath>
@@ -269,6 +270,8 @@
     <Content Include="Css\Thickbox\jquery.fancybox.css" />
     <Content Include="Css\Thickbox\new-thickbox-title.png" />
     <Content Include="Css\TrangChinh.css" />
+    <Content Include="Css\ttdn.css" />
+    <Content Include="Css\ttdn_mobile.css" />
     <Content Include="Default.aspx" />
     <Content Include="DichVu\HeThong\BanQuyen.ascx" />
     <Content Include="DichVu\HeThong\DangXuat.ascx" />

@@ -17,8 +17,15 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
         string sWebID = "0";
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.QueryString["WebID"] != null)
-                sWebID = Request.QueryString["WebID"].ToString();
+            if (Request.QueryString["loai"] != null)
+            {
+                string[] arr = Request.QueryString["loai"].ToLower().Split('-');
+                string sLoai = arr[arr.Length - 1];
+                if (sLoai.Length > 1)
+                {
+                    sWebID = sLoai.Substring(1);
+                }
+            }    
             if (!IsPostBack)
             {
 
@@ -137,7 +144,6 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
             if (sWebID != "0")
             {
                 StringBuilder str = new StringBuilder();
-                str.Append("<div class='danhsachtin-nen'>");
                 //=============================================
                 using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1, 0, sWebID))
                 {
@@ -158,6 +164,15 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                             tblPhanTrang.Visible = true;
                         //End phân trang==========================================
 
+                        string TenWeb = "";
+                        DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, sWebID);
+                        if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+                        {
+                            TenWeb = ds1.Tables[0].Rows[0]["TenWeb"].ToString().ToUpper();
+                        }
+                        
+                        str.AppendFormat("<div class='demuc'>{0}</div>", TenWeb);
+                        str.Append("<div class='danhsachtin-nen'>");
                         for (int i = TuBanGhi; i < DenBanGhi; i++)
                         {
                             DataRow row = ds.Tables[0].Rows[i];
@@ -177,11 +192,12 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                             str.Append("</div>");
                             str.Append("<div class='dongnoidung'>");
                             str.AppendFormat("<div class='tomtat'>{0}</div>", row["TomTat"].ToString());
-                            str.AppendFormat("<div class='xemchitiet'><a href='/?id={0}'>Xem chi tiết</a></div>", row["BaiVietID"].ToString());
+                            str.AppendFormat("<div class='xemchitiet'><a href='{0}.html'>Xem chi tiết</a></div>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim());
                             str.Append("</div>");
                             str.Append("</div>");
                             str.Append("</div>");
                         }
+                        str.Append("</div>");
                     }
                     else
                     {
@@ -190,9 +206,16 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                         str.Append("</div>");
                     }
                 }
-                str.Append("</div>");
                 divDanhSach.InnerHtml = str.ToString();
             }
+        }
+
+        public string ChuyenTuCoDauSangKoDau(string strUrl)
+        {
+            string str = strUrl.Trim().ToLower();
+            while (str.LastIndexOf("  ") > 0)
+                str = str.Replace("  ", "");
+            return str.Replace(" ", "-").Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "-").Replace("=", "").Replace("(", "").Replace(")", "").Replace("+", "").Replace(",", "").Replace(">", "").Replace("<", "").Replace("'", "").Replace("đ", "d").Replace("á", "a").Replace("à", "a").Replace("ạ", "a").Replace("ả", "a").Replace("ã", "a").Replace("ă", "a").Replace("ắ", "a").Replace("ằ", "a").Replace("ặ", "a").Replace("ẳ", "a").Replace("ẵ", "a").Replace("â", "a").Replace("ấ", "a").Replace("ầ", "a").Replace("ậ", "a").Replace("ẩ", "a").Replace("ẫ", "a").Replace("ê", "e").Replace("ế", "e").Replace("ề", "e").Replace("ể", "e").Replace("ễ", "e").Replace("ệ", "e").Replace("e", "e").Replace("é", "e").Replace("è", "e").Replace("ẹ", "e").Replace("ẻ", "e").Replace("ẽ", "e").Replace("i", "i").Replace("í", "i").Replace("ì", "i").Replace("ị", "i").Replace("ỉ", "i").Replace("ĩ", "i").Replace("o", "o").Replace("ó", "o").Replace("ò", "o").Replace("ọ", "o").Replace("ỏ", "o").Replace("õ", "o").Replace("ô", "o").Replace("ố", "o").Replace("ồ", "o").Replace("ộ", "o").Replace("ổ", "o").Replace("ỗ", "o").Replace("ơ", "o").Replace("ớ", "o").Replace("ờ", "o").Replace("ợ", "o").Replace("ở", "o").Replace("ỡ", "o").Replace("u", "u").Replace("ú", "u").Replace("ù", "u").Replace("ụ", "u").Replace("ủ", "u").Replace("ũ", "u").Replace("ư", "u").Replace("ứ", "u").Replace("ừ", "u").Replace("ự", "u").Replace("ử", "u").Replace("ữ", "u").Replace("y", "y").Replace("ý", "y").Replace("ỳ", "y").Replace("ỵ", "y").Replace("ỷ", "y").Replace("ỹ", "y").Replace("/", "-").Replace("?", "-").Replace("\'", "").Replace("\"", "").Replace(":", "-").Replace(";", "-").Replace("--", "-");
         }
     }
 }

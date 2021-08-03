@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="footer">
-                <img src="css/trangchinh/footer.png" alt="" style="width: 100%" />
+                <img src="/css/trangchinh/footer.png" alt="" style="width: 100%" />
             </div>
         </div>
     </form>

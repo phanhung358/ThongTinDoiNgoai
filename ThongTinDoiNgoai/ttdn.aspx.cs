@@ -70,11 +70,12 @@ namespace ThongTinDoiNgoai
             DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 1);
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
+                str.AppendFormat("<li class='trangchu'><a href='{0}'>Trang chủ</a></li>", Static.AppPath() + "/thongtindoingoai/");
                 str.AppendFormat("<li class='cocon'>Tin từ Sở, Ban, Ngành");
                 str.Append("<ul>");
                 foreach (DataRow row in ds.Tables[0].Rows)
                 {
-                    str.AppendFormat("<li><a href='{1}.html'>{0}</a></li>", row["TenWeb"].ToString(), "/thongtindoingoai/" + ham.ChuyenTuCoDauSangKoDau(row["TenWeb"].ToString()) + "-a" + row["WebID"].ToString().Trim());
+                    str.AppendFormat("<li><a href='{1}.html'>{0}</a></li>", row["TenWeb"].ToString(), "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TenWeb"].ToString()) + "-a" + row["WebID"].ToString().Trim());
                 }
                 str.Append("</ul>");
                 str.Append("</li>");
@@ -86,7 +87,7 @@ namespace ThongTinDoiNgoai
                 str.Append("<ul>");
                 //foreach (DataRow row in ds.Tables[0].Rows)
                 //{
-                //    str.AppendFormat("<li><a href='{1}.html'>{0}</a></li>", row["TenLoaiVanBan"].ToString(), sChucNang + "/" + ham.ChuyenTuCoDauSangKoDau_Url(row["TenLoaiVanBan"].ToString()) + "-a" + row["LoaiVanBanID"].ToString().Trim());
+                //    str.AppendFormat("<li><a href='{1}.html'>{0}</a></li>", row["TenLoaiVanBan"].ToString(), sChucNang + "/" + ChuyenTuCoDauSangKoDau_Url(row["TenLoaiVanBan"].ToString()) + "-a" + row["LoaiVanBanID"].ToString().Trim());
                 //}
                 for (int i = 0; i < 5; i++)
                 {
@@ -144,7 +145,7 @@ namespace ThongTinDoiNgoai
             StringBuilder str = new StringBuilder();
             if (bHome)
             {
-                str.Append("<div class='main-vien'>");
+                str.Append("<div class='vung-chinh-vien'>");
                 str.Append("<div class='tinmoi'>");
                 str.Append("<div class='tinmoi-tieude'>Tin mới</div>");
                 str.Append("<div class='tinmoi-danhsach'>");
@@ -156,7 +157,7 @@ namespace ThongTinDoiNgoai
                     {
                         DataRow row = ds.Tables[0].Rows[i];
                         str.Append("<div class='tinmoi-mautin'>");
-                        str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ham.ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
+                        str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
                         str.Append("</div>");
                     }
                 }
@@ -173,12 +174,12 @@ namespace ThongTinDoiNgoai
                     {
                         DataRow row = ds1.Tables[0].Rows[i];
                         str.Append("<div class='tintungtrang-mautin'>");
-                        str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ham.ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
+                        str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
                         str.Append("</div>");
                     }
                     DataRow row1 = ds1.Tables[0].Rows[0];
                     str.Append("<div class='tintungtrang-xemtiep'>");
-                    str.AppendFormat("<a href='{0}.html'>Xem tiếp</a>", "/thongtindoingoai/" + ham.ChuyenTuCoDauSangKoDau(row1["TenWeb"].ToString()) + "-a" + row1["WebID"].ToString().Trim());
+                    str.AppendFormat("<a href='{0}.html'>Xem tiếp</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row1["TenWeb"].ToString()) + "-a" + row1["WebID"].ToString().Trim());
                     str.Append("</div>");
                 }
                 str.Append("</div>");
@@ -194,12 +195,12 @@ namespace ThongTinDoiNgoai
                     {
                         DataRow row = ds2.Tables[0].Rows[i];
                         str.Append("<div class='tintungtrang-mautin'>");
-                        str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ham.ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
+                        str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
                         str.Append("</div>");
                     }
                     DataRow row1 = ds2.Tables[0].Rows[0];
                     str.Append("<div class='tintungtrang-xemtiep'>");
-                    str.AppendFormat("<a href='{0}.html'>Xem tiếp</a>", "/thongtindoingoai/" + ham.ChuyenTuCoDauSangKoDau(row1["TenWeb"].ToString()) + "-a" + row1["WebID"].ToString().Trim());
+                    str.AppendFormat("<a href='{0}.html'>Xem tiếp</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row1["TenWeb"].ToString()) + "-a" + row1["WebID"].ToString().Trim());
                     str.Append("</div>");
                 }
                 str.Append("</div>");
@@ -216,7 +217,7 @@ namespace ThongTinDoiNgoai
                 if (sLoai.Length > 1)
                 {
                     string sWebID = sLoai.Substring(1);
-                    divMain.Controls.Add(LoadControl(Static.AppPath() + "/dichvu/thongtindoingoai/danhsachtin.ascx?WebID=" + sWebID));
+                    divMain.Controls.Add(LoadControl(Static.AppPath() + "/dichvu/thongtindoingoai/danhsachtin.ascx"));
                 }
             }
         }
@@ -229,25 +230,30 @@ namespace ThongTinDoiNgoai
             {
                 string sBaiVietID = sLoai.Substring(1);
                 StringBuilder str = new StringBuilder();
-                str.Append("<div class='ttdn-chitiet'>");
+                str.Append("<div class='vung-chinh-vien'>");
                 DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 0, sBaiVietID);
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     DataRow row = ds.Tables[0].Rows[0];
 
-                    str.AppendFormat("<h2 class='ttdn-chitiet-tieude'>{0}</h2>", row["TieuDe"].ToString());
-                    if (!string.IsNullOrEmpty(row["ThoiGian"].ToString()))
-                        str.AppendFormat("<div class='ttdn-chitiet-thoigian'><span>{0}</span></div>", DateTime.Parse(row["ThoiGian"].ToString()).ToString("dd/MM/yyyy - HH:mm"));
-                    if (!string.IsNullOrEmpty(row["TomTat"].ToString()))
-                        str.AppendFormat("<div class='ttdn-chitiet-tomtat'>{0}</div>", row["TomTat"].ToString());
-
+                    string TenWeb = "";
                     string DiaChiWeb = "";
                     DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, row["WebID"].ToString());
                     if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
                     {
                         DataRow rowWeb = ds1.Tables[0].Rows[0];
                         DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
+                        TenWeb = rowWeb["TenWeb"].ToString().ToUpper();
                     }
+
+                    str.AppendFormat("<div class='demuc'>{0}</div>", TenWeb);
+                    str.Append("<div class='chitiet'>");
+                    str.AppendFormat("<h2 class='chitiet-tieude'>{0}</h2>", row["TieuDe"].ToString());
+                    if (!string.IsNullOrEmpty(row["ThoiGian"].ToString()))
+                        str.AppendFormat("<div class='chitiet-thoigian'><span>{0}</span></div>", DateTime.Parse(row["ThoiGian"].ToString()).ToString("dd/MM/yyyy - HH:mm"));
+                    if (!string.IsNullOrEmpty(row["TomTat"].ToString()))
+                        str.AppendFormat("<div class='chitiet-tomtat'>{0}</div>", row["TomTat"].ToString());
+
                     HtmlDocument NoiDung = new HtmlDocument();
                     NoiDung.LoadHtml(row["NoiDung"].ToString());
                     try
@@ -275,7 +281,7 @@ namespace ThongTinDoiNgoai
                                             {
                                                 if (css.Contains("width") && !css.Contains("max-width"))
                                                 {
-                                                    if (Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 920)
+                                                    if (Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 850)
                                                         newstyle += "width: 100%; ";
                                                     else
                                                         newstyle += css.Trim() + "; ";
@@ -303,10 +309,10 @@ namespace ThongTinDoiNgoai
                                         {
                                             if (file.Attributes["width"] != null && !string.IsNullOrEmpty(file.Attributes["width"].Value))
                                             {
-                                                if (Convert.ToInt32(file.Attributes["width"].Value) > 920)
+                                                if (Convert.ToInt32(file.Attributes["width"].Value) > 850)
                                                     img = img.Replace(string.Format("width=\"{0}\"", file.Attributes["width"].Value), "width=\"100%\"");
                                             }
-                                            else if (image.Width > 920)
+                                            else if (image.Width > 850)
                                                 img = img.Replace(">", " width=\"100%\">");
                                             if (file.Attributes["height"] != null && !string.IsNullOrEmpty(file.Attributes["height"].Value))
                                                 img = img.Replace(string.Format("height=\"{0}\"", file.Attributes["height"].Value), "height=\"auto\"");
@@ -323,9 +329,11 @@ namespace ThongTinDoiNgoai
 
                     }
 
-                    str.AppendFormat("<div class='ttdn-chitiet-noidung'>{0}</div>", NoiDung.DocumentNode.InnerHtml);
-                    str.AppendFormat("<div class='ttdn-chitiet-tacgia'><p>{0}</p></div>", row["TacGia"].ToString());
+                    str.AppendFormat("<div class='chitiet-noidung'>{0}</div>", NoiDung.DocumentNode.InnerHtml);
+                    str.AppendFormat("<div class='chitiet-tacgia'><p>{0}</p></div>", row["TacGia"].ToString());
+                    str.Append("</div>");
                 }
+                str.Append("</div>");
 
                 divMain.InnerHtml = str.ToString();
             }
@@ -353,6 +361,14 @@ namespace ThongTinDoiNgoai
             }
 
             return image;
+        }
+
+        public string ChuyenTuCoDauSangKoDau(string strUrl)
+        {
+            string str = strUrl.Trim().ToLower();
+            while (str.LastIndexOf("  ") > 0)
+                str = str.Replace("  ", "");
+            return str.Replace(" ", "-").Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "-").Replace("=", "").Replace("(", "").Replace(")", "").Replace("+", "").Replace(",", "").Replace(">", "").Replace("<", "").Replace("'", "").Replace("đ", "d").Replace("á", "a").Replace("à", "a").Replace("ạ", "a").Replace("ả", "a").Replace("ã", "a").Replace("ă", "a").Replace("ắ", "a").Replace("ằ", "a").Replace("ặ", "a").Replace("ẳ", "a").Replace("ẵ", "a").Replace("â", "a").Replace("ấ", "a").Replace("ầ", "a").Replace("ậ", "a").Replace("ẩ", "a").Replace("ẫ", "a").Replace("ê", "e").Replace("ế", "e").Replace("ề", "e").Replace("ể", "e").Replace("ễ", "e").Replace("ệ", "e").Replace("e", "e").Replace("é", "e").Replace("è", "e").Replace("ẹ", "e").Replace("ẻ", "e").Replace("ẽ", "e").Replace("i", "i").Replace("í", "i").Replace("ì", "i").Replace("ị", "i").Replace("ỉ", "i").Replace("ĩ", "i").Replace("o", "o").Replace("ó", "o").Replace("ò", "o").Replace("ọ", "o").Replace("ỏ", "o").Replace("õ", "o").Replace("ô", "o").Replace("ố", "o").Replace("ồ", "o").Replace("ộ", "o").Replace("ổ", "o").Replace("ỗ", "o").Replace("ơ", "o").Replace("ớ", "o").Replace("ờ", "o").Replace("ợ", "o").Replace("ở", "o").Replace("ỡ", "o").Replace("u", "u").Replace("ú", "u").Replace("ù", "u").Replace("ụ", "u").Replace("ủ", "u").Replace("ũ", "u").Replace("ư", "u").Replace("ứ", "u").Replace("ừ", "u").Replace("ự", "u").Replace("ử", "u").Replace("ữ", "u").Replace("y", "y").Replace("ý", "y").Replace("ỳ", "y").Replace("ỵ", "y").Replace("ỷ", "y").Replace("ỹ", "y").Replace("/", "-").Replace("?", "-").Replace("\'", "").Replace("\"", "").Replace(":", "-").Replace(";", "-").Replace("--", "-");
         }
     }
 }

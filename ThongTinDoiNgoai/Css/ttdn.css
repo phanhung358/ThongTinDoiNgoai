@@ -1,0 +1,261 @@
+﻿*, body {
+    padding: 0;
+    margin: 0;
+    font-family: tahoma, arial;
+}
+
+a, td, div {
+    text-decoration: none;
+    color: #111;
+}
+
+a:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+.vien {
+    width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: #f3f2f1;
+    box-shadow: 0px 0px 3px #888888;
+}
+
+.main {
+    display: flex;
+    padding: 20px;
+}
+
+.menu-trai {
+    width: 25%;
+    background-color: #e8e8e8;
+}
+
+.menu-trai-danhmuc {
+    background-color: #d45252;
+    padding: 8px;
+    color: white;
+    text-transform: uppercase;
+    padding-left: 22px;
+}
+
+.menu-trai ul {
+    padding: 0;
+    margin: 0;
+    padding-left: 0px;
+    padding-top: 10px;
+}
+
+.menu-trai ul li {
+    padding: 3px 0;
+    margin: 0;
+    padding-left: 22px;
+    list-style: none;
+    border-bottom: 1px solid #d4d4d4;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.menu-trai ul li a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.menu-trai ul li:last-child {
+    border-bottom: none;
+}
+
+.menu-trai ul li ul {
+    padding-top: 0;
+}
+
+.menu-trai ul li ul li {
+    background: url(Home/bulet_xo.png) no-repeat;
+    background-position: left 8px;
+    padding: 3px 0;
+    margin: 0;
+    padding-left: 15px;
+    list-style: none;
+    background-size: 9px;
+    border-bottom: 0;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.vung-chinh {
+    width: 75%;
+    margin-left: 20px;
+}
+
+.vung-chinh-vien {
+    min-height: 85vh;
+}
+
+.tinmoi, .tintungtrang {
+    padding-top: 8px;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.tinmoi {
+    padding-top: 0;
+}
+
+.tintungtrang:last-child {
+    border-bottom: none;
+}
+
+.tinmoi-tieude, .tintungtrang-tieude, .demuc {
+    font-weight: 600;
+    font-size: 18px;
+    color: #007eff;
+    padding: 4px;
+    border-bottom: 6px ridge #7eceec;
+}
+
+.tinmoi-danhsach, .tintungtrang-danhsach {
+    line-height: 22px;
+}
+
+.tinmoi-danhsach {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.tinmoi-mautin {
+    width: 48%;
+    padding: 3px 0;
+    background: url(Home/bulet_xo1.png) no-repeat;
+    background-position: left 10px;
+    padding-left: 15px;
+}
+
+.tintungtrang-mautin {
+    padding: 3px 0;
+    background: url(Home/bulet_xo1.png) no-repeat;
+    background-position: left 10px;
+    padding-left: 15px;
+}
+
+.tintungtrang-xemtiep {
+    text-align: right;
+}
+
+.tintungtrang-xemtiep > a {
+    color: red;
+    text-decoration: underline;
+}
+
+.danhsachtin-nen {
+    min-height: 85vh;
+}
+
+.dong-chan, .dong-le {
+    padding: 10px 0;
+    display: flex;
+}
+
+.anhdaidien-trai {
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+
+.noidung-phai {
+    flex: 0 0 80%;
+    max-width: 80%;
+}
+
+.anhdaidien-trai img {
+    width: 162px;
+    height: 108px;
+    border-radius: 5px;
+    object-fit: cover;
+    padding-left: 4px;
+}
+
+.dong-chan:hover, .dong-le:hover {
+    background-color: antiquewhite;
+}
+
+.dongtieude {
+    padding-right: 4px;
+}
+
+.tieude {
+    font-weight: bold;
+}
+
+.thoigian {
+    font-style: italic;
+    text-align: right;
+}
+
+.dongnoidung {
+    padding-right: 4px;
+}
+
+.tomtat {
+    text-align: justify;
+    padding-top: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.xemchitiet a {
+    font-style: italic;
+    float: right;
+    color: blue;
+}
+
+.Vien_Khung {
+    padding: 5px;
+    background-color: #ccc6;
+}
+
+.Tin_PhanTrang_HienTai {
+    padding: 0 3px;
+    color: red;
+    text-decoration: none;
+}
+
+.Tin_PhanTrang {
+    padding: 0 3px;
+    text-decoration: none;
+}
+
+.chitiet {
+    padding-top: 10px;
+}
+
+.chitiet-tieude {
+    font-size: 22px;
+    margin-bottom: 15px !important;
+}
+
+.chitiet-thoigian {
+    margin-bottom: 15px !important;
+}
+
+.chitiet-noidung {
+    word-break: keep-all;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: visible;
+    line-height: 1.7em;
+    margin-bottom: 15px !important;
+}
+
+.chitiet-tacgia {
+    text-align: right;
+    font-weight: 700;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.chitiet-tomtat {
+    font-weight: 700;
+    margin-bottom: 10px !important;
+}
