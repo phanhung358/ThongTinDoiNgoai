@@ -225,6 +225,7 @@
     <Content Include="Css\Home\menulaptrang.jpg" />
     <Content Include="Css\Home\menu_demuc.png" />
     <Content Include="Css\Home\menu_ht.png" />
+    <Content Include="Css\Home\menu_mobi.png" />
     <Content Include="Css\Home\nentraiduoi.jpg" />
     <Content Include="Css\Home\nentrailap.jpg" />
     <Content Include="Css\Home\nentraitop.jpg" />

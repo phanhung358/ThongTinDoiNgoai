@@ -34,7 +34,7 @@ namespace ThongTinDoiNgoai
             if (!bMobie)
                 dangky.Text = "<link href='/Css/ttdn.css?v=1' rel='stylesheet' type='text/css'/>";
             else
-                dangky.Text = "<link href='/Css/ttdn_mobie.css?v=1' rel='stylesheet' type='text/css'/>";
+                dangky.Text = "<link href='/Css/ttdn_mobile.css?v=1' rel='stylesheet' type='text/css'/>";
             addMenuTrai();
             addVungChinh();
         }
@@ -61,7 +61,10 @@ namespace ThongTinDoiNgoai
                 str.Append("});</script>");
 
                 str.AppendFormat("<header>");
-                str.AppendFormat("<div><span class=\"menuBtn{0}\"><img alt=\"\" src=\"\" /></span></div>", "");
+                str.Append("<div class=\"danhmuc-vien\">");
+                str.Append("<div class=\"danhmuc\">Danh mục</div>");
+                str.Append("<span class=\"menuBtn\"></span>");
+                str.Append("</div>");
                 str.AppendFormat("<nav id=\"navigation-list{0}\">", "");
             }
             else

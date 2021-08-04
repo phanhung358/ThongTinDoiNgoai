@@ -1,2 +1,184 @@
-﻿body {
+﻿*, body {
+    padding: 0px;
+    margin: 0px;
+    color: #000;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.1rem;
+    line-height: 21px;
+    box-sizing: border-box;
+    font-weight: 300;
+}
+
+.vien {
+    background-color: #f3f2f147;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.menu-trai {
+    background-color: #f3f2f1;
+}
+
+.danhmuc-vien {
+    display: flex;
+    width: 100%;
+    height: 38px;
+    background-color: #d45252;
+    justify-content: space-between;
+}
+
+.danhmuc {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding-left: 15px;
+    line-height: 38px;
+    color: white;
+}
+
+.menuBtn {
+    background-repeat: no-repeat;
+    height: 35px;
+    cursor: pointer;
+    display: block;
+    background-position: center center;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiIGNsYXNzPSIiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuOTUwMDAwMDAwMDAwMDAwMSwwLDAsMC45NTAwMDAwMDAwMDAwMDAxLDEyLjgwMDAwMDE5MDczNDgwNiwxMi43OTk5OTk5OTk5OTk5ODMpIj48cGF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGQ9Im00NjQuODgzIDY0LjI2N2gtNDE3Ljc2NmMtMjUuOTggMC00Ny4xMTcgMjEuMTM2LTQ3LjExNyA0Ny4xNDkgMCAyNS45OCAyMS4xMzcgNDcuMTE3IDQ3LjExNyA0Ny4xMTdoNDE3Ljc2NmMyNS45OCAwIDQ3LjExNy0yMS4xMzcgNDcuMTE3LTQ3LjExNyAwLTI2LjAxMy0yMS4xMzctNDcuMTQ5LTQ3LjExNy00Ny4xNDl6IiBmaWxsPSIjZmZmZmZmIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L3BhdGg+PHBhdGggeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBkPSJtNDY0Ljg4MyAyMDguODY3aC00MTcuNzY2Yy0yNS45OCAwLTQ3LjExNyAyMS4xMzYtNDcuMTE3IDQ3LjE0OSAwIDI1Ljk4IDIxLjEzNyA0Ny4xMTcgNDcuMTE3IDQ3LjExN2g0MTcuNzY2YzI1Ljk4IDAgNDcuMTE3LTIxLjEzNyA0Ny4xMTctNDcuMTE3IDAtMjYuMDEzLTIxLjEzNy00Ny4xNDktNDcuMTE3LTQ3LjE0OXoiIGZpbGw9IiNmZmZmZmYiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvcGF0aD48cGF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGQ9Im00NjQuODgzIDM1My40NjdoLTQxNy43NjZjLTI1Ljk4IDAtNDcuMTE3IDIxLjEzNy00Ny4xMTcgNDcuMTQ5IDAgMjUuOTggMjEuMTM3IDQ3LjExNyA0Ny4xMTcgNDcuMTE3aDQxNy43NjZjMjUuOTggMCA0Ny4xMTctMjEuMTM3IDQ3LjExNy00Ny4xMTcgMC0yNi4wMTItMjEuMTM3LTQ3LjE0OS00Ny4xMTctNDcuMTQ5eiIgZmlsbD0iI2ZmZmZmZiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPjwvZz48L3N2Zz4=);
+    background-size: contain;
+    width: 35px;
+    border-radius: 6px;
+    border: 1px solid white;
+    margin-right: 10px;
+}
+
+nav ul {
+    padding: 0;
+    margin: 0;
+    padding-left: 0px;
+}
+
+nav ul li {
+    padding: 5px 0;
+    margin: 0;
+    padding-left: 15px;
+    list-style: none;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+nav ul li a {
+    width: 100%;
+    padding: 10px 10px 10px 0px;
+    font-weight: 400;
+    color: #be1e2d;
+}
+
+navi ul li ul {
+    padding-top: 0;
+}
+
+nav ul li ul li {
+    background: url(trangchinh/bulet.png) no-repeat;
+    background-position: left 8px;
+    padding: 3px 0;
+    margin: 0;
+    padding-left: 15px;
+    list-style: none;
+    background-size: 9px;
+    border-bottom: 0;
+}
+
+nav ul li ul li a {
+    font-weight: 300;
+    color: #000;
+}
+
+.cocon {
+    font-weight: 400;
+    color: #be1e2d;
+}
+
+.vung-chinh {
+    padding: 10px;
+}
+
+.tinmoi, .tintungtrang {
+    padding-top: 8px;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.tinmoi {
+    padding-top: 0;
+}
+
+.tintungtrang:last-child {
+    border-bottom: none;
+}
+
+.tinmoi-tieude, .tintungtrang-tieude, .demuc {
+    font-weight: 600;
+    font-size: 20px;
+    color: #007eff;
+    padding: 4px;
+    border-bottom: 6px ridge #7eceec;
+}
+
+.tinmoi-mautin, .tintungtrang-mautin {
+    width: 100%;
+    padding: 3px 0;
+    background: url(Home/bulet_xo1.png) no-repeat;
+    background-position: left 10px;
+    padding-left: 15px;
+}
+
+.tintungtrang-xemtiep {
+    text-align: right;
+}
+
+.tintungtrang-xemtiep > a {
+    color: red;
+    text-decoration: underline;
+}
+
+.dong-chan, .dong-le {
+    padding: 10px 0;
+    display: flex;
+    border-bottom: solid 1px #e2e2e2;
+}
+
+.anhdaidien-trai {
+    flex: 0 0 30%;
+    max-width: 30%;
+}
+
+.noidung-phai {
+    flex: 0 0 70%;
+    max-width: 70%;
+}
+
+.anhdaidien-trai img {
+    width: 96%;
+    aspect-ratio: 3/2;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.tieude {
+    font-weight: 500;
+    font-size: 0.9rem;
+    line-height: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.thoigian {
+    font-style: italic;
+    text-align: right;
+    color: #0000009e;
+    font-size: 0.9rem;
+    line-height: 1rem;
 }

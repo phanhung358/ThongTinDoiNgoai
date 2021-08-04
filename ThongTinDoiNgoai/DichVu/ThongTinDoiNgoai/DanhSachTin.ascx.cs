@@ -25,7 +25,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                 {
                     sWebID = sLoai.Substring(1);
                 }
-            }    
+            }
             if (!IsPostBack)
             {
 
@@ -141,6 +141,20 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
 
         private void addData()
         {
+            bool bMobie = false;
+            string sLoai = Request.UserAgent.ToLowerInvariant();
+            if ((sLoai.Contains("mobile") || sLoai.Contains("blackberry") || sLoai.Contains("iphone")))
+            {
+                bMobie = true;
+            }
+
+            if (bMobie)
+                addData_Mobile();
+            else
+                addData_Web();
+        }
+
+        private void addData_Web(){
             if (sWebID != "0")
             {
                 StringBuilder str = new StringBuilder();
@@ -170,7 +184,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                         {
                             TenWeb = ds1.Tables[0].Rows[0]["TenWeb"].ToString().ToUpper();
                         }
-                        
+
                         str.AppendFormat("<div class='demuc'>{0}</div>", TenWeb);
                         str.Append("<div class='danhsachtin-nen'>");
                         for (int i = TuBanGhi; i < DenBanGhi; i++)
@@ -186,7 +200,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                             str.Append("</div>");
                             str.Append("<div class='noidung-phai'>");
                             str.Append("<div class='dongtieude'>");
-                            str.AppendFormat("<div class='tieude'>{0}</div>", row["TieuDe"].ToString());
+                            str.AppendFormat("<div class='tieude'><a href='{1}.html'>{0}</a></div>", row["TieuDe"].ToString(), "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim());
                             str.AppendFormat("<div class='thoigian'>{0}</div>", DateTime.Parse(row["ThoiGian"].ToString()).ToString("dd/MM/yyyy - HH:mm"));
 
                             str.Append("</div>");
@@ -196,6 +210,74 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                             str.Append("</div>");
                             str.Append("</div>");
                             str.Append("</div>");
+                        }
+                        str.Append("</div>");
+                    }
+                    else
+                    {
+                        str.Append("<div class='dong-chan'>");
+                        str.Append("<div class='rong'>Thông tin chưa được cập nhật</div>");
+                        str.Append("</div>");
+                    }
+                }
+                divDanhSach.InnerHtml = str.ToString();
+            }
+        }
+
+        private void addData_Mobile()
+        {
+            if (sWebID != "0")
+            {
+                StringBuilder str = new StringBuilder();
+                //=============================================
+                using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1, 0, sWebID))
+                {
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        //Phân trang===============================================
+                        int iSoTin = int.Parse(drpSoTin.SelectedValue) * (Static.PhanTrangThu - 1);
+                        if (ds.Tables[0].Rows.Count <= iSoTin && Static.PhanTrangThu != 1)
+                            Static.PhanTrangThu = Static.PhanTrangThu - 1;
+
+                        int TrangHienTai = Static.PhanTrangThu;
+                        int TongSoTin = ds.Tables[0].Rows.Count;
+                        int SoTinTrenTrang = Convert.ToInt32(drpSoTin.SelectedValue);
+                        PhanTrang(TongSoTin, SoTinTrenTrang, TrangHienTai, lblPhanTrang);
+                        int TuBanGhi = (TrangHienTai - 1) * SoTinTrenTrang;
+                        int DenBanGhi = (TrangHienTai * SoTinTrenTrang) > TongSoTin ? TongSoTin : TrangHienTai * SoTinTrenTrang;
+                        if (TongSoTin > SoTinTrenTrang)
+                            tblPhanTrang.Visible = true;
+                        //End phân trang==========================================
+
+                        string TenWeb = "";
+                        DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, sWebID);
+                        if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+                        {
+                            TenWeb = ds1.Tables[0].Rows[0]["TenWeb"].ToString().ToUpper();
+                        }
+
+                        str.AppendFormat("<div class='demuc'>{0}</div>", TenWeb);
+                        str.Append("<div class='danhsachtin-nen'>");
+                        for (int i = TuBanGhi; i < DenBanGhi; i++)
+                        {
+                            DataRow row = ds.Tables[0].Rows[i];
+
+                            str.AppendFormat("<a href='{0}.html'>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim());
+                            if (i % 2 == 0)
+                                str.Append("<div class='dong-chan'>");
+                            else
+                                str.Append("<div class='dong-le'>");
+                            str.Append("<div class='anhdaidien-trai'>");
+                            str.AppendFormat("<img src='{0}' />", string.IsNullOrEmpty(row["AnhDaiDien"].ToString()) ? Static.AppPath() + "/Images/no_image.png" : row["AnhDaiDien"].ToString());
+                            str.Append("</div>");
+                            str.Append("<div class='noidung-phai'>");
+                            str.Append("<div class='dongtieude'>");
+                            str.AppendFormat("<div class='tieude'>{0}</div>", row["TieuDe"].ToString());
+                            str.AppendFormat("<div class='thoigian'>{0}</div>", DateTime.Parse(row["ThoiGian"].ToString()).ToString("dd/MM/yyyy - HH:mm"));
+                            str.Append("</div>");
+                            str.Append("</div>");
+                            str.Append("</div>");
+                            str.Append("</a>");
                         }
                         str.Append("</div>");
                     }
