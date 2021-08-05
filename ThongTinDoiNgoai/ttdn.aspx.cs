@@ -49,6 +49,7 @@ namespace ThongTinDoiNgoai
                 bMobie = true;
             }
 
+            str.Append("<div class='menu-trai-vien'>");
             if (bMobie)
             {
                 str.Append("<script type=\"text/javascript\">");
@@ -106,6 +107,7 @@ namespace ThongTinDoiNgoai
                 str.Append("</nav>");
                 str.Append("</header>");
             }
+            str.Append("</div>");
 
             divMenuTrai.InnerHtml = str.ToString();
         }
@@ -160,6 +162,8 @@ namespace ThongTinDoiNgoai
                     {
                         DataRow row = ds.Tables[0].Rows[i];
                         str.Append("<div class='tinmoi-mautin'>");
+                        if (!string.IsNullOrEmpty(row["AnhDaiDien"].ToString()))
+                            str.AppendFormat("<img src='{0}'>", row["AnhDaiDien"].ToString());
                         str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
                         str.Append("</div>");
                     }
@@ -334,6 +338,7 @@ namespace ThongTinDoiNgoai
 
                     str.AppendFormat("<div class='chitiet-noidung'>{0}</div>", NoiDung.DocumentNode.InnerHtml);
                     str.AppendFormat("<div class='chitiet-tacgia'><p>{0}</p></div>", row["TacGia"].ToString());
+                    str.AppendFormat("<div class='baivietgoc'><a href='{0}' target='_blank'>>>><i>Xem bài viết gốc</i></a></div>", row["BaiViet_Url"].ToString());
                     str.Append("</div>");
                 }
                 str.Append("</div>");

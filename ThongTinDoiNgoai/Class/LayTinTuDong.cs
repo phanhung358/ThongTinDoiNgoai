@@ -105,17 +105,17 @@ namespace ThongTinDoiNgoai
                                         if (!string.IsNullOrEmpty(XBaiViet_Url) && item.SelectSingleNode(XBaiViet_Url) != null)
                                         {
                                             BaiViet_Url = item.SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
-                                            TieuDe = item.SelectSingleNode(XBaiViet_Url).InnerText;
+                                            TieuDe = item.SelectSingleNode(XBaiViet_Url).InnerText.Replace("&nbsp;", " ").Trim();
                                         }
                                         else if (!string.IsNullOrEmpty(XBaiViet_Url1) && item.SelectSingleNode(XBaiViet_Url1) != null)
                                         {
                                             BaiViet_Url = item.SelectSingleNode(XBaiViet_Url1).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
-                                            TieuDe = item.SelectSingleNode(XBaiViet_Url1).InnerText;
+                                            TieuDe = item.SelectSingleNode(XBaiViet_Url1).InnerText.Replace("&nbsp;", " ").Trim();
                                         }
                                         else if (!string.IsNullOrEmpty(XBaiViet_Url2) && item.SelectSingleNode(XBaiViet_Url2) != null)
                                         {
                                             BaiViet_Url = item.SelectSingleNode(XBaiViet_Url2).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
-                                            TieuDe = item.SelectSingleNode(XBaiViet_Url2).InnerText;
+                                            TieuDe = item.SelectSingleNode(XBaiViet_Url2).InnerText.Replace("&nbsp;", " ").Trim();
                                         }
                                         if (!string.IsNullOrEmpty(XAnhDaiDien) && item.SelectSingleNode(XAnhDaiDien) != null)
                                         {
