@@ -291,6 +291,9 @@ namespace ThongTinDoiNgoai
                                         
                                         if (NoiDung != null && !string.IsNullOrEmpty(NoiDung.InnerHtml) && (!string.IsNullOrEmpty(item[5].ToString()) || scheck == ""))
                                         {
+                                            if (rowCM["DiaChiWeb"].ToString() == "https://vietnam.vn" && NoiDung.InnerHtml.IndexOf("<div class=\"clean\"></div>") != -1)
+                                                NoiDung.InnerHtml = NoiDung.InnerHtml.Remove(NoiDung.InnerHtml.IndexOf("<div class=\"clean\"></div>"));
+
                                             string DirUpload = ConfigurationManager.AppSettings["ThuMuc"].Replace("\\", "/") + "/UploadFiles/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + rowCM["DiaChiWeb"].ToString().Remove(0, rowCM["DiaChiWeb"].ToString().IndexOf("/") + 2) + "/";
                                             var dsFile = NoiDung.SelectNodes(".//img");
                                             if (dsFile != null)

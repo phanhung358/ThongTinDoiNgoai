@@ -231,8 +231,15 @@ namespace ThongTinDoiNgoai
 
         private void addData_ChiTiet()
         {
+            bool bMobie = false;
+            string sLoai = Request.UserAgent.ToLowerInvariant();
+            if ((sLoai.Contains("mobile") || sLoai.Contains("blackberry") || sLoai.Contains("iphone")))
+            {
+                bMobie = true;
+            }
+
             string[] arr = Request.QueryString["loai"].ToLower().Split('-');
-            string sLoai = arr[arr.Length - 1];
+            sLoai = arr[arr.Length - 1];
             if (sLoai.Length > 1)
             {
                 string sBaiVietID = sLoai.Substring(1);
@@ -288,7 +295,7 @@ namespace ThongTinDoiNgoai
                                             {
                                                 if (css.Contains("width") && !css.Contains("max-width"))
                                                 {
-                                                    if (Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 850)
+                                                    if (Convert.ToInt32(new string(css.Where(x => char.IsDigit(x)).ToArray())) > 850 || bMobie)
                                                         newstyle += "width: 100%; ";
                                                     else
                                                         newstyle += css.Trim() + "; ";
@@ -316,10 +323,10 @@ namespace ThongTinDoiNgoai
                                         {
                                             if (file.Attributes["width"] != null && !string.IsNullOrEmpty(file.Attributes["width"].Value))
                                             {
-                                                if (Convert.ToInt32(file.Attributes["width"].Value) > 850)
+                                                if (Convert.ToInt32(file.Attributes["width"].Value) > 850 || bMobie)
                                                     img = img.Replace(string.Format("width=\"{0}\"", file.Attributes["width"].Value), "width=\"100%\"");
                                             }
-                                            else if (image.Width > 850)
+                                            else if (image.Width > 850 || bMobie)
                                                 img = img.Replace(">", " width=\"100%\">");
                                             if (file.Attributes["height"] != null && !string.IsNullOrEmpty(file.Attributes["height"].Value))
                                                 img = img.Replace(string.Format("height=\"{0}\"", file.Attributes["height"].Value), "height=\"auto\"");
@@ -327,6 +334,56 @@ namespace ThongTinDoiNgoai
                                     }
 
                                     NoiDung.DocumentNode.InnerHtml = NoiDung.DocumentNode.InnerHtml.Replace(file.OuterHtml, img);
+                                }
+                            }
+
+                            var dsIfame = NoiDung.DocumentNode.SelectNodes(".//iframe");
+                            if (dsIfame != null && bMobie)
+                            {
+                                foreach (var frame in dsIfame)
+                                {
+                                    var iframe = frame.OuterHtml;
+                                    if (frame.Attributes["style"] != null)
+                                    {
+                                        string[] st = frame.Attributes["style"].Value.Split(';');
+                                        string newstyle = "";
+                                        int c = 0;
+                                        foreach (var css in st)
+                                        {
+                                            if (css.Contains("width") && !css.Contains("max-width"))
+                                            {
+                                                newstyle += "width: 100%; ";
+                                            }
+                                            else
+                                            {
+
+                                                if (css.Contains("height"))
+                                                {
+                                                    newstyle += "height: auto; ";
+                                                    c++;
+                                                }
+                                                else
+                                                {
+                                                    newstyle += css.Trim() == "" ? "" : css.Trim() + "; ";
+                                                    c++;
+                                                }
+                                            }
+                                        }
+                                        if (c == st.Length)
+                                            newstyle += "width: 100%; ";
+                                        iframe = iframe.Replace(frame.Attributes["style"].Value, newstyle);
+                                    }
+                                    else
+                                    {
+                                        if (frame.Attributes["width"] != null && !string.IsNullOrEmpty(frame.Attributes["width"].Value))
+                                        {
+                                            iframe = iframe.Replace(string.Format("width=\"{0}\"", frame.Attributes["width"].Value), "width=\"100%\"");
+                                        }
+                                        if (frame.Attributes["height"] != null && !string.IsNullOrEmpty(frame.Attributes["height"].Value))
+                                            iframe = iframe.Replace(string.Format("height=\"{0}\"", frame.Attributes["height"].Value), "height=\"auto\"");
+                                    }
+
+                                    NoiDung.DocumentNode.InnerHtml = NoiDung.DocumentNode.InnerHtml.Replace(frame.OuterHtml, iframe);
                                 }
                             }
                         }

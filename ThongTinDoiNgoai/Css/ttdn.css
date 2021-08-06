@@ -148,6 +148,7 @@ a:hover {
     height: 44px;
     aspect-ratio: 3/2;
     margin-right: 3px;
+    border-radius: 5px;
 }
 
 .tinmoi-mautin a {
@@ -268,20 +269,26 @@ a:hover {
 .chitiet-noidung {
     word-break: keep-all;
     max-width: 100%;
-    overflow-x: hidden;
-    overflow-y: visible;
-    line-height: 1.7em;
+    overflow: hidden;
     margin-bottom: 15px !important;
+}
+
+.chitiet-noidung p, .chitiet-noidung span {
+    font-size: 1rem;
+    line-height: 1.7em;
 }
 
 .chitiet-tacgia {
     text-align: right;
-    font-weight: 700;
+}
+
+.chitiet-tacgia p {
+    font-weight: 600;
     line-height: 1.5;
     font-style: italic;
 }
 
 .chitiet-tomtat {
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 10px !important;
 }

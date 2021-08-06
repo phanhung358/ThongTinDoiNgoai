@@ -129,7 +129,7 @@
     </div>
 </div>
 
-<div style="width: 100%; clear: both" class="Dong_Table">
+<div style="width: 100%; clear: both; display: none;" class="Dong_Table">
     <div class="Dong_Cell" style="width: 115px;">Định dạng Thời gian:</div>
     <div class="Dong_Cell">
         <asp:TextBox ID="txtDinhDangThoiGian" runat="server" Width="100%"></asp:TextBox>
