@@ -19,6 +19,7 @@
                 <asp:ListItem Value="0">[Tất cả]</asp:ListItem>
                 <asp:ListItem Value="1" Selected="True">Thông tin đối ngoại</asp:ListItem>
                 <asp:ListItem Value="2">Thông tin báo chí</asp:ListItem>
+                <asp:ListItem Value="3">Sở, ban, ngành</asp:ListItem>
             </asp:DropDownList>
         </td>
         <td style="width: 65px;">Trang web:</td>

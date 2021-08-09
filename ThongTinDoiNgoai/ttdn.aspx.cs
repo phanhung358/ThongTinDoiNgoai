@@ -170,47 +170,41 @@ namespace ThongTinDoiNgoai
                 }
                 str.Append("</div>");
                 str.Append("</div>");
-                str.Append("<div class='tintungtrang'>");
-                str.Append("<div class='tintungtrang-tieude'>Tin từ Báo Thừa Thiên Huế</div>");
-                str.Append("<div class='tintungtrang-danhsach'>");
-                DataSet ds1 = db.GetDataSet("TTDN_BAIVIET_SELECT", 3, 0, 0, 0, 0, "https://baothuathienhue.vn");
-                if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+
+                str.Append("<div class='tintungtrang-vien'>");
+                DataSet dsSo = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 1);
+                if (dsSo != null && dsSo.Tables.Count > 0 && dsSo.Tables[0].Rows.Count > 0)
                 {
-                    int count = ds1.Tables[0].Rows.Count < 3 ? ds1.Tables[0].Rows.Count : 3;
-                    for (int i = 0; i < count; i++)
+                    for (int j = 0; j < dsSo.Tables[0].Rows.Count; j++)
                     {
-                        DataRow row = ds1.Tables[0].Rows[i];
-                        str.Append("<div class='tintungtrang-mautin'>");
-                        str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
+                        DataRow rowSo = dsSo.Tables[0].Rows[j];
+                        string sClass = "";
+                        if (j + 1 == dsSo.Tables[0].Rows.Count && j % 2 == 0)
+                            sClass = "width-100";
+
+                        str.AppendFormat("<div class='tintungtrang {0}'>", sClass);
+                        str.AppendFormat("<div class='tintungtrang-tieude'>Tin từ {0}</div>", rowSo["DiaChiWeb"].ToString().Contains("trt.com.vn") ? "TRT" : rowSo["TenWeb"].ToString());
+                        str.Append("<div class='tintungtrang-danhsach'>");
+                        DataSet ds1 = db.GetDataSet("TTDN_BAIVIET_SELECT", 3, 0, 0, 0, 0, rowSo["DiaChiWeb"].ToString());
+                        if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+                        {
+                            int count = ds1.Tables[0].Rows.Count < 3 ? ds1.Tables[0].Rows.Count : 3;
+                            for (int i = 0; i < count; i++)
+                            {
+                                DataRow row = ds1.Tables[0].Rows[i];
+                                str.Append("<div class='tintungtrang-mautin'>");
+                                str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
+                                str.Append("</div>");
+                            }
+                            DataRow row1 = ds1.Tables[0].Rows[0];
+                            str.Append("<div class='tintungtrang-xemtiep'>");
+                            str.AppendFormat("<a href='{0}.html'>Xem tiếp</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row1["TenWeb"].ToString()) + "-a" + row1["WebID"].ToString().Trim());
+                            str.Append("</div>");
+                        }
+                        str.Append("</div>");
                         str.Append("</div>");
                     }
-                    DataRow row1 = ds1.Tables[0].Rows[0];
-                    str.Append("<div class='tintungtrang-xemtiep'>");
-                    str.AppendFormat("<a href='{0}.html'>Xem tiếp</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row1["TenWeb"].ToString()) + "-a" + row1["WebID"].ToString().Trim());
-                    str.Append("</div>");
                 }
-                str.Append("</div>");
-                str.Append("</div>");
-                str.Append("<div class='tintungtrang'>");
-                str.Append("<div class='tintungtrang-tieude'>Tin từ TRT</div>");
-                str.Append("<div class='tintungtrang-danhsach'>");
-                DataSet ds2 = db.GetDataSet("TTDN_BAIVIET_SELECT", 3, 0, 0, 0, 0, "http://www.trt.com.vn");
-                if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[0].Rows.Count > 0)
-                {
-                    int count = ds2.Tables[0].Rows.Count < 3 ? ds2.Tables[0].Rows.Count : 3;
-                    for (int i = 0; i < count; i++)
-                    {
-                        DataRow row = ds2.Tables[0].Rows[i];
-                        str.Append("<div class='tintungtrang-mautin'>");
-                        str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
-                        str.Append("</div>");
-                    }
-                    DataRow row1 = ds2.Tables[0].Rows[0];
-                    str.Append("<div class='tintungtrang-xemtiep'>");
-                    str.AppendFormat("<a href='{0}.html'>Xem tiếp</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row1["TenWeb"].ToString()) + "-a" + row1["WebID"].ToString().Trim());
-                    str.Append("</div>");
-                }
-                str.Append("</div>");
                 str.Append("</div>");
                 str.Append("</div>");
 
@@ -243,6 +237,7 @@ namespace ThongTinDoiNgoai
             if (sLoai.Length > 1)
             {
                 string sBaiVietID = sLoai.Substring(1);
+                string sChuyenMucID = "0";
                 StringBuilder str = new StringBuilder();
                 str.Append("<div class='vung-chinh-vien'>");
                 DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 0, sBaiVietID);
@@ -259,6 +254,7 @@ namespace ThongTinDoiNgoai
                         DiaChiWeb = rowWeb["DiaChiWeb"].ToString();
                         TenWeb = rowWeb["TenWeb"].ToString().ToUpper();
                     }
+                    sChuyenMucID = row["ChuyenMucID"].ToString();
 
                     str.AppendFormat("<div class='demuc'>{0}</div>", TenWeb);
                     str.Append("<div class='chitiet'>");
@@ -396,6 +392,21 @@ namespace ThongTinDoiNgoai
                     str.AppendFormat("<div class='chitiet-noidung'>{0}</div>", NoiDung.DocumentNode.InnerHtml);
                     str.AppendFormat("<div class='chitiet-tacgia'><p>{0}</p></div>", row["TacGia"].ToString());
                     str.AppendFormat("<div class='baivietgoc'><a href='{0}' target='_blank'>>>><i>Xem bài viết gốc</i></a></div>", row["BaiViet_Url"].ToString());
+                    str.Append("</div>");
+
+                    str.Append("<div class='tinkhac-demuc'>Tin khác:</div>");
+                    str.Append("<div class='tinkhac-danhsach'>");
+                    DataSet dsKhac = db.GetDataSet("TTDN_BAIVIET_SELECT", 2, sBaiVietID, 0, sChuyenMucID);
+                    if (dsKhac != null && dsKhac.Tables.Count > 0 && dsKhac.Tables[0].Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dsKhac.Tables[0].Rows.Count; i++)
+                        {
+                            DataRow rowKhac = dsKhac.Tables[0].Rows[i];
+                            str.Append("<div class='tinkhac-mautin'>");
+                            str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(rowKhac["TieuDe"].ToString()) + "-b" + rowKhac["BaiVietID"].ToString().Trim(), rowKhac["TieuDe"].ToString().Trim());
+                            str.Append("</div>");
+                        }
+                    }
                     str.Append("</div>");
                 }
                 str.Append("</div>");

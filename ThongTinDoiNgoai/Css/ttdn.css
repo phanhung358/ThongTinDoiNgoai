@@ -81,19 +81,19 @@ a:hover {
     padding-top: 0;
 }
 
-.menu-trai ul li ul li {
-    background: url(Home/IconGiaoViec.png) no-repeat;
-    background-position: left 8px;
-    padding: 3px 0;
-    margin: 0;
-    padding-left: 15px;
-    list-style: none;
-    background-size: 9px;
-    border-bottom: 0;
-    font-weight: 500;
-    font-size: 16px;
-    transition:all 0.3s ease-in-out;
-}
+    .menu-trai ul li ul li {
+        background: url(Home/IconGiaoViec.png) no-repeat;
+        background-position: left 8px;
+        padding: 3px 0;
+        margin: 0;
+        padding-left: 15px;
+        list-style: none;
+        background-size: 12px;
+        border-bottom: 0;
+        font-weight: 500;
+        font-size: 16px;
+        transition: all 0.3s ease-in-out;
+    }
 
 .vung-chinh {
     width: 75%;
@@ -111,10 +111,6 @@ a:hover {
 
 .tinmoi {
     padding-top: 0;
-}
-
-.tintungtrang:last-child {
-    border-bottom: none;
 }
 
 .tinmoi-tieude, .tintungtrang-tieude, .demuc {
@@ -156,6 +152,20 @@ a:hover {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.tintungtrang-vien {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.tintungtrang {
+    width: 49.5%;
+}
+
+.width-100 {
+    width: 100% !important;
 }
 
 .tintungtrang-mautin {
@@ -291,4 +301,24 @@ a:hover {
 .chitiet-tomtat {
     font-weight: 600;
     margin-bottom: 10px !important;
+}
+
+.tinkhac-demuc {
+    margin-top: 15px;
+    font-size: 19px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.tinkhac-danhsach {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.tinkhac-mautin {
+    padding: 3px 0;
+    background: url(Home/IconGiaoTiep.png) no-repeat;
+    background-position: left 8px;
+    background-size: 12px;
+    padding-left: 17px;
 }
