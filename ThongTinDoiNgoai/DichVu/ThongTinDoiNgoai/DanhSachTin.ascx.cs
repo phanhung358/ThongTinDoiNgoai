@@ -226,29 +226,17 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
 
         private void addData_Mobile()
         {
+            tblPhanTrang.Visible = false;
+            WebID.Value = sWebID;
+            LoadMore.Text = "<script type='text/javascript' src='/js/LoadMore.js'></script>";
             if (sWebID != "0")
             {
                 StringBuilder str = new StringBuilder();
                 //=============================================
-                using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1, 0, sWebID))
+                using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT_MOBILE", 0, 0, sWebID))
                 {
                     if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                     {
-                        //Phân trang===============================================
-                        int iSoTin = int.Parse(drpSoTin.SelectedValue) * (Static.PhanTrangThu - 1);
-                        if (ds.Tables[0].Rows.Count <= iSoTin && Static.PhanTrangThu != 1)
-                            Static.PhanTrangThu = Static.PhanTrangThu - 1;
-
-                        int TrangHienTai = Static.PhanTrangThu;
-                        int TongSoTin = ds.Tables[0].Rows.Count;
-                        int SoTinTrenTrang = Convert.ToInt32(drpSoTin.SelectedValue);
-                        PhanTrang(TongSoTin, SoTinTrenTrang, TrangHienTai, lblPhanTrang);
-                        int TuBanGhi = (TrangHienTai - 1) * SoTinTrenTrang;
-                        int DenBanGhi = (TrangHienTai * SoTinTrenTrang) > TongSoTin ? TongSoTin : TrangHienTai * SoTinTrenTrang;
-                        if (TongSoTin > SoTinTrenTrang)
-                            tblPhanTrang.Visible = true;
-                        //End phân trang==========================================
-
                         string TenWeb = "";
                         DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, sWebID);
                         if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
@@ -257,8 +245,8 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                         }
 
                         str.AppendFormat("<div class='demuc'>{0}</div>", TenWeb);
-                        str.Append("<div class='danhsachtin-nen'>");
-                        for (int i = TuBanGhi; i < DenBanGhi; i++)
+                        str.Append("<div class='danhsachtin-nen' id='DanhSachTin'>");
+                        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                         {
                             DataRow row = ds.Tables[0].Rows[i];
 

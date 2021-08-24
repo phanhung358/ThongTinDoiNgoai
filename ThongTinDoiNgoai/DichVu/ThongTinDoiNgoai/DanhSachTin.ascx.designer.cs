@@ -24,6 +24,15 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDanhSach;
 
         /// <summary>
+        /// WebID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField WebID;
+
+        /// <summary>
         /// tblPhanTrang control.
         /// </summary>
         /// <remarks>
@@ -49,5 +58,14 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPhanTrang;
+
+        /// <summary>
+        /// LoadMore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal LoadMore;
     }
 }

@@ -71,10 +71,10 @@ namespace ThongTinDoiNgoai
             else
                 str.Append("<div class='menu-trai-danhmuc'>Danh mục</div>");
             str.Append("<ul>");
-            DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 1);
+            str.AppendFormat("<li class='trangchu'><a href='{0}'>Trang chủ</a></li>", Static.AppPath() + "/thongtindoingoai/");
+            DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 3);
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                str.AppendFormat("<li class='trangchu'><a href='{0}'>Trang chủ</a></li>", Static.AppPath() + "/thongtindoingoai/");
                 str.AppendFormat("<li class='cocon'>Tin từ Sở, Ban, Ngành");
                 str.Append("<ul>");
                 foreach (DataRow row in ds.Tables[0].Rows)
@@ -84,21 +84,29 @@ namespace ThongTinDoiNgoai
                 str.Append("</ul>");
                 str.Append("</li>");
             }
+            ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 1);
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    str.AppendFormat("<li class='cocon'><a href='{1}.html'>{0}</a></li>", row["TenWeb"].ToString(), "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TenWeb"].ToString()) + "-a" + row["WebID"].ToString().Trim());
+                }
+            }
             //ds = db.GetDataSet("VANBAN_DM_LOAIVANBAN_SELECT", 0);
             //if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             //{
-                str.AppendFormat("<li class='cocon'>Văn bản");
-                str.Append("<ul>");
-                //foreach (DataRow row in ds.Tables[0].Rows)
-                //{
-                //    str.AppendFormat("<li><a href='{1}.html'>{0}</a></li>", row["TenLoaiVanBan"].ToString(), sChucNang + "/" + ChuyenTuCoDauSangKoDau_Url(row["TenLoaiVanBan"].ToString()) + "-a" + row["LoaiVanBanID"].ToString().Trim());
-                //}
-                for (int i = 0; i < 5; i++)
-                {
-                    str.AppendFormat("<li><a href=''>{0}</a></li>", "Văn bản hành chính");
-                }    
-                str.Append("</ul>");
-                str.Append("</li>");
+            str.AppendFormat("<li class='cocon'>Văn bản");
+            str.Append("<ul>");
+            //foreach (DataRow row in ds.Tables[0].Rows)
+            //{
+            //    str.AppendFormat("<li><a href='{1}.html'>{0}</a></li>", row["TenLoaiVanBan"].ToString(), sChucNang + "/" + ChuyenTuCoDauSangKoDau_Url(row["TenLoaiVanBan"].ToString()) + "-a" + row["LoaiVanBanID"].ToString().Trim());
+            //}
+            for (int i = 0; i < 5; i++)
+            {
+                str.AppendFormat("<li><a href=''>{0}</a></li>", "Văn bản hành chính");
+            }
+            str.Append("</ul>");
+            str.Append("</li>");
             //}
 
             str.Append("</ul>");
@@ -154,7 +162,7 @@ namespace ThongTinDoiNgoai
                 str.Append("<div class='tinmoi'>");
                 str.Append("<div class='tinmoi-tieude'>Tin mới</div>");
                 str.Append("<div class='tinmoi-danhsach'>");
-                DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1, 0, 0, 0, 1);
+                DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 4);
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     int count = ds.Tables[0].Rows.Count < 20 ? ds.Tables[0].Rows.Count : 20;
@@ -172,20 +180,37 @@ namespace ThongTinDoiNgoai
                 str.Append("</div>");
 
                 str.Append("<div class='tintungtrang-vien'>");
-                DataSet dsSo = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 1);
+                List<DataRow> listWeb = new List<DataRow>();
+                DataSet dsSo = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 3);
                 if (dsSo != null && dsSo.Tables.Count > 0 && dsSo.Tables[0].Rows.Count > 0)
                 {
                     for (int j = 0; j < dsSo.Tables[0].Rows.Count; j++)
                     {
                         DataRow rowSo = dsSo.Tables[0].Rows[j];
-                        string sClass = "";
-                        if (j + 1 == dsSo.Tables[0].Rows.Count && j % 2 == 0)
-                            sClass = "width-100";
+                        listWeb.Add(rowSo);
+                    }
+                }
+                dsSo = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 1);
+                if (dsSo != null && dsSo.Tables.Count > 0 && dsSo.Tables[0].Rows.Count > 0)
+                {
+                    for (int j = 0; j < dsSo.Tables[0].Rows.Count; j++)
+                    {
+                        DataRow rowSo = dsSo.Tables[0].Rows[j];
+                        listWeb.Add(rowSo);
+                    }
+                }
 
+                if (listWeb.Count > 0)
+                {
+                    foreach (DataRow item in listWeb)
+                    {
+                        string sClass = "";
+                        if (listWeb.IndexOf(item) == listWeb.Count - 1 && listWeb.Count % 2 == 1)
+                            sClass = "width-100";
                         str.AppendFormat("<div class='tintungtrang {0}'>", sClass);
-                        str.AppendFormat("<div class='tintungtrang-tieude'>Tin từ {0}</div>", rowSo["DiaChiWeb"].ToString().Contains("trt.com.vn") ? "TRT" : rowSo["TenWeb"].ToString());
+                        str.AppendFormat("<div class='tintungtrang-tieude'>Tin từ {0}</div>", item["DiaChiWeb"].ToString().Contains("trt.com.vn") ? "TRT" : item["TenWeb"].ToString());
                         str.Append("<div class='tintungtrang-danhsach'>");
-                        DataSet ds1 = db.GetDataSet("TTDN_BAIVIET_SELECT", 3, 0, 0, 0, 0, rowSo["DiaChiWeb"].ToString());
+                        DataSet ds1 = db.GetDataSet("TTDN_BAIVIET_SELECT", 3, 0, 0, 0, 0, item["DiaChiWeb"].ToString());
                         if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
                         {
                             int count = ds1.Tables[0].Rows.Count < 3 ? ds1.Tables[0].Rows.Count : 3;
@@ -193,6 +218,8 @@ namespace ThongTinDoiNgoai
                             {
                                 DataRow row = ds1.Tables[0].Rows[i];
                                 str.Append("<div class='tintungtrang-mautin'>");
+                                if (!string.IsNullOrEmpty(row["AnhDaiDien"].ToString()))
+                                    str.AppendFormat("<img src='{0}'>", row["AnhDaiDien"].ToString());
                                 str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
                                 str.Append("</div>");
                             }
@@ -386,7 +413,7 @@ namespace ThongTinDoiNgoai
                     }
                     catch (Exception ex)
                     {
-
+                        
                     }
 
                     str.AppendFormat("<div class='chitiet-noidung'>{0}</div>", NoiDung.DocumentNode.InnerHtml);
@@ -444,7 +471,7 @@ namespace ThongTinDoiNgoai
             string str = strUrl.Trim().ToLower();
             while (str.LastIndexOf("  ") > 0)
                 str = str.Replace("  ", "");
-            return str.Replace(" ", "-").Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "-").Replace("=", "").Replace("(", "").Replace(")", "").Replace("+", "").Replace(",", "").Replace(">", "").Replace("<", "").Replace("'", "").Replace("đ", "d").Replace("á", "a").Replace("à", "a").Replace("ạ", "a").Replace("ả", "a").Replace("ã", "a").Replace("ă", "a").Replace("ắ", "a").Replace("ằ", "a").Replace("ặ", "a").Replace("ẳ", "a").Replace("ẵ", "a").Replace("â", "a").Replace("ấ", "a").Replace("ầ", "a").Replace("ậ", "a").Replace("ẩ", "a").Replace("ẫ", "a").Replace("ê", "e").Replace("ế", "e").Replace("ề", "e").Replace("ể", "e").Replace("ễ", "e").Replace("ệ", "e").Replace("e", "e").Replace("é", "e").Replace("è", "e").Replace("ẹ", "e").Replace("ẻ", "e").Replace("ẽ", "e").Replace("i", "i").Replace("í", "i").Replace("ì", "i").Replace("ị", "i").Replace("ỉ", "i").Replace("ĩ", "i").Replace("o", "o").Replace("ó", "o").Replace("ò", "o").Replace("ọ", "o").Replace("ỏ", "o").Replace("õ", "o").Replace("ô", "o").Replace("ố", "o").Replace("ồ", "o").Replace("ộ", "o").Replace("ổ", "o").Replace("ỗ", "o").Replace("ơ", "o").Replace("ớ", "o").Replace("ờ", "o").Replace("ợ", "o").Replace("ở", "o").Replace("ỡ", "o").Replace("u", "u").Replace("ú", "u").Replace("ù", "u").Replace("ụ", "u").Replace("ủ", "u").Replace("ũ", "u").Replace("ư", "u").Replace("ứ", "u").Replace("ừ", "u").Replace("ự", "u").Replace("ử", "u").Replace("ữ", "u").Replace("y", "y").Replace("ý", "y").Replace("ỳ", "y").Replace("ỵ", "y").Replace("ỷ", "y").Replace("ỹ", "y").Replace("/", "-").Replace("?", "-").Replace("\'", "").Replace("\"", "").Replace(":", "-").Replace(";", "-").Replace("--", "-");
+            return str.Replace(" ", "-").Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "-").Replace("=", "").Replace("(", "").Replace(")", "").Replace("+", "").Replace(",", "").Replace(">", "").Replace("<", "").Replace("'", "").Replace("đ", "d").Replace("á", "a").Replace("à", "a").Replace("ạ", "a").Replace("ả", "a").Replace("ã", "a").Replace("ă", "a").Replace("ắ", "a").Replace("ằ", "a").Replace("ặ", "a").Replace("ẳ", "a").Replace("ẵ", "a").Replace("â", "a").Replace("ấ", "a").Replace("ầ", "a").Replace("ậ", "a").Replace("ẩ", "a").Replace("ẫ", "a").Replace("ê", "e").Replace("ế", "e").Replace("ề", "e").Replace("ể", "e").Replace("ễ", "e").Replace("ệ", "e").Replace("e", "e").Replace("é", "e").Replace("è", "e").Replace("ẹ", "e").Replace("ẻ", "e").Replace("ẽ", "e").Replace("i", "i").Replace("í", "i").Replace("ì", "i").Replace("ị", "i").Replace("ỉ", "i").Replace("ĩ", "i").Replace("o", "o").Replace("ó", "o").Replace("ò", "o").Replace("ọ", "o").Replace("ỏ", "o").Replace("õ", "o").Replace("ô", "o").Replace("ố", "o").Replace("ồ", "o").Replace("ộ", "o").Replace("ổ", "o").Replace("ỗ", "o").Replace("ơ", "o").Replace("ớ", "o").Replace("ờ", "o").Replace("ợ", "o").Replace("ở", "o").Replace("ỡ", "o").Replace("u", "u").Replace("ú", "u").Replace("ù", "u").Replace("ụ", "u").Replace("ủ", "u").Replace("ũ", "u").Replace("ư", "u").Replace("ứ", "u").Replace("ừ", "u").Replace("ự", "u").Replace("ử", "u").Replace("ữ", "u").Replace("y", "y").Replace("ý", "y").Replace("ỳ", "y").Replace("ỵ", "y").Replace("ỷ", "y").Replace("ỹ", "y").Replace("/", "-").Replace("?", "-").Replace("\'", "").Replace("\"", "").Replace(":", "-").Replace(";", "-").Replace("--", "-").Replace("“", "").Replace("”", "");
         }
     }
 }

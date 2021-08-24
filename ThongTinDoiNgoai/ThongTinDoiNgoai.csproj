@@ -402,6 +402,7 @@
     <Content Include="Js\jquery.fancybox.pack.js" />
     <Content Include="Js\keyboard_type.js" />
     <Content Include="Js\keyboard_type11.js" />
+    <Content Include="Js\LoadMore.js" />
     <Content Include="Js\map.js" />
     <Content Include="Js\newCalendar.js" />
     <Content Include="Js\PDFSigning.min.js" />
@@ -658,6 +659,9 @@
     <Compile Include="DichVu\ThongTinDoiNgoai\DanhSachTin.ascx.designer.cs">
       <DependentUpon>DanhSachTin.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\LoadMore.ashx.cs">
+      <DependentUpon>LoadMore.ashx</DependentUpon>
+    </Compile>
     <Compile Include="DichVu\ThongTinDoiNgoai\QuanLyLoi.ascx.cs">
       <DependentUpon>QuanLyLoi.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -749,6 +753,7 @@
     <Content Include="Css\Home\Thumbs.db" />
     <Content Include="Css\Home\TinNoiBo\Thumbs.db" />
     <Content Include="Css\Thickbox\helpers\Thumbs.db" />
+    <Content Include="DichVu\ThongTinDoiNgoai\LoadMore.ashx" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

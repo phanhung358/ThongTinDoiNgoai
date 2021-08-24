@@ -39,8 +39,7 @@ a:hover {
 }
 
 .menu-trai-vien {
-    position: sticky;
-    top: 10px;
+    
 }
 
 .menu-trai-danhmuc {
@@ -49,6 +48,7 @@ a:hover {
     color: white;
     text-transform: uppercase;
     padding-left: 22px;
+    font-weight: bold;
 }
 
 .menu-trai ul {
@@ -89,7 +89,7 @@ a:hover {
         padding-left: 15px;
         list-style: none;
         background-size: 12px;
-        border-bottom: 0;
+        border-bottom: none;
         font-weight: 500;
         font-size: 16px;
         transition: all 0.3s ease-in-out;
@@ -140,14 +140,14 @@ a:hover {
     display: flex;
 }
 
-.tinmoi-mautin img {
+.tinmoi-mautin img, .tintungtrang-mautin img {
     height: 44px;
     aspect-ratio: 3/2;
     margin-right: 3px;
     border-radius: 5px;
 }
 
-.tinmoi-mautin a {
+.tinmoi-mautin a, .tintungtrang-mautin a {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -173,6 +173,7 @@ a:hover {
     background: url(Home/bulet_xo1.png) no-repeat;
     background-position: left 10px;
     padding-left: 15px;
+    display: flex;
 }
 
 .tintungtrang-xemtiep {
@@ -317,7 +318,7 @@ a:hover {
 
 .tinkhac-mautin {
     padding: 3px 0;
-    background: url(Home/IconGiaoTiep.png) no-repeat;
+    background: url(Home/BulletCon.png) no-repeat;
     background-position: left 8px;
     background-size: 12px;
     padding-left: 17px;

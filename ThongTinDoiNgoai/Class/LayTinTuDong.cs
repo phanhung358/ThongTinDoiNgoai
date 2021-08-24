@@ -380,7 +380,7 @@ namespace ThongTinDoiNgoai
                                             }
 
                                             string sTieuDe = item[3].ToString();
-                                            if (TieuDe != null && !string.IsNullOrEmpty(TieuDe.InnerText) && TieuDe.InnerText.Trim().ToLower().Contains(item[3].ToString().Trim().ToLower().Remove(item[3].ToString().Trim().Length - 3, 3)) && !TieuDe.InnerText.Trim().ToLower().Equals(item[3].ToString().Trim().ToLower()))
+                                            if (TieuDe != null && !string.IsNullOrEmpty(TieuDe.InnerText) && !TieuDe.InnerText.Trim().ToLower().Equals(item[3].ToString().Trim().ToLower()))
                                                 sTieuDe = TieuDe.InnerText.Trim();
 
                                             object[] obj = new object[10];   

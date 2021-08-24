@@ -1,7 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DanhSachTin.ascx.cs" Inherits="ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai.DanhSachTin" %>
 
 <div class="main-vien">
-    <div id="divDanhSach" class="danhsachtin" runat="server"></div>
+    <div id="divDanhSach" runat="server"></div>
+    <asp:HiddenField runat="server" ID="WebID" />
     <table style="width: 100%" class="Vien_Khung" id="tblPhanTrang" runat="server" border="0">
         <tr>
             <td class="PhanTrang_Cot1">Số dòng trên 1 trang:
@@ -18,4 +19,5 @@
             </td>
         </tr>
     </table>
+    <asp:Literal runat="server" ID="LoadMore"></asp:Literal>
 </div>
