@@ -170,8 +170,7 @@ namespace ThongTinDoiNgoai
                     {
                         DataRow row = ds.Tables[0].Rows[i];
                         str.Append("<div class='tinmoi-mautin'>");
-                        if (!string.IsNullOrEmpty(row["AnhDaiDien"].ToString()))
-                            str.AppendFormat("<img src='{0}'>", row["AnhDaiDien"].ToString());
+                        str.AppendFormat("<img src='{0}'>", !string.IsNullOrEmpty(row["AnhDaiDien"].ToString()) ? row["AnhDaiDien"].ToString() : Static.AppPath() + "/Images/no_image.png");
                         str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
                         str.Append("</div>");
                     }
@@ -218,8 +217,7 @@ namespace ThongTinDoiNgoai
                             {
                                 DataRow row = ds1.Tables[0].Rows[i];
                                 str.Append("<div class='tintungtrang-mautin'>");
-                                if (!string.IsNullOrEmpty(row["AnhDaiDien"].ToString()))
-                                    str.AppendFormat("<img src='{0}'>", row["AnhDaiDien"].ToString());
+                                str.AppendFormat("<img src='{0}'>", !string.IsNullOrEmpty(row["AnhDaiDien"].ToString()) ? row["AnhDaiDien"].ToString() : Static.AppPath() + "/Images/no_image.png");
                                 str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
                                 str.Append("</div>");
                             }

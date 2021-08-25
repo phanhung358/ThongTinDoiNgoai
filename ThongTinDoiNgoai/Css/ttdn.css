@@ -54,18 +54,20 @@ a:hover {
 .menu-trai ul {
     padding: 0;
     margin: 0;
-    padding-left: 0px;
-    padding-top: 10px;
 }
 
 .menu-trai ul li {
-    padding: 3px 0;
+    padding: 5px 0;
     margin: 0;
     padding-left: 22px;
     list-style: none;
     border-bottom: 1px solid #d4d4d4;
     font-weight: bold;
     font-size: 17px;
+}
+
+.menu-trai-vien > ul > li, .menu-trai-vien > ul > li > a {
+    color: #007eff;
 }
 
 .menu-trai ul li a:hover {
@@ -81,19 +83,19 @@ a:hover {
     padding-top: 0;
 }
 
-    .menu-trai ul li ul li {
-        background: url(Home/IconGiaoViec.png) no-repeat;
-        background-position: left 8px;
-        padding: 3px 0;
-        margin: 0;
-        padding-left: 15px;
-        list-style: none;
-        background-size: 12px;
-        border-bottom: none;
-        font-weight: 500;
-        font-size: 16px;
-        transition: all 0.3s ease-in-out;
-    }
+.menu-trai ul li ul li {
+    background: url(Home/IconGiaoViec.png) no-repeat;
+    background-position: left 8px;
+    padding: 3px 0;
+    margin: 0;
+    padding-left: 15px;
+    list-style: none;
+    background-size: 12px;
+    border-bottom: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
 
 .vung-chinh {
     width: 75%;
@@ -101,7 +103,14 @@ a:hover {
 }
 
 .vung-chinh-vien {
-    min-height: 75vh;
+    min-height: calc(100vh - 200px);
+}
+
+.main-vien {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .tinmoi, .tintungtrang {
@@ -133,7 +142,7 @@ a:hover {
 
 .tinmoi-mautin {
     width: 49%;
-    padding: 3px 0;
+    padding: 5px 0;
     background: url(Home/bulet_xo1.png) no-repeat;
     background-position: left 10px;
     padding-left: 15px;
@@ -141,15 +150,16 @@ a:hover {
 }
 
 .tinmoi-mautin img, .tintungtrang-mautin img {
-    height: 44px;
+    height: 88px;
     aspect-ratio: 3/2;
-    margin-right: 3px;
+    object-fit: cover;
+    margin-right: 5px;
     border-radius: 5px;
 }
 
 .tinmoi-mautin a, .tintungtrang-mautin a {
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -169,7 +179,7 @@ a:hover {
 }
 
 .tintungtrang-mautin {
-    padding: 3px 0;
+    padding: 5px 0;
     background: url(Home/bulet_xo1.png) no-repeat;
     background-position: left 10px;
     padding-left: 15px;
@@ -186,7 +196,7 @@ a:hover {
 }
 
 .danhsachtin-nen {
-    min-height: 70vh;
+    
 }
 
 .dong-chan, .dong-le {
@@ -218,6 +228,10 @@ a:hover {
 
 .dongtieude {
     padding-right: 4px;
+}
+
+.rong {
+    text-align: center
 }
 
 .tieude {
@@ -317,7 +331,7 @@ a:hover {
 }
 
 .tinkhac-mautin {
-    padding: 3px 0;
+    padding: 5px 0;
     background: url(Home/BulletCon.png) no-repeat;
     background-position: left 8px;
     background-size: 12px;
