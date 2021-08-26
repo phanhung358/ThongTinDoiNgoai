@@ -307,11 +307,11 @@ namespace ThongTinDoiNgoai
                                     {
                                         System.Drawing.Image image = LoadImage(Server.MapPath(strSource));
 
+                                        int c = 0;
                                         if (file.Attributes["style"] != null)
                                         {
                                             string[] st = file.Attributes["style"].Value.Split(';');
                                             string newstyle = "";
-                                            int c = 0;
                                             foreach (var css in st)
                                             {
                                                 if (css.Contains("width") && !css.Contains("max-width"))
@@ -320,27 +320,16 @@ namespace ThongTinDoiNgoai
                                                         newstyle += "width: 100%; ";
                                                     else
                                                         newstyle += css.Trim() + "; ";
+                                                    c = 1;
                                                 }
+                                                else if (css.Contains("height"))
+                                                    newstyle += "height: auto; ";
                                                 else
-                                                {
-
-                                                    if (css.Contains("height"))
-                                                    {
-                                                        newstyle += "height: auto; ";
-                                                        c++;
-                                                    }
-                                                    else
-                                                    {
-                                                        newstyle += css.Trim() == "" ? "" : css.Trim() + "; ";
-                                                        c++;
-                                                    }
-                                                }
+                                                    newstyle += css.Trim() == "" ? "" : css.Trim() + "; ";
                                             }
-                                            if (c == st.Length)
-                                                newstyle += "width: 100%; ";
                                             img = img.Replace(file.Attributes["style"].Value, newstyle);
                                         }
-                                        else
+                                        if (c == 0)
                                         {
                                             if (file.Attributes["width"] != null && !string.IsNullOrEmpty(file.Attributes["width"].Value))
                                             {

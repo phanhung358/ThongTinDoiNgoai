@@ -10,6 +10,11 @@ a, td, div {
     color: #111;
 }
 
+::selection {
+    background-color: teal;
+    color: white;
+}
+
 a:hover {
     color: red;
     text-decoration: underline;

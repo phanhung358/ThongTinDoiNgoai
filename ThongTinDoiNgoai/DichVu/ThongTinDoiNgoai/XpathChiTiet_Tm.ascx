@@ -85,7 +85,7 @@
         padding: 1.5px 0;
     }
 
-    tr:nth-child(5n+2) td {
+    tr:nth-child(6n+1) td {
         padding-top: 10px;
     }
 </style>

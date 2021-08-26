@@ -102,17 +102,17 @@ namespace ThongTinDoiNgoai
                                         string TieuDe = null;
                                         string AnhDaiDien = "";
                                         string ThoiGian = "";
-                                        if (!string.IsNullOrEmpty(XBaiViet_Url) && item.SelectSingleNode(XBaiViet_Url) != null)
+                                        if (!string.IsNullOrEmpty(XBaiViet_Url) && item.SelectSingleNode(XBaiViet_Url) != null && !string.IsNullOrEmpty(item.SelectSingleNode(XBaiViet_Url).InnerText.Replace("&nbsp;", " ").Trim()))
                                         {
                                             BaiViet_Url = item.SelectSingleNode(XBaiViet_Url).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
                                             TieuDe = item.SelectSingleNode(XBaiViet_Url).InnerText.Replace("&nbsp;", " ").Trim();
                                         }
-                                        else if (!string.IsNullOrEmpty(XBaiViet_Url1) && item.SelectSingleNode(XBaiViet_Url1) != null)
+                                        else if (!string.IsNullOrEmpty(XBaiViet_Url1) && item.SelectSingleNode(XBaiViet_Url1) != null && !string.IsNullOrEmpty(item.SelectSingleNode(XBaiViet_Url1).InnerText.Replace("&nbsp;", " ").Trim()))
                                         {
                                             BaiViet_Url = item.SelectSingleNode(XBaiViet_Url1).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
                                             TieuDe = item.SelectSingleNode(XBaiViet_Url1).InnerText.Replace("&nbsp;", " ").Trim();
                                         }
-                                        else if (!string.IsNullOrEmpty(XBaiViet_Url2) && item.SelectSingleNode(XBaiViet_Url2) != null)
+                                        else if (!string.IsNullOrEmpty(XBaiViet_Url2) && item.SelectSingleNode(XBaiViet_Url2) != null && !string.IsNullOrEmpty(item.SelectSingleNode(XBaiViet_Url2).InnerText.Replace("&nbsp;", " ").Trim()))
                                         {
                                             BaiViet_Url = item.SelectSingleNode(XBaiViet_Url2).Attributes["href"].Value.Replace("&amp;", "&").Replace("&#x3a;", ":").Replace("&#x2f;", "/").Replace("&#x2e;", ".");
                                             TieuDe = item.SelectSingleNode(XBaiViet_Url2).InnerText.Replace("&nbsp;", " ").Trim();
@@ -164,7 +164,7 @@ namespace ThongTinDoiNgoai
                                             ThoiGian = LayNgay(item.SelectSingleNode(XThoiGian).InnerText.Trim());
                                         }
 
-                                        if (BaiViet_Url != null)
+                                        if (BaiViet_Url != null && !string.IsNullOrEmpty(TieuDe))
                                         {
                                             string DiaChiWeb = rowCM["DiaChiWeb"].ToString();
                                             if (BaiViet_Url.Contains("http"))
