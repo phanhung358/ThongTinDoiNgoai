@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 
 namespace ThongTinDoiNgoai
@@ -33,12 +34,13 @@ namespace ThongTinDoiNgoai
                 string ThuMuc = ConfigurationManager.AppSettings["ThuMuc"].Replace("\\", "/") + "/ChromeDriver";
                 ChromeDriverService DeviceDriver = ChromeDriverService.CreateDefaultService(ThuMuc);
                 ChromeOptions options = new ChromeOptions() { Proxy = null };
+                options.PageLoadStrategy = PageLoadStrategy.Normal;
                 options.AddArgument("--headless");
                 options.AddArgument("--no-sandbox");
                 options.AddArgument("--ignore-certificate-errors");
                 ChromeDriver driver = new ChromeDriver(DeviceDriver, options, TimeSpan.FromMinutes(1));
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-                wait.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+                wait.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState == \"complete\" && window.jQuery != \"undefined\" && jQuery.active == 0"));
 
                 string[] dsTag = { "<TABLE", "<TR", "<TD", "<DIV", "<A", "<P", "<SPAN", "<STRONG", "<EM", "<TITLE", "<SCRIPT", "</TABLE>", "</TR>", "</TD>", "</DIV>", "</A>", "</P>", "</SPAN>", "</STRONG>", "</EM>", "</TITLE>", "</SCRIPT>" };
                 DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 3, webID);
