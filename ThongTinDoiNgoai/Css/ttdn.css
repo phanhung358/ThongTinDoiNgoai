@@ -28,9 +28,15 @@ a:hover {
     box-shadow: 0px 0px 3px #888888;
 }
 
-.banner, .footer {
-    height: 100px;
-    background-color: teal;
+.banner {
+    background: url(/Images/banner.png) no-repeat;
+    background-size: contain;
+    aspect-ratio: 10/1;
+}
+
+.footer {
+    aspect-ratio: 10/1;
+    background-image: linear-gradient(to right, #2cacd9, #b5dbe4, #b5dbe4, #83c5d3)
 }
 
 .main {
@@ -77,7 +83,7 @@ a:hover {
 
 .menu-trai ul li a:hover {
     text-decoration: none;
-    color: #d45252;
+    color: #ec3636;
 }
 
 .menu-trai ul li:last-child {
@@ -99,7 +105,6 @@ a:hover {
     border-bottom: none;
     font-weight: 500;
     font-size: 16px;
-    transition: all 0.3s ease-in-out;
 }
 
 .vung-chinh {
@@ -108,7 +113,7 @@ a:hover {
 }
 
 .vung-chinh-vien {
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 240px);
 }
 
 .main-vien {
@@ -177,6 +182,9 @@ a:hover {
 
 .tintungtrang {
     width: 49.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .width-100 {

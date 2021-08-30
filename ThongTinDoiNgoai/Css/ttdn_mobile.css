@@ -14,9 +14,15 @@
     background-color: #f3f2f147;
 }
 
-.banner, .footer {
-    height: 50px;
-    background-color: teal;
+.banner {
+    background: url(/Images/banner.png) no-repeat;
+    background-size: contain;
+    aspect-ratio: 10/1;
+}
+
+.footer {
+    aspect-ratio: 10/1;
+    background-image: linear-gradient(to right, #2cacd9, #b5dbe4, #b5dbe4, #83c5d3)
 }
 
 a {
@@ -136,14 +142,23 @@ nav ul li ul li a {
     background: url(Home/bulet_xo1.png) no-repeat;
     background-position: left 10px;
     padding-left: 15px;
+    display: flex;
 }
 
 .tinmoi-mautin img, .tintungtrang-mautin img {
-    height: 42px;
+    height: 84px;
     aspect-ratio: 3/2;
-    float: left;
-    margin-right: 4px;
+    object-fit: cover;
+    margin-right: 5px;
     border-radius: 5px;
+}
+
+.tinmoi-mautin a, .tintungtrang-mautin a {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 1rem;
 }
 
 .tintungtrang-xemtiep {
@@ -162,13 +177,13 @@ nav ul li ul li a {
 }
 
 .anhdaidien-trai {
-    flex: 0 0 30%;
-    max-width: 30%;
+    flex: 0 0 40%;
+    max-width: 40%;
 }
 
 .noidung-phai {
-    flex: 0 0 70%;
-    max-width: 70%;
+    flex: 0 0 60%;
+    max-width: 60%;
 }
 
 .anhdaidien-trai img {
@@ -180,8 +195,7 @@ nav ul li ul li a {
 
 .tieude {
     font-weight: 500;
-    font-size: 0.9rem;
-    line-height: 1rem;
+    font-size: 1rem;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;

@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Thông tin đối ngoại</title>
+    <title>Trang tổng hợp Thông tin đối ngoại</title>
     <meta content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" name="viewport" />
     <script type="text/javascript" src="/js/Functions.js"></script>
     <script type="text/javascript" src="/Js/jquery-3.1.0.min.js"></script>
@@ -24,7 +24,6 @@
         </asp:ScriptManager>
         <div class="vien">
             <div class="banner">
-                <img src="/css/trangchinh/banner.png" alt="" style="width: 100%" />
             </div>
             <div class="main">
                 <div class="menu-trai" id="divMenuTrai" runat="server">
@@ -33,7 +32,6 @@
                 </div>
             </div>
             <div class="footer">
-                <img src="/css/trangchinh/footer.png" alt="" style="width: 100%" />
             </div>
         </div>
     </form>

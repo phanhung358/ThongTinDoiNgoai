@@ -40,7 +40,7 @@ namespace ThongTinDoiNgoai
                 options.AddArgument("--ignore-certificate-errors");
                 ChromeDriver driver = new ChromeDriver(DeviceDriver, options, TimeSpan.FromMinutes(1));
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-                wait.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState == \"complete\" && window.jQuery != \"undefined\" && jQuery.active == 0"));
+                wait.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
 
                 string[] dsTag = { "<TABLE", "<TR", "<TD", "<DIV", "<A", "<P", "<SPAN", "<STRONG", "<EM", "<TITLE", "<SCRIPT", "</TABLE>", "</TR>", "</TD>", "</DIV>", "</A>", "</P>", "</SPAN>", "</STRONG>", "</EM>", "</TITLE>", "</SCRIPT>" };
                 DataSet dsChuyenMuc = db.GetDataSet("TTDN_CHUYENMUC_SELECT", 3, webID);

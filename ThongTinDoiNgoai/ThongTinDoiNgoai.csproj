@@ -322,6 +322,7 @@
     <Content Include="Images\add.ico" />
     <Content Include="Images\add.png" />
     <Content Include="Images\angle_up-16.png" />
+    <Content Include="Images\banner.png" />
     <Content Include="Images\canhbao.png" />
     <Content Include="Images\ChuyenTrang\AnhChuTich.jpg" />
     <Content Include="Images\ChuyenTrang\Chuagiaiquyet.png" />
