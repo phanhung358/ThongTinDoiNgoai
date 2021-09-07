@@ -60,15 +60,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
         protected global::System.Web.UI.WebControls.Button btnCapNhat;
 
         /// <summary>
-        /// imgThemMoi control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgThemMoi;
-
-        /// <summary>
         /// divDanhSach control.
         /// </summary>
         /// <remarks>

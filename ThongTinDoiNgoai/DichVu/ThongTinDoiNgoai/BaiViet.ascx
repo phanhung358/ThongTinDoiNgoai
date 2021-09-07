@@ -32,10 +32,9 @@
         </td>
         <td>
             <asp:Button ID="btnXoa" runat="server" Text="Xóa" CssClass="button" OnClick="btnXoa_Click" />
-            <asp:Button runat="server" CssClass="button" ID="btnCapNhat" Text="Lấy dữ liệu" OnClick="btnCapNhat_Click" />
         </td>
         <td style="text-align: right">
-            <asp:ImageButton ID="imgThemMoi" runat="server" ImageUrl="~/Images/imgThemMoi.png" />
+            <asp:Button runat="server" CssClass="button" ID="btnCapNhat" Text="Lấy dữ liệu" OnClick="btnCapNhat_Click" />
         </td>
     </tr>
 </table>

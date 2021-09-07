@@ -57,36 +57,13 @@
         vertical-align: middle;
     }
 
-    .resize_none {
-        resize: none;
-    }
-
-    .loading {
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: rgba(0,0,0,0.4);
-    }
-
-    .loading img {
-        position: relative;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-    }
-
-    .d-none {
-        display: none;
-    }
-
-    td {
-        padding: 1.5px 0;
-    }
-
-    tr:nth-child(5n+2) td {
-        padding-top: 10px;
+    .Dong_Cell img {
+        width: 300px;
+        aspect-ratio: 3/2;
+        object-fit: cover;
+        padding: 3px;
+        border: solid 1px #00000038;
+        border-radius: 5px;
     }
 </style>
 
@@ -132,7 +109,35 @@
     </div>
 </div>
 
-<div id="divDanhSach" runat="server"></div>
+<div style="width: 100%; clear: both" class="Dong_Table">
+    <div class="Dong_Cell" style="width: 115px;">Bài viết URL:</div>
+    <div class="Dong_Cell">
+        <asp:TextBox ID="txtBaiViet_Url" runat="server" Width="100%"></asp:TextBox>
+    </div>
+</div>
+
+<div style="width: 100%; clear: both" class="Dong_Table">
+    <div class="Dong_Cell" style="width: 115px;">Anh đại diện:</div>
+    <div class="Dong_Cell" style="width: 300px;">
+        <asp:FileUpload ID="UploadFile" runat="server" Width="100%"></asp:FileUpload>
+    </div>
+    <div class="Dong_Cell" style="text-align: right;">
+        <label for="<%=UploadFile.ClientID%>">
+            <img runat="server" id="AnhDaiDien" src="/Images/no_image.png" />
+        </label>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var oldsrc = $("#<%=AnhDaiDien.ClientID%>").attr("src");
+    $("#<%=UploadFile.ClientID%>").change(function (e) {
+        var src = oldsrc;
+        if (e.target.files.length !== 0)
+            src = URL.createObjectURL(e.target.files[0]);
+        console.log(e.target.files[0]);
+        $("#<%=AnhDaiDien.ClientID%>").attr("src", src);
+    });
+</script>
 
 <div style="text-align: center; padding-top: 10px; padding-bottom: 5px;">
     <asp:Button ID="btnThemMoi" runat="server" CssClass="button" Text="Cập nhật" OnClick="btnThemMoi_Click" />

@@ -157,9 +157,16 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
         private void addData_Web(){
             if (sWebID != "0")
             {
+                object[] obj = new object[5];
+                obj[0] = 1;
+                obj[1] = 0;
+                obj[2] = sWebID == "00" ? "0" : sWebID;
+                obj[3] = 0;
+                obj[4] = sWebID == "00" ? "3" : "0";
+
                 StringBuilder str = new StringBuilder();
                 //=============================================
-                using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1, 0, sWebID))
+                using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", obj))
                 {
                     if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                     {
@@ -178,7 +185,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                             tblPhanTrang.Visible = true;
                         //End phân trang==========================================
 
-                        string TenWeb = "";
+                        string TenWeb = "SỞ, BAN, NGÀNH";
                         DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, sWebID);
                         if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
                         {
@@ -231,13 +238,18 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
             LoadMore.Text = "<script type='text/javascript' src='/js/LoadMore.js'></script>";
             if (sWebID != "0")
             {
+                object[] obj = new object[3];
+                obj[0] = sWebID == "00" ? "1" : "0";
+                obj[1] = sWebID == "00" ? "0" : sWebID;
+                obj[2] = sWebID == "00" ? "3" : "0";
+
                 StringBuilder str = new StringBuilder();
                 //=============================================
-                using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT_MOBILE", 0, 0, sWebID))
+                using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT_MOBILE", obj))
                 {
                     if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                     {
-                        string TenWeb = "";
+                        string TenWeb = "SỞ, BAN, NGÀNH";
                         DataSet ds1 = db.GetDataSet("TTDN_TRANGWEB_SELECT", 1, sWebID);
                         if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
                         {

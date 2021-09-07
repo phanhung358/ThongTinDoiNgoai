@@ -54,10 +54,10 @@ namespace ThongTinDoiNgoai
             {
                 str.Append("<script type=\"text/javascript\">");
                 str.Append("jQuery(document).ready(function($) {");
-                str.AppendFormat("$(\"#navigation-list{0}\").hide();", "");
-                str.AppendFormat("$(\".menuBtn{0}\").click(function()", "");
+                str.Append("$(\"#navigation-list\").hide();");
+                str.Append("$(\".menuBtn\").click(function()");
                 str.Append("{");
-                str.AppendFormat("$(\"#navigation-list{0}\").slideToggle(300);", "");
+                str.Append("$(\"#navigation-list\").slideToggle(300);");
                 str.Append(" });");
                 str.Append("});</script>");
 
@@ -75,8 +75,19 @@ namespace ThongTinDoiNgoai
             DataSet ds = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 3);
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                str.AppendFormat("<li class='cocon'>Tin từ Sở, Ban, Ngành");
-                str.Append("<ul>");
+                str.Append("<script type=\"text/javascript\">");
+                str.Append("$(document).ready(function($) {");
+                str.Append("$(\"#sbn-list\").hide();");
+                str.Append("$(\"#so-ban-nganh\").click(function()");
+                str.Append("{");
+                str.Append("$(\"#sbn-list\").slideToggle(300);");
+                str.Append("$(\"#so-ban-nganh\").toggleClass('so-ban-nganh');");
+                str.Append(" });");
+                str.Append("});</script>");
+
+                str.AppendFormat("<li class='cocon'><a href='/thongtindoingoai/so-ban-nganh-a00.html'>Tin từ Sở, Ban, Ngành</a>");
+                str.Append("<span id='so-ban-nganh'></span>");
+                str.Append("<ul id='sbn-list'>");
                 foreach (DataRow row in ds.Tables[0].Rows)
                 {
                     str.AppendFormat("<li><a href='{1}.html'>{0}</a></li>", row["TenWeb"].ToString(), "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TenWeb"].ToString()) + "-a" + row["WebID"].ToString().Trim());
@@ -405,7 +416,8 @@ namespace ThongTinDoiNgoai
 
                     str.AppendFormat("<div class='chitiet-noidung'>{0}</div>", NoiDung.DocumentNode.InnerHtml);
                     str.AppendFormat("<div class='chitiet-tacgia'><p>{0}</p></div>", row["TacGia"].ToString());
-                    str.AppendFormat("<div class='baivietgoc'><a href='{0}' target='_blank'>>>><i>Xem bài viết gốc</i></a></div>", row["BaiViet_Url"].ToString());
+                    if (row["BaiVietID"].ToString() != row["BaiViet_Url"].ToString())
+                        str.AppendFormat("<div class='baivietgoc'><a href='{0}' target='_blank'>>>><i>Xem bài viết gốc</i></a></div>", row["BaiViet_Url"].ToString());
                     str.Append("</div>");
 
                     str.Append("<div class='tinkhac-demuc'>Tin khác:</div>");

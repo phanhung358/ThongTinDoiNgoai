@@ -161,8 +161,6 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
         private void addData()
         {
-            imgThemMoi.Attributes["onclick"] = string.Format("return thickboxPopup('Tạo tin mới', '{0}?control={1}&btn={2}','900','700');", Static.AppPath() + "/home/popup.aspx", "/DichVu/ThongTinDoiNgoai/BaiViet_Tm.ascx", btnSuKien.ClientID);
-
             divDanhSach.Controls.Clear();
             Table tbl = new Table();
             tbl.Width = Unit.Percentage(100);
@@ -248,13 +246,16 @@ namespace QuanLyVanBan.DichVu.DuLieu
                         tblRow.Controls.Add(tblCell);
 
                         tblCell = new TableCell();
-                        HyperLink link = new HyperLink();
-                        link.NavigateUrl = row["BaiViet_Url"].ToString();
-                        link.Text = row["BaiViet_Url"].ToString();
-                        link.ToolTip = row["BaiViet_Url"].ToString();
-                        link.Target = "_blank";
-                        link.CssClass = "LienKet text-ellipsis";
-                        tblCell.Controls.Add(link);
+                        if (row["BaiVietID"].ToString() != row["BaiViet_Url"].ToString())
+                        {
+                            HyperLink link = new HyperLink();
+                            link.NavigateUrl = row["BaiViet_Url"].ToString();
+                            link.Text = row["BaiViet_Url"].ToString();
+                            link.ToolTip = row["BaiViet_Url"].ToString();
+                            link.Target = "_blank";
+                            link.CssClass = "LienKet text-ellipsis";
+                            tblCell.Controls.Add(link);
+                        }    
                         tblRow.Controls.Add(tblCell);
 
                         tbl.Controls.Add(tblRow);
@@ -311,7 +312,7 @@ namespace QuanLyVanBan.DichVu.DuLieu
 
         protected void btnXoa_Click(object sender, EventArgs e)
         {
-            db.ExcuteSP("TTDN_BAIVIET_DELETE", drpWeb.SelectedValue);
+            db.ExcuteSP("TTDN_BAIVIET_DELETE", 0, drpWeb.SelectedValue);
             addData();
         }
 

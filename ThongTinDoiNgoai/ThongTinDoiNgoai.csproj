@@ -18,8 +18,8 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44370</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -140,7 +140,7 @@
       <HintPath>..\packages\Selenium.WebDriver.3.141.0\lib\net45\WebDriver.dll</HintPath>
     </Reference>
     <Reference Include="WebDriverManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebDriverManager.2.11.2\lib\netstandard2.0\WebDriverManager.dll</HintPath>
+      <HintPath>..\packages\WebDriverManager.2.11.3\lib\netstandard2.0\WebDriverManager.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -306,9 +306,11 @@
     <Content Include="DichVu\ThongTinDoiNgoai\ChuyenMuc_Tm.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\DanhSachTin.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\QuanLyLoi.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\SoanTin.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\TrangChu.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\TrangWeb.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\TrangWeb_Tm.ascx" />
+    <Content Include="DichVu\ThongTinDoiNgoai\XacThuc.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\XpathChiTiet_Tm.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm.ascx" />
     <Content Include="DichVu\ThongTinDoiNgoai\XpathChuyenMuc_Tm_Copy.ascx" />
@@ -670,6 +672,13 @@
     <Compile Include="DichVu\ThongTinDoiNgoai\QuanLyLoi.ascx.designer.cs">
       <DependentUpon>QuanLyLoi.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\SoanTin.ascx.cs">
+      <DependentUpon>SoanTin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\SoanTin.ascx.designer.cs">
+      <DependentUpon>SoanTin.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DichVu\ThongTinDoiNgoai\TrangChu.ascx.cs">
       <DependentUpon>TrangChu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -690,6 +699,13 @@
     </Compile>
     <Compile Include="DichVu\ThongTinDoiNgoai\TrangWeb_Tm.ascx.designer.cs">
       <DependentUpon>TrangWeb_Tm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\XacThuc.ascx.cs">
+      <DependentUpon>XacThuc.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DichVu\ThongTinDoiNgoai\XacThuc.ascx.designer.cs">
+      <DependentUpon>XacThuc.ascx</DependentUpon>
     </Compile>
     <Compile Include="DichVu\ThongTinDoiNgoai\XpathChiTiet_Tm.ascx.cs">
       <DependentUpon>XpathChiTiet_Tm.ascx</DependentUpon>

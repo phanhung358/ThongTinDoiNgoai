@@ -21,8 +21,14 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
             string WebID = context.Request.QueryString["WebID"];
             string page = context.Request.QueryString["page"];
 
+            object[] obj = new object[4];
+            obj[0] = WebID == "00" ? "1" : "0";
+            obj[1] = WebID == "00" ? "0" : WebID;
+            obj[2] = WebID == "00" ? "3" : "0";
+            obj[3] = page;
+
             StringBuilder str = new StringBuilder();
-            using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT_MOBILE", 0, 0, WebID, page))
+            using (DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT_MOBILE", obj))
             {
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {

@@ -6,7 +6,6 @@
         cursor: pointer;
         border: none;
         background: none;
-        color: green;
         font-weight: 700;
         line-height: 20px;
         border-radius: 12px;

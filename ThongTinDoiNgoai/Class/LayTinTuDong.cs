@@ -1,5 +1,6 @@
 ﻿using FITC.Web.Component;
 using HtmlAgilityPack;
+using Microsoft.Win32;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,6 +16,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
+using WebDriverManager.DriverConfigs.Impl;
+using WebDriverManager.Helpers;
 
 namespace ThongTinDoiNgoai
 {
@@ -32,6 +36,9 @@ namespace ThongTinDoiNgoai
             try
             {
                 string ThuMuc = ConfigurationManager.AppSettings["ThuMuc"].Replace("\\", "/") + "/ChromeDriver";
+                new WebDriverManager.DriverManager().SetUpDriver(string.Format("https://chromedriver.storage.googleapis.com/{0}/chromedriver_win32.zip", GetLatestVersion()),
+                    Path.Combine(ThuMuc, "chromedriver.exe"),
+                    "chromedriver.exe");
                 ChromeDriverService DeviceDriver = ChromeDriverService.CreateDefaultService(ThuMuc);
                 ChromeOptions options = new ChromeOptions() { Proxy = null };
                 options.PageLoadStrategy = PageLoadStrategy.Normal;
@@ -385,7 +392,7 @@ namespace ThongTinDoiNgoai
                                             if (TieuDe != null && !string.IsNullOrEmpty(TieuDe.InnerText) && !TieuDe.InnerText.Trim().ToLower().Equals(item[3].ToString().Trim().ToLower()))
                                                 sTieuDe = TieuDe.InnerText.Trim();
 
-                                            object[] obj = new object[10];   
+                                            object[] obj = new object[12];   
                                             obj[0] = sTieuDe;
                                             obj[1] = TomTat != null ? TomTat.InnerText : null;
                                             obj[2] = NoiDung != null ? NoiDung.InnerHtml : null;
@@ -396,6 +403,8 @@ namespace ThongTinDoiNgoai
                                             obj[7] = item[1].ToString();
                                             obj[8] = item[2].ToString();
                                             obj[9] = item[4].ToString();
+                                            obj[10] = 2;
+                                            obj[11] = null;
 
                                             string sLoi = db.ExcuteSP("TTDN_BAIVIET_INSERT", obj);
                                             if (sLoi != "")
@@ -562,6 +571,22 @@ namespace ThongTinDoiNgoai
             while (str.LastIndexOf("  ") > 0)
                 str = str.Replace("  ", "");
             return str.Replace(" ", "-").Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "-").Replace("=", "").Replace("(", "").Replace(")", "").Replace("+", "").Replace(",", "").Replace(">", "").Replace("<", "").Replace("'", "").Replace("đ", "d").Replace("á", "a").Replace("à", "a").Replace("ạ", "a").Replace("ả", "a").Replace("ã", "a").Replace("ă", "a").Replace("ắ", "a").Replace("ằ", "a").Replace("ặ", "a").Replace("ẳ", "a").Replace("ẵ", "a").Replace("â", "a").Replace("ấ", "a").Replace("ầ", "a").Replace("ậ", "a").Replace("ẩ", "a").Replace("ẫ", "a").Replace("ạ", "a").Replace("ê", "e").Replace("ế", "e").Replace("ề", "e").Replace("ể", "e").Replace("ễ", "e").Replace("ệ", "e").Replace("e", "e").Replace("é", "e").Replace("è", "e").Replace("ẹ", "e").Replace("ẻ", "e").Replace("ẽ", "e").Replace("i", "i").Replace("í", "i").Replace("ì", "i").Replace("ị", "i").Replace("ỉ", "i").Replace("ĩ", "i").Replace("o", "o").Replace("ó", "o").Replace("ò", "o").Replace("ọ", "o").Replace("ỏ", "o").Replace("õ", "o").Replace("ô", "o").Replace("ố", "o").Replace("ồ", "o").Replace("ộ", "o").Replace("ổ", "o").Replace("ỗ", "o").Replace("ơ", "o").Replace("ớ", "o").Replace("ờ", "o").Replace("ợ", "o").Replace("ở", "o").Replace("ỡ", "o").Replace("u", "u").Replace("ú", "u").Replace("ù", "u").Replace("ụ", "u").Replace("ủ", "u").Replace("ũ", "u").Replace("ư", "u").Replace("ứ", "u").Replace("ừ", "u").Replace("ự", "u").Replace("ử", "u").Replace("ữ", "u").Replace("y", "y").Replace("ý", "y").Replace("ỳ", "y").Replace("ỵ", "y").Replace("ỷ", "y").Replace("ỹ", "y").Replace("/", "-").Replace("?", "-").Replace("\"", "").Replace(":", "-").Replace(";", "-").Replace("--", "-");
+        }
+
+        public string GetLatestVersion()
+        {
+            using (var client = new WebClient())
+            {
+                var doc = new HtmlDocument();
+                var htmlCode = client.DownloadString("https://chromedriver.chromium.org/downloads");
+                doc.LoadHtml(htmlCode);
+                var itemList =
+                    doc.DocumentNode.SelectNodes("//li[@class='TYR86d wXCUfe zfr3Q']/p[@class='CDt4Ke zfr3Q']/span[@class=' aw5Odc']/a")
+                        .Select(p => p.InnerText)
+                        .ToList();
+                var version = itemList.FirstOrDefault()?.Split(' ')[1];
+                return version;
+            }
         }
     }
 }
