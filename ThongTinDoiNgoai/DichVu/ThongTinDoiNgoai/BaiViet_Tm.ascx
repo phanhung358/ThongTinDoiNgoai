@@ -65,19 +65,27 @@
         border: solid 1px #00000038;
         border-radius: 5px;
     }
+
+    .resize_none {
+        resize: none !important;
+    }
+
+    .select2-selection__rendered {
+        max-width: 100% !important;
+    }
 </style>
 
 <div style="width: 100%; clear: both" class="Dong_Table">
     <div class="Dong_Cell" style="width: 115px;">Trang web:<sup>*</sup></div>
     <div class="Dong_Cell">
-        <asp:DropDownList ID="drpWeb" runat="server" AutoPostBack="true" Width="100%" OnSelectedIndexChanged="drpWeb_SelectedIndexChanged"></asp:DropDownList>
+        <asp:DropDownList ID="drpWeb" runat="server" CssClass="js-example-basic-single" AutoPostBack="true" Width="100%" OnSelectedIndexChanged="drpWeb_SelectedIndexChanged"></asp:DropDownList>
     </div>
 </div>
 
 <div style="width: 100%; clear: both" class="Dong_Table">
     <div class="Dong_Cell" style="width: 115px;">Chuyên mục:</div>
     <div class="Dong_Cell">
-        <asp:DropDownList ID="drpChuyenMuc" runat="server" Width="100%"></asp:DropDownList>
+        <asp:DropDownList ID="drpChuyenMuc" CssClass="js-example-basic-single" runat="server" Width="100%"></asp:DropDownList>
     </div>
 </div>
 

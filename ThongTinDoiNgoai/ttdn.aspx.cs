@@ -191,16 +191,7 @@ namespace ThongTinDoiNgoai
 
                 str.Append("<div class='tintungtrang-vien'>");
                 List<DataRow> listWeb = new List<DataRow>();
-                DataSet dsSo = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 3);
-                if (dsSo != null && dsSo.Tables.Count > 0 && dsSo.Tables[0].Rows.Count > 0)
-                {
-                    for (int j = 0; j < dsSo.Tables[0].Rows.Count; j++)
-                    {
-                        DataRow rowSo = dsSo.Tables[0].Rows[j];
-                        listWeb.Add(rowSo);
-                    }
-                }
-                dsSo = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 1);
+                DataSet dsSo = db.GetDataSet("TTDN_TRANGWEB_SELECT", 0, 0, "", 1);
                 if (dsSo != null && dsSo.Tables.Count > 0 && dsSo.Tables[0].Rows.Count > 0)
                 {
                     for (int j = 0; j < dsSo.Tables[0].Rows.Count; j++)
@@ -210,12 +201,34 @@ namespace ThongTinDoiNgoai
                     }
                 }
 
+                str.AppendFormat("<div class='tintungtrang'>");
+                str.AppendFormat("<div class='tintungtrang-tieude'>Tin từ Sở, Ban, Ngành</div>");
+                str.Append("<div class='tintungtrang-danhsach'>");
+                ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 1, 0, 0, 0, 3);
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    int count = ds.Tables[0].Rows.Count < 3 ? ds.Tables[0].Rows.Count : 3;
+                    for (int i = 0; i < count; i++)
+                    {
+                        DataRow row = ds.Tables[0].Rows[i];
+                        str.Append("<div class='tintungtrang-mautin'>");
+                        str.AppendFormat("<img src='{0}'>", !string.IsNullOrEmpty(row["AnhDaiDien"].ToString()) ? row["AnhDaiDien"].ToString() : Static.AppPath() + "/Images/no_image.png");
+                        str.AppendFormat("<a href='{0}.html'>{1}</a>", "/thongtindoingoai/" + ChuyenTuCoDauSangKoDau(row["TieuDe"].ToString()) + "-b" + row["BaiVietID"].ToString().Trim(), row["TieuDe"].ToString().Trim());
+                        str.Append("</div>");
+                    }
+                    str.Append("<div class='tintungtrang-xemtiep'>");
+                    str.AppendFormat("<a href='/thongtindoingoai/so-ban-nganh-a00.html'>Xem tiếp</a>");
+                    str.Append("</div>");
+                }
+                str.Append("</div>");
+                str.Append("</div>");
+
                 if (listWeb.Count > 0)
                 {
                     foreach (DataRow item in listWeb)
                     {
                         string sClass = "";
-                        if (listWeb.IndexOf(item) == listWeb.Count - 1 && listWeb.Count % 2 == 1)
+                        if (listWeb.IndexOf(item) == listWeb.Count - 1 && listWeb.Count % 2 == 0)
                             sClass = "width-100";
                         str.AppendFormat("<div class='tintungtrang {0}'>", sClass);
                         str.AppendFormat("<div class='tintungtrang-tieude'>Tin từ {0}</div>", item["DiaChiWeb"].ToString().Contains("trt.com.vn") ? "TRT" : item["TenWeb"].ToString());
