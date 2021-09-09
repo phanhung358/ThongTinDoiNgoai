@@ -69,15 +69,6 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
         protected global::System.Web.UI.WebControls.TextBox txtTacGia;
 
         /// <summary>
-        /// txtBaiViet_Url control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBaiViet_Url;
-
-        /// <summary>
         /// UploadFile control.
         /// </summary>
         /// <remarks>

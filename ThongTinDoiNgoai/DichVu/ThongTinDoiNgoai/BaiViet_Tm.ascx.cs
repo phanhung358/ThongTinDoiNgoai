@@ -59,7 +59,6 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                     txtTomTat.Text = row["TomTat"].ToString();
                     txtNoiDung.Text = row["NoiDung"].ToString();
                     txtTacGia.Text = row["TacGia"].ToString();
-                    txtBaiViet_Url.Text = row["BaiViet_Url"].ToString();
                     AnhDaiDien.Src = string.IsNullOrEmpty(row["AnhDaiDien"].ToString()) ? "/Images/no_image.png" : row["AnhDaiDien"].ToString();
                 }
             }
@@ -104,6 +103,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
 
                 string ThoiGian = null;
                 string sAnhDaiDien = null;
+                string BaiViet_Url = "";
                 if (!string.IsNullOrEmpty(sBaiVietID))
                 {
                     DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 0, sBaiVietID);
@@ -112,6 +112,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                         DataRow row = ds.Tables[0].Rows[0];
 
                         ThoiGian = row["ThoiGian"].ToString();
+                        BaiViet_Url = row["BaiViet_Url"].ToString();
                     }
                 }
                 string diachiweb = "";
@@ -134,7 +135,7 @@ namespace ThongTinDoiNgoai.DichVu.ThongTinDoiNgoai
                 obj[2] = txtNoiDung.Text.Trim();
                 obj[3] = ThoiGian;
                 obj[4] = txtTacGia.Text.Trim();
-                obj[5] = txtBaiViet_Url.Text.Trim();
+                obj[5] = BaiViet_Url;
                 obj[6] = txtNoiDung.Text.Trim().Length;
                 obj[7] = drpChuyenMuc.SelectedValue;
                 obj[8] = drpWeb.SelectedValue;

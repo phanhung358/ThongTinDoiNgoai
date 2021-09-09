@@ -118,13 +118,6 @@
 </div>
 
 <div style="width: 100%; clear: both" class="Dong_Table">
-    <div class="Dong_Cell" style="width: 115px;">Bài viết URL:</div>
-    <div class="Dong_Cell">
-        <asp:TextBox ID="txtBaiViet_Url" runat="server" Width="100%"></asp:TextBox>
-    </div>
-</div>
-
-<div style="width: 100%; clear: both" class="Dong_Table">
     <div class="Dong_Cell" style="width: 115px;">Anh đại diện:</div>
     <div class="Dong_Cell" style="width: 300px;">
         <asp:FileUpload ID="UploadFile" runat="server" Width="100%"></asp:FileUpload>
