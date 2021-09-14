@@ -176,7 +176,7 @@ namespace ThongTinDoiNgoai
                 DataSet ds = db.GetDataSet("TTDN_BAIVIET_SELECT", 4);
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
-                    int count = ds.Tables[0].Rows.Count < 20 ? ds.Tables[0].Rows.Count : 10;
+                    int count = ds.Tables[0].Rows.Count < 10 ? ds.Tables[0].Rows.Count : 10;
                     for (int i = 0; i < count; i++)
                     {
                         DataRow row = ds.Tables[0].Rows[i];

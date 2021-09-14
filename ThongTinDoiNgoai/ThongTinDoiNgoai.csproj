@@ -407,74 +407,6 @@
     <Content Include="Js\keyboard_type11.js" />
     <Content Include="Js\LoadMore.js" />
     <Content Include="Js\map.js" />
-    <Content Include="Js\ckeditor\build\ckeditor.js" />
-    <Content Include="Js\ckeditor\build\translations\af.js" />
-    <Content Include="Js\ckeditor\build\translations\ar.js" />
-    <Content Include="Js\ckeditor\build\translations\ast.js" />
-    <Content Include="Js\ckeditor\build\translations\az.js" />
-    <Content Include="Js\ckeditor\build\translations\bg.js" />
-    <Content Include="Js\ckeditor\build\translations\ca.js" />
-    <Content Include="Js\ckeditor\build\translations\cs.js" />
-    <Content Include="Js\ckeditor\build\translations\da.js" />
-    <Content Include="Js\ckeditor\build\translations\de-ch.js" />
-    <Content Include="Js\ckeditor\build\translations\de.js" />
-    <Content Include="Js\ckeditor\build\translations\el.js" />
-    <Content Include="Js\ckeditor\build\translations\en-au.js" />
-    <Content Include="Js\ckeditor\build\translations\en-gb.js" />
-    <Content Include="Js\ckeditor\build\translations\eo.js" />
-    <Content Include="Js\ckeditor\build\translations\es.js" />
-    <Content Include="Js\ckeditor\build\translations\et.js" />
-    <Content Include="Js\ckeditor\build\translations\eu.js" />
-    <Content Include="Js\ckeditor\build\translations\fa.js" />
-    <Content Include="Js\ckeditor\build\translations\fi.js" />
-    <Content Include="Js\ckeditor\build\translations\fr.js" />
-    <Content Include="Js\ckeditor\build\translations\gl.js" />
-    <Content Include="Js\ckeditor\build\translations\gu.js" />
-    <Content Include="Js\ckeditor\build\translations\he.js" />
-    <Content Include="Js\ckeditor\build\translations\hi.js" />
-    <Content Include="Js\ckeditor\build\translations\hr.js" />
-    <Content Include="Js\ckeditor\build\translations\hu.js" />
-    <Content Include="Js\ckeditor\build\translations\id.js" />
-    <Content Include="Js\ckeditor\build\translations\it.js" />
-    <Content Include="Js\ckeditor\build\translations\ja.js" />
-    <Content Include="Js\ckeditor\build\translations\kk.js" />
-    <Content Include="Js\ckeditor\build\translations\km.js" />
-    <Content Include="Js\ckeditor\build\translations\kn.js" />
-    <Content Include="Js\ckeditor\build\translations\ko.js" />
-    <Content Include="Js\ckeditor\build\translations\ku.js" />
-    <Content Include="Js\ckeditor\build\translations\lt.js" />
-    <Content Include="Js\ckeditor\build\translations\lv.js" />
-    <Content Include="Js\ckeditor\build\translations\ms.js" />
-    <Content Include="Js\ckeditor\build\translations\nb.js" />
-    <Content Include="Js\ckeditor\build\translations\ne.js" />
-    <Content Include="Js\ckeditor\build\translations\nl.js" />
-    <Content Include="Js\ckeditor\build\translations\no.js" />
-    <Content Include="Js\ckeditor\build\translations\oc.js" />
-    <Content Include="Js\ckeditor\build\translations\pl.js" />
-    <Content Include="Js\ckeditor\build\translations\pt-br.js" />
-    <Content Include="Js\ckeditor\build\translations\pt.js" />
-    <Content Include="Js\ckeditor\build\translations\ro.js" />
-    <Content Include="Js\ckeditor\build\translations\ru.js" />
-    <Content Include="Js\ckeditor\build\translations\si.js" />
-    <Content Include="Js\ckeditor\build\translations\sk.js" />
-    <Content Include="Js\ckeditor\build\translations\sl.js" />
-    <Content Include="Js\ckeditor\build\translations\sq.js" />
-    <Content Include="Js\ckeditor\build\translations\sr-latn.js" />
-    <Content Include="Js\ckeditor\build\translations\sr.js" />
-    <Content Include="Js\ckeditor\build\translations\sv.js" />
-    <Content Include="Js\ckeditor\build\translations\th.js" />
-    <Content Include="Js\ckeditor\build\translations\tk.js" />
-    <Content Include="Js\ckeditor\build\translations\tr.js" />
-    <Content Include="Js\ckeditor\build\translations\tt.js" />
-    <Content Include="Js\ckeditor\build\translations\ug.js" />
-    <Content Include="Js\ckeditor\build\translations\uk.js" />
-    <Content Include="Js\ckeditor\build\translations\vi.js" />
-    <Content Include="Js\ckeditor\build\translations\zh-cn.js" />
-    <Content Include="Js\ckeditor\build\translations\zh.js" />
-    <Content Include="Js\ckeditor\sample\index.html" />
-    <Content Include="Js\ckeditor\sample\styles.css" />
-    <Content Include="Js\ckeditor\src\ckeditor.js" />
-    <Content Include="Js\ckeditor\webpack.config.js" />
     <Content Include="Js\newCalendar.js" />
     <Content Include="Js\PDFSigning.min.js" />
     <Content Include="Js\simple-keyboard-min.js" />
@@ -512,9 +444,6 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DichVu\ckUpload.ashx.cs">
-      <DependentUpon>ckUpload.ashx</DependentUpon>
     </Compile>
     <Compile Include="DichVu\HeThong\BanQuyen.ascx.cs">
       <DependentUpon>BanQuyen.ascx</DependentUpon>
@@ -842,11 +771,6 @@
     <Content Include="Css\Home\TinNoiBo\Thumbs.db" />
     <Content Include="Css\Thickbox\helpers\Thumbs.db" />
     <Content Include="DichVu\ThongTinDoiNgoai\LoadMore.ashx" />
-    <Content Include="Js\ckeditor\build\ckeditor.js.map" />
-    <Content Include="Js\ckeditor\LICENSE.md" />
-    <Content Include="Js\ckeditor\package.json" />
-    <Content Include="Js\ckeditor\README.md" />
-    <Content Include="DichVu\ckUpload.ashx" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
